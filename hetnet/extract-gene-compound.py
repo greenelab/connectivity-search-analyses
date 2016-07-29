@@ -3,28 +3,16 @@
 import numpy as np
 import sys
 
-id2indexf = open('./adjacency/id2ind.tsv','r')
-
-''' 
-Transform the files into dictionaries that map to and from node ID to index.
-Examples of node IDs:
-Gene::
-Compound::
-Anatomy::UBERON:0000002
-Disease::DOID:119
-'''
-
-# Construct hashtable from file
-ID2index = {}
-index2ID = {}
-
-for line in id2indexf:
-	line = line.strip()
-	ID, index = line.split('\t')
-	ID2index[ID] = int(index)
-	index2ID[int(index)] = ID
-
-id2indexf.close()
+# Construct node-ID maps from file
+with open('./adjacency/ind2id.tsv','r') as index2idf:
+	next(index2idf) # skip header line
+	ID2index = {}
+	index2ID = {}
+	for line in index2idf:
+		line = line.strip()
+		index, ID = line.split('\t')
+		ID2index[ID] = int(index)
+		index2ID[int(index)] = ID
 
 print("Done reading in hashtable.\n")
 
@@ -41,18 +29,19 @@ for key in ID2index:
 		CompoundIndexes.append(ID2index[key])
 		num_compounds = num_compounds + 1
 
-print(str(num_genes))
-print(str(num_compounds))
+print(str(num_genes) + ' genes')
+print(str(num_compounds) + ' compounds')
 
 # Write gene and compound node lists to file
-genelistf = open('./adjacency/genelist.tsv','w')
-compoundlistf = open('./adjacency/compoundlist.tsv','w')
-for index in GeneIndexes:
-	genelistf.write( str(index) + '\t' + index2ID[index] + '\n' )
-genelistf.close()
-for index in CompoundIndexes:
-	compoundlistf.write( str(index) + '\t' + index2ID[index] + '\n' )
-compoundlistf.close()
+with open('./adjacency/genelist.tsv','w') as genelistf:
+	genelistf.write( '# genelist: int_id \t node_id \n' ) # Write header info
+	for index in GeneIndexes:
+		genelistf.write( str(index) + '\t' + index2ID[index] + '\n' )
+
+with open('./adjacency/compoundlist.tsv','w') as compoundlistf:
+	compoundlistf.write( '# compoundlist: int_id \t node_id \n' ) # Write header info
+	for index in CompoundIndexes:
+		compoundlistf.write( str(index) + '\t' + index2ID[index] + '\n' )
 
 print("Gene and compound index lists done.\n")
 

@@ -1,3 +1,4 @@
+# Hetnet, node ID to node index map, column 1 = node index, column 2 = node ID
 0	Anatomy::UBERON:0000002
 1	Disease::DOID:119
 2	Disease::DOID:1245

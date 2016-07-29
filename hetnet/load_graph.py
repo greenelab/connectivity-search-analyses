@@ -8,41 +8,43 @@ import sys
 import os
 import scipy.sparse
 
-G=nx.read_edgelist("./adjacency/data-big/adj-list.tsv", nodetype=int)
+G=nx.read_edgelist("./adjacency/data-big/adj-list.tsv", comments='#', nodetype=int)
 smat = nx.to_scipy_sparse_matrix(G)
 
 print ("Done reading in graph and converting to a matrix.\n")
 
 # Now load gene and compound node lists
-genelistf = open('./adjacency/genelist.tsv','r')
-GeneIndexes = []
-GeneNames = {}
-GeneName2index = {}
-for line in genelistf:
-	a, b = line.split('\t')
-	GeneIndexes.append(int(a))
-	GeneNames[int(a)] = b.strip()
-	GeneName2index[b.strip()] = int(a)
-genelistf.close()
+with open('./adjacency/genelist.tsv','r') as genelistf:
+	next(genelistf) # skip header line
+	GeneIndexes = []
+	GeneNames = {}
+	GeneName2index = {}
+	for line in genelistf:
+		a, b = line.split('\t')
+		GeneIndexes.append(int(a))
+		GeneNames[int(a)] = b.strip()
+		GeneName2index[b.strip()] = int(a)
 
-compoundlistf = open('./adjacency/compoundlist.tsv','r')
-CompoundIndexes = []
-CompoundNames = {}
-CompoundName2index = {}
-for line in compoundlistf:
-	a, b = line.split('\t')
-	CompoundIndexes.append(int(a))
-	CompoundNames[int(a)] = b.strip()
-	CompoundName2index[b.strip()] = int(a)
-compoundlistf.close()
-print("Done loading genes and compounds\n")
+with open('./adjacency/compoundlist.tsv','r') as compoundlistf:
+	next(compoundlistf) # skip header line
+	CompoundIndexes = []
+	CompoundNames = {}
+	CompoundName2index = {}
+	for line in compoundlistf:
+		a, b = line.split('\t')
+		CompoundIndexes.append(int(a))
+		CompoundNames[int(a)] = b.strip()
+		CompoundName2index[b.strip()] = int(a)
+
+print("Done loading genes and compounds.\n")
 
 # Load node ID index map
 index2ID = {}
-idlistf = open('./adjacency/ind2id.tsv', 'r')
-for line in idlistf:
-	line = line.strip()
-	index, ID = line.split('\t')
-	index2ID[int(index)] = ID
-idlistf.close()
-print("Done building node ID-index map.\n")
+with open('./adjacency/ind2id.tsv', 'r') as idlistf:
+	next(idlistf) # skip header line
+	for line in idlistf:
+		line = line.strip()
+		index, ID = line.split('\t')
+		index2ID[int(index)] = ID
+
+print("Done loading node ID-index map.\n")
