@@ -2,14 +2,14 @@
 This script is converts the adjacency.tsv file into an adjacency matrix that python/matlab can then compute paths from.
 Outputs a txt file containing adjacency information stripped of all bio IDs,
 and txt files containing the biological ID to numerial index conversion hashtables.
+Also extracts the gene and compound IDs and write to file a hashmap from their node IDs to node indexes.
 '''
-
 import numpy as np
 import sys
+
 inputf = open('./adjacency/data-big/adjacency.tsv')
 graphf = open('./adjacency/data-big/adj-list.tsv', 'w')
-graphf.write('# Hetnet adjacency edge list, column 1 = endpoint 1, column 2 = endpoint 2\n') # Write header info into the adj-list
-
+graphf.write('int_id\tint_id\n') # Write header info into the adj-list
 
 # First get dictionary of ID names, and map to integers 1:N where N is number of disinct labels.
 ID2index = {}
@@ -41,8 +41,48 @@ print("Done reading in the graph\n")
 
 
 with open('./adjacency/ind2id.tsv', 'w') as ind2idf:
-	ind2idf.write('# int_id \t node_id \n') # Write header info
+	ind2idf.write('int_id\tnode_id\n') # Write header info
 	for key in ID2index:
 		ind2idf.write( str(ID2index[key]) + '\t' + key + '\n' )
+
+# Next, extract gene and compound ids
+with open('./adjacency/ind2id.tsv','r') as index2idf:
+	next(index2idf) # skip header line
+	ID2index = {}
+	index2ID = {}
+	for line in index2idf:
+		line = line.strip()
+		index, ID = line.split('\t')
+		ID2index[ID] = int(index)
+		index2ID[int(index)] = ID
+
+# Construct list of gene and compound nodes
+GeneIndexes = []
+CompoundIndexes = []
+num_genes = 0
+num_compounds = 0
+for key in ID2index:
+	if "Gene::" in key:
+		GeneIndexes.append(ID2index[key])
+		num_genes = num_genes + 1
+	if "Compound::" in key:
+		CompoundIndexes.append(ID2index[key])
+		num_compounds = num_compounds + 1
+
+print(str(num_genes) + ' genes')
+print(str(num_compounds) + ' compounds')
+
+# Write gene and compound node lists to file
+with open('./adjacency/genelist.tsv','w') as genelistf:
+	genelistf.write( 'int_id\tnode_id\n' ) # Write header info
+	for index in GeneIndexes:
+		genelistf.write( str(index) + '\t' + index2ID[index] + '\n' )
+
+with open('./adjacency/compoundlist.tsv','w') as compoundlistf:
+	compoundlistf.write( 'int_id\tnode_id\n' ) # Write header info
+	for index in CompoundIndexes:
+		compoundlistf.write( str(index) + '\t' + index2ID[index] + '\n' )
+
+print("Gene and compound index lists done.\n")
 
 

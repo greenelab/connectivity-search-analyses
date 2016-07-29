@@ -34,12 +34,12 @@ print(str(num_compounds) + ' compounds')
 
 # Write gene and compound node lists to file
 with open('./adjacency/genelist.tsv','w') as genelistf:
-	genelistf.write( '# genelist: int_id \t node_id \n' ) # Write header info
+	genelistf.write( 'int_id\tnode_id\n' ) # Write header info
 	for index in GeneIndexes:
 		genelistf.write( str(index) + '\t' + index2ID[index] + '\n' )
 
 with open('./adjacency/compoundlist.tsv','w') as compoundlistf:
-	compoundlistf.write( '# compoundlist: int_id \t node_id \n' ) # Write header info
+	compoundlistf.write( 'int_id\tnode_id\n' ) # Write header info
 	for index in CompoundIndexes:
 		compoundlistf.write( str(index) + '\t' + index2ID[index] + '\n' )
 

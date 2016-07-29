@@ -8,9 +8,10 @@ import sys
 import os
 import scipy.sparse
 
-G=nx.read_edgelist("./adjacency/data-big/adj-list.tsv", comments='#', nodetype=int)
+with open("./adjacency/data-big/adj-list.tsv", 'r') as graphfile:
+	next(graphfile)
+	G=nx.read_edgelist(graphfile, nodetype=int)
 smat = nx.to_scipy_sparse_matrix(G)
-
 print ("Done reading in graph and converting to a matrix.\n")
 
 # Now load gene and compound node lists
