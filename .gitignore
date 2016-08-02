@@ -3,5 +3,4 @@
 
 ### Jupyter Notebook ###
 # Temporary data
-**.ipynb_checkpoints/
-/hetnet/.ipynb_checkpoints/*
+**/.ipynb_checkpoints/
