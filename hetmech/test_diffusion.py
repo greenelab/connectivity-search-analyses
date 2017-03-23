@@ -33,16 +33,30 @@ class TestDualNormalize:
         """Test column_damping"""
         original = self.get_clean_matrix(dtype)
         input_matrix = original.copy()
-        matrix = dual_normalize(input_matrix, exponent, 0.0, copy=copy)
 
-        # Test the normalized matrix is as expected
+        # Create the matrix expected for single normalization
         expect = [
             [1/3**exponent, 1/3**exponent, 1/3**exponent],
             [1/2**exponent, 1/2**exponent, 0],
             [1, 0, 0],
         ]
         expect = numpy.array(expect, dtype='float64')
+        
+        # Test column normalization works as expected
+        matrix = dual_normalize(input_matrix, exponent, 0.0, copy=copy)
         assert numpy.allclose(expect, matrix)
+        
+        # Test row normalization works as expected
+        matrix = dual_normalize(input_matrix, 0.0, exponent, copy=copy)
+        assert numpy.allclose(numpy.transpose(expect), matrix)
+        
+        # Create the matrix expected for simultaneous dual normalization
+        expect = [
+            [(1/3**exponent) / (1/3**exponent + 1/2**exponent + 1), (1/3**exponent) / (1/3**exponent + 1/2**exponent), 1],
+            [(1/2**exponent) / (1/3**exponent + 1/2**exponent + 1), (1/2**exponent) / (1/3**exponent + 1/2**exponent), 0],
+            [1 / (1/3**exponent + 1/2**exponent + 1), 0, 0],
+        ]
+        expect = numpy.array(expect, dtype='float64')
 
         # Test whether the original matrix is unmodified
         if copy or dtype != 'float64':
