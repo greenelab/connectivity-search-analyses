@@ -32,7 +32,6 @@ class TestDualNormalize:
     def test_dual_normalize_column_damping(self, exponent, dtype, copy):
         """Test column_damping"""
         original = self.get_clean_matrix(dtype)
-        input_matrix = original.copy()
 
         # Create the matrix expected for single normalization
         expect = [
@@ -42,23 +41,28 @@ class TestDualNormalize:
         ]
         expect = numpy.array(expect, dtype='float64')
 
-        # Test column normalization works as expected
+        # Test row normalization works as expected
+        input_matrix = original.copy()
         matrix = dual_normalize(input_matrix, exponent, 0.0, copy=copy)
         assert numpy.allclose(expect, matrix)
 
-        # Test row normalization works as expected
+        # Test column normalization works as expected
+        input_matrix = original.copy()
         matrix = dual_normalize(input_matrix, 0.0, exponent, copy=copy)
         assert numpy.allclose(numpy.transpose(expect), matrix)
 
         # Create the matrix expected for simultaneous dual normalization
-        expect = [
-            [(1/3**exponent) / (1/3**exponent + 1/2**exponent + 1),
-             (1/3**exponent) / (1/3**exponent + 1/2**exponent), 1],
-            [(1/2**exponent) / (1/3**exponent + 1/2**exponent + 1),
-             (1/2**exponent) / (1/3**exponent + 1/2**exponent), 0],
-            [1 / (1/3**exponent + 1/2**exponent + 1), 0, 0],
+        expect = [ [(1/3**exponent) / (1/3**exponent + 1/2**exponent + 1)**exponent,
+                    (1/3**exponent) / (1/3**exponent + 1/2**exponent)**exponent,
+                    (1/3**exponent) / (1/3**exponent)**exponent],
+                [(1/2**exponent) / (1/3**exponent + 1/2**exponent + 1)**exponent,
+                 (1/2**exponent) / (1/3**exponent + 1/2**exponent)**exponent, 0],
+                [1 / (1/3**exponent + 1/2**exponent + 1)**exponent, 0, 0],
         ]
         expect = numpy.array(expect, dtype='float64')
+        input_matrix = original.copy()
+        matrix = dual_normalize(input_matrix, exponent, exponent, copy=copy)
+        assert numpy.allclose(expect, matrix)
 
         # Test whether the original matrix is unmodified
         if copy or dtype != 'float64':
