@@ -52,12 +52,16 @@ class TestDualNormalize:
         assert numpy.allclose(numpy.transpose(expect), matrix)
 
         # Create the matrix expected for simultaneous dual normalization
-        expect = [ [(1/3**exponent) / (1/3**exponent + 1/2**exponent + 1)**exponent,
-                    (1/3**exponent) / (1/3**exponent + 1/2**exponent)**exponent,
-                    (1/3**exponent) / (1/3**exponent)**exponent],
-                [(1/2**exponent) / (1/3**exponent + 1/2**exponent + 1)**exponent,
-                 (1/2**exponent) / (1/3**exponent + 1/2**exponent)**exponent, 0],
-                [1 / (1/3**exponent + 1/2**exponent + 1)**exponent, 0, 0],
+        expect = [
+            [(1/3**exponent) /
+                (1/3**exponent + 1/2**exponent + 1)**exponent,
+             (1/3**exponent) / (1/3**exponent + 1/2**exponent)**exponent,
+             (1/3**exponent) / (1/3**exponent)**exponent],
+            [(1/2**exponent) / 
+                (1/3**exponent + 1/2**exponent + 1)**exponent,
+             (1/2**exponent) /
+                (1/3**exponent + 1/2**exponent)**exponent, 0],
+            [1 / (1/3**exponent + 1/2**exponent + 1)**exponent, 0, 0],
         ]
         expect = numpy.array(expect, dtype='float64')
         input_matrix = original.copy()
