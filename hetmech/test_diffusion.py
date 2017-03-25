@@ -34,38 +34,37 @@ class TestDualNormalize:
         original = self.get_clean_matrix(dtype)
 
         # Create the matrix expected for single normalization
+        p = exponent # for easier reading
         expect = [
-            [1/3**exponent, 1/3**exponent, 1/3**exponent],
-            [1/2**exponent, 1/2**exponent, 0],
+            [1/3**p, 1/3**p, 1/3**p],
+            [1/2**p, 1/2**p, 0],
             [1, 0, 0],
         ]
         expect = numpy.array(expect, dtype='float64')
 
         # Test row normalization works as expected
         input_matrix = original.copy()
-        matrix = dual_normalize(input_matrix, exponent, 0.0, copy=copy)
+        matrix = dual_normalize(input_matrix, p, 0.0, copy=copy)
         assert numpy.allclose(expect, matrix)
 
         # Test column normalization works as expected
         input_matrix = original.copy()
-        matrix = dual_normalize(input_matrix, 0.0, exponent, copy=copy)
+        matrix = dual_normalize(input_matrix, 0.0, p, copy=copy)
         assert numpy.allclose(numpy.transpose(expect), matrix)
 
         # Create the matrix expected for simultaneous dual normalization
         expect = [
-            [(1/3**exponent) /
-                (1/3**exponent + 1/2**exponent + 1)**exponent,
-             (1/3**exponent) / (1/3**exponent + 1/2**exponent)**exponent,
-             (1/3**exponent) / (1/3**exponent)**exponent],
-            [(1/2**exponent) / 
-                (1/3**exponent + 1/2**exponent + 1)**exponent,
-             (1/2**exponent) /
-                (1/3**exponent + 1/2**exponent)**exponent, 0],
-            [1 / (1/3**exponent + 1/2**exponent + 1)**exponent, 0, 0],
+            [(1/3**p) / (1/3**p + 1/2**p + 1)**p,
+             (1/3**p) / (1/3**p + 1/2**p)**p,
+             (1/3**p) / (1/3**p)**p],
+            [(1/2**p) / (1/3**p + 1/2**p + 1)**p,
+             (1/2**p) / (1/3**p + 1/2**p)**p,
+             0],
+            [1 / (1/3**p + 1/2**p + 1)**p, 0, 0],
         ]
         expect = numpy.array(expect, dtype='float64')
         input_matrix = original.copy()
-        matrix = dual_normalize(input_matrix, exponent, exponent, copy=copy)
+        matrix = dual_normalize(input_matrix, p, p, copy=copy)
         assert numpy.allclose(expect, matrix)
 
         # Test whether the original matrix is unmodified
