@@ -34,7 +34,7 @@ class TestDualNormalize:
         original = self.get_clean_matrix(dtype)
 
         # Create the matrix expected for single normalization
-        p = exponent # for easier reading
+        p = exponent  # for easier reading
         expect = [
             [1/3**p, 1/3**p, 1/3**p],
             [1/2**p, 1/2**p, 0],
