@@ -58,10 +58,12 @@ class TestDualNormalize:
         else:
             assert input_matrix is matrix
 
-    @pytest.mark.parametrize('exponents', [ [0,0], [0, 0.3], [0.3, 0], [0.5, 1], [1, 0.5] ])
+    @pytest.mark.parametrize('exponents',
+                             [[0, 0], [0, 0.3], [0.3, 0], [0.5, 1], [1, 0.5]])
     @pytest.mark.parametrize('dtype', ['bool_', 'int8', 'float32', 'float64'])
     @pytest.mark.parametrize('copy', [True, False])
-    def test_dual_normalize_row_and_column_damping(self, exponent_row, exponent_col, dtype, copy):
+    def test_dual_normalize_row_and_column_damping(self,
+                                                   exponents, dtype, copy):
         """Test simultaneous row and column damping"""
         original = self.get_clean_matrix(dtype)
 
