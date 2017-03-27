@@ -45,7 +45,7 @@ def dual_normalize(matrix, row_damping=0, column_damping=0, copy=True):
         column_sums = matrix.sum(axis=0)
         column_sums = column_sums ** -column_damping
         # If column_sums contained zeros, now it contains Inf, so
-        column_sums[nump.isinf(column_sums)] = 0.0  # remove Inf
+        column_sums[numpy.isinf(column_sums)] = 0.0  # remove Inf
         # Reshape to normalize matrix by columns
         column_sums = column_sums.reshape((1, len(column_sums)))
         matrix *= column_sums
