@@ -4,16 +4,17 @@ import numpy
 import hetio.hetnet
 
 
-def dual_normalize(matrix,
-                   row_damping=0,
-                   column_damping=0,
-                   copy=True):
+def degree_weight_adjacency_matrix(
+        matrix, row_damping=0, column_damping=0, copy=True):
     """
-    Row and column normalize a 2d numpy array
+    Return the degree-weighted adjacency matrix (DWAM) produced by the
+    input matrix with the specified row and column normalization exponents.
 
     Parameters
     ==========
-    matrix : numpy.array
+    matrix : numpy.ndarray
+        adjacency matrix for a given metaedge, where the source nodes are
+        columns and the target nodes are rows
     row_damping : int or float
         exponent to use in scaling each node's row by its in-degree
     column_damping : int or float
@@ -27,32 +28,42 @@ def dual_normalize(matrix,
 
     Returns
     =======
-    numpy.array
+    numpy.ndarray
         Normalized matrix with dtype.float64.
     """
+    # Check that matrix is a two dimensional ndarray (not a numpy.matrix)
+    assert isinstance(matrix, numpy.ndarray)
+    assert not isinstance(matrix, numpy.matrix)
+    assert matrix.ndim == 2
+
     # returns a newly allocated array
     matrix = matrix.astype(numpy.float64, copy=copy)
 
-    # Normalize rows, unless row_damping is 0
-    if row_damping != 0:
-        row_sums = matrix.sum(axis=1)
-        row_sums **= -row_damping
-        # If row_sums contained zeros, now it contains Inf, so
-        row_sums[numpy.isinf(row_sums)] = 0.0  # remove Inf
-        # Reshape to normalize matrix by rows
-        row_sums = row_sums.reshape((len(row_sums), 1))
-        matrix *= row_sums
+    # Perform row then column normalization
+    matrix = normalize(matrix, 'rows', row_damping)
+    matrix = normalize(matrix, 'columns', column_damping)
 
-    # Normalize columns, unless column_damping is 0
-    if column_damping != 0:
-        column_sums = matrix.sum(axis=0)
-        column_sums **= -column_damping
-        # If column_sums contained zeros, now it contains Inf, so
-        column_sums[numpy.isinf(column_sums)] = 0.0  # remove Inf
-        # Reshape to normalize matrix by columns
-        column_sums = column_sums.reshape((1, len(column_sums)))
-        matrix *= column_sums
+    return matrix
 
+
+def normalize(matrix, axis, damping_exponent):
+    """
+    Normalize a 2D numpy.ndarray in place.
+
+    Parameters
+    ==========
+    matrix : numpy.ndarray
+    axis : str
+        'rows' or 'columns' for which axis to normalize
+    """
+    if damping_exponent == 0:
+        return matrix
+    vector = matrix.sum(axis={'rows': 1, 'columns': 0}[axis])
+    with numpy.errstate(divide='ignore'):
+        vector **= -damping_exponent
+    vector[numpy.isinf(vector)] = 0
+    shape = (len(vector), 1) if axis == 'rows' else (1, len(vector))
+    matrix *= vector.reshape(shape)
     return matrix
 
 
@@ -62,7 +73,7 @@ def get_node_to_position(graph, metanode):
     """
     if not isinstance(metanode, hetio.hetnet.MetaNode):
         # metanode is a name
-        metanode = graph.node_dict(metanode)
+        metanode = graph.metagraph.node_dict[metanode]
     metanode_to_nodes = graph.get_metanode_to_nodes()
     nodes = sorted(metanode_to_nodes[metanode])
     node_to_position = OrderedDict((n, i) for i, n in enumerate(nodes))
@@ -88,7 +99,7 @@ def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_):
     return adjacency_matrix
 
 
-def diffuse_along_metapath(
+def dwwc_diffusion(
         graph,
         metapath,
         source_node_weights,
@@ -96,6 +107,8 @@ def diffuse_along_metapath(
         row_damping=0,
         ):
     """
+    Performs degree-weighted walk count (DWWC)
+
     Parameters
     ==========
     graph : hetio.hetnet.Graph
@@ -122,7 +135,7 @@ def diffuse_along_metapath(
         adjacency_matrix = metaedge_to_adjacency_matrix(graph, metaedge)
 
         # Row/column normalization with degree damping
-        adjacency_matrix = dual_normalize(
+        adjacency_matrix = degree_weight_adjacency_matrix(
             adjacency_matrix, row_damping, column_damping)
 
         node_scores = adjacency_matrix @ node_scores
@@ -131,3 +144,18 @@ def diffuse_along_metapath(
     target_node_to_position = get_node_to_position(graph, target_metanode)
     node_to_score = OrderedDict(zip(target_node_to_position, node_scores))
     return node_to_score
+
+
+def dwwc(graph, metapath, damping=0.5):
+    """
+    Compute the degree-weighted walk count (DWWC).
+    """
+    dwwc_matrix = None
+    for metaedge in metapath:
+        adj_mat = metaedge_to_adjacency_matrix(graph, metaedge)
+        adj_mat = degree_weight_adjacency_matrix(adj_mat, damping, damping)
+        if dwwc_matrix is None:
+            dwwc_matrix = adj_mat
+        else:
+            dwwc_matrix = adj_mat @ dwwc_matrix
+    return dwwc_matrix
