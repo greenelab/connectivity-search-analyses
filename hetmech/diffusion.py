@@ -4,11 +4,11 @@ import numpy
 import hetio.hetnet
 
 
-def degree_weight_adjacency_matrix(
+def diffusion_step(
         matrix, row_damping=0, column_damping=0, copy=True):
     """
-    Return the degree-weighted adjacency matrix (DWAM) produced by the
-    input matrix with the specified row and column normalization exponents.
+    Return the diffusion adjacency matrix produced by the input matrix
+    with the specified row and column normalization exponents.
 
     Parameters
     ==========
@@ -31,34 +31,39 @@ def degree_weight_adjacency_matrix(
     numpy.ndarray
         Normalized matrix with dtype.float64.
     """
-    # Check that matrix is a two dimensional ndarray (not a numpy.matrix)
-    assert isinstance(matrix, numpy.ndarray)
-    assert not isinstance(matrix, numpy.matrix)
+    # returns a newly allocated numpy.ndarray
+    matrix = numpy.array(matrix, numpy.float64, copy=copy)
     assert matrix.ndim == 2
 
-    # returns a newly allocated array
-    matrix = matrix.astype(numpy.float64, copy=copy)
+    # Perform row normalization
+    if row_damping != 0:
+        row_sums = matrix.sum(axis=1)
+        matrix = normalize(matrix, row_sums, 'rows', row_damping)
 
-    # Perform row then column normalization
-    matrix = normalize(matrix, 'rows', row_damping)
-    matrix = normalize(matrix, 'columns', column_damping)
+    # Perform column normalization
+    if column_damping != 0:
+        column_sums = matrix.sum(axis=0)
+        matrix = normalize(matrix, column_sums, 'columns', column_damping)
 
     return matrix
 
 
-def normalize(matrix, axis, damping_exponent):
+def normalize(matrix, vector, axis, damping_exponent):
     """
     Normalize a 2D numpy.ndarray in place.
 
     Parameters
     ==========
     matrix : numpy.ndarray
+    vector : numpy.ndarray
+        Vector used for row or column normalization of matrix.
     axis : str
         'rows' or 'columns' for which axis to normalize
     """
+    assert matrix.ndim == 2
+    assert vector.ndim == 1
     if damping_exponent == 0:
         return matrix
-    vector = matrix.sum(axis={'rows': 1, 'columns': 0}[axis])
     with numpy.errstate(divide='ignore'):
         vector **= -damping_exponent
     vector[numpy.isinf(vector)] = 0
@@ -99,7 +104,7 @@ def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_):
     return adjacency_matrix
 
 
-def dwwc_diffusion(
+def diffusion(
         graph,
         metapath,
         source_node_weights,
@@ -107,7 +112,7 @@ def dwwc_diffusion(
         row_damping=0,
         ):
     """
-    Performs degree-weighted walk count (DWWC)
+    Performs diffusion from the specified source nodes.
 
     Parameters
     ==========
@@ -135,7 +140,7 @@ def dwwc_diffusion(
         adjacency_matrix = metaedge_to_adjacency_matrix(graph, metaedge)
 
         # Row/column normalization with degree damping
-        adjacency_matrix = degree_weight_adjacency_matrix(
+        adjacency_matrix = diffusion_step(
             adjacency_matrix, row_damping, column_damping)
 
         node_scores = adjacency_matrix @ node_scores
