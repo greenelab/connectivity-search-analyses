@@ -33,7 +33,7 @@ def dual_normalize(matrix, row_damping=0, column_damping=0, copy=True):
     # Normalize rows, unless row_damping is 0
     if row_damping != 0:
         row_sums = matrix.sum(axis=1)
-        row_sums = row_sums ** -row_damping
+        row_sums **= -row_damping
         # If row_sums contained zeros, now it contains Inf, so
         row_sums[numpy.isinf(row_sums)] = 0.0  # remove Inf
         # Reshape to normalize matrix by rows
@@ -43,7 +43,7 @@ def dual_normalize(matrix, row_damping=0, column_damping=0, copy=True):
     # Normalize columns, unless column_damping is 0
     if column_damping != 0:
         column_sums = matrix.sum(axis=0)
-        column_sums = column_sums ** -column_damping
+        column_sums **= -column_damping
         # If column_sums contained zeros, now it contains Inf, so
         column_sums[numpy.isinf(column_sums)] = 0.0  # remove Inf
         # Reshape to normalize matrix by columns
