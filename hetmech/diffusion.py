@@ -4,16 +4,17 @@ import numpy
 import hetio.hetnet
 
 
-def dual_normalize(matrix,
-                   row_damping=0,
-                   column_damping=0,
-                   copy=True):
+def degree_weight_adjacency_matrix(
+        matrix, row_damping=0, column_damping=0, copy=True):
     """
-    Row and column normalize a 2d numpy array
+    Return the degree-weighted adjacency matrix (DWAM) produced by the
+    input matrix with the specified row and column normalization exponents.
 
     Parameters
     ==========
-    matrix : numpy.array
+    matrix : numpy.ndarray
+        adjacency matrix for a given metaedge, where the source nodes are
+        columns and the target nodes are rows
     row_damping : int or float
         exponent to use in scaling each node's row by its in-degree
     column_damping : int or float
@@ -27,7 +28,7 @@ def dual_normalize(matrix,
 
     Returns
     =======
-    numpy.array
+    numpy.ndarray
         Normalized matrix with dtype.float64.
     """
     # returns a newly allocated array
@@ -88,7 +89,7 @@ def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_):
     return adjacency_matrix
 
 
-def diffuse_along_metapath(
+def dwwc_diffusion(
         graph,
         metapath,
         source_node_weights,
@@ -96,6 +97,8 @@ def diffuse_along_metapath(
         row_damping=0,
         ):
     """
+    Performs degree-weighted walk count (DWWC)
+
     Parameters
     ==========
     graph : hetio.hetnet.Graph
@@ -122,7 +125,7 @@ def diffuse_along_metapath(
         adjacency_matrix = metaedge_to_adjacency_matrix(graph, metaedge)
 
         # Row/column normalization with degree damping
-        adjacency_matrix = dual_normalize(
+        adjacency_matrix = degree_weight_adjacency_matrix(
             adjacency_matrix, row_damping, column_damping)
 
         node_scores = adjacency_matrix @ node_scores
