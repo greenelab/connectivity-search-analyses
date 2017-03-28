@@ -144,3 +144,18 @@ def dwwc_diffusion(
     target_node_to_position = get_node_to_position(graph, target_metanode)
     node_to_score = OrderedDict(zip(target_node_to_position, node_scores))
     return node_to_score
+
+
+def dwwc(graph, metapath, damping=0.5):
+    """
+    Compute the degree-weighted walk count (DWWC).
+    """
+    dwwc_matrix = None
+    for metaedge in metapath:
+        adj_mat = metaedge_to_adjacency_matrix(graph, metaedge)
+        adj_mat = degree_weight_adjacency_matrix(adj_mat, damping, damping)
+        if dwwc_matrix is None:
+            dwwc_matrix = adj_mat
+        else:
+            dwwc_matrix = adj_mat @ dwwc_matrix
+    return dwwc_matrix
