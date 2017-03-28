@@ -31,6 +31,11 @@ def degree_weight_adjacency_matrix(
     numpy.ndarray
         Normalized matrix with dtype.float64.
     """
+    # Check that matrix is a two dimensional ndarray (not a numpy.matrix)
+    assert isinstance(matrix, numpy.ndarray)
+    assert not isinstance(matrix, numpy.matrix)
+    assert matrix.ndim == 2
+
     # returns a newly allocated array
     matrix = matrix.astype(numpy.float64, copy=copy)
 
