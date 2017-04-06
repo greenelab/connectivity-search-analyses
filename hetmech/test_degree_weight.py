@@ -16,9 +16,14 @@ def test_disease_gene_example_dwwc():
     )
     graph = hetio.readwrite.read_graph(url)
     metagraph = graph.metagraph
-
-    # Compute GiGaD path count and DWPC matrices
     metapath = metagraph.metapath_from_abbrev('GiGaD')
+
+    # Check that metapath does not contain duplicate metanodes,
+    # i.e. the special case applies where DWWC is equivalent to DWPC.
+    metanodes = metapath.get_nodes()
+    assert len(metanodes) == len(set(metanodes))
+
+    # Compute GiGaD path count and DWWC matrices
     pc_matrix = dwwc(graph, metapath, damping=0)
     dwwc_matrix = dwwc(graph, metapath, damping=0.5)
 
