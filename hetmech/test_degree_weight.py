@@ -16,14 +16,9 @@ def test_disease_gene_example_dwwc():
     )
     graph = hetio.readwrite.read_graph(url)
     metagraph = graph.metagraph
-    metapath = metagraph.metapath_from_abbrev('GiGaD')
-
-    # Check that metapath does not contain duplicate metanodes,
-    # i.e. the special case applies where DWWC is equivalent to DWPC.
-    metanodes = metapath.get_nodes()
-    assert len(metanodes) == len(set(metanodes))
 
     # Compute GiGaD path count and DWWC matrices
+    metapath = metagraph.metapath_from_abbrev('GiGaD')
     pc_matrix = dwwc(graph, metapath, damping=0)
     dwwc_matrix = dwwc(graph, metapath, damping=0.5)
 
@@ -32,5 +27,10 @@ def test_disease_gene_example_dwwc():
     disease_index = get_node_to_position(graph, 'Disease')
     i = gene_index[graph.node_dict['Gene', 'IRF1']]
     j = disease_index[graph.node_dict['Disease', 'Multiple Sclerosis']]
+
+    # Warning: the WC (walk count) and PC (path count) are only equivalent
+    # because none of the GiGaD paths contain duplicate nodes. Since, GiGaD
+    # contains duplicate metanodes, WC and PC are not gauranteed to be the
+    # same. However, they happen to be equivalent for this example.
     assert pc_matrix[i, j] == 3
     assert dwwc_matrix[i, j] == pytest.approx(0.25 + 0.25 + 32**-0.5)
