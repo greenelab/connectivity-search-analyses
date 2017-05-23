@@ -8,14 +8,29 @@ from .degree_weight import dwwc_step
 
 def dwpc(graph, metapath, damping=1.0, verbose=False):
     """
-    Compute the degree-weighted path count (DWPC).
-    First checks that no more than one metanode type is repeated,
-    then separates metapath into three segments: head, loop, tail.
-    The 'loop' segment contains all instances of repeated nodes;
-    the three segments are handled with different multiplication rules.
-    """
+    Compute the degree-weighted path count (DWPC) on specified metapath
+    and graph, with the paths normalized by the given damping parameter.
 
-    dwpc_matrix = None
+    This function computes the dwpc for all paths of the given metpath
+    type, via matrix multiplies and corrections to handle non-path walks.
+    
+    NOTE: this function can handle metapaths that do not repeat
+    metatnode typs, and metapaths that repeat exactly one node type
+    any number of times, but cannot handle metapaths that repeat
+    more than one type of node.
+    
+    Parameters
+    ==========
+    graph : hetio.hetnet.Graph
+        graph to extract adjacency matrices along
+    metapath : hetio.hetnet.MetaPath
+        metapath for which function computes DWPCs
+    damping : scalar
+        exponent of degree in degree-weighting of DWPC
+    verbose : bool
+        set to True to have function print to screen
+        (temporary, for debugging)
+    """
 
     # Check sequence of metanode types for repeats
     nodetype_sequence = collections.defaultdict(int)
@@ -28,9 +43,11 @@ def dwpc(graph, metapath, damping=1.0, verbose=False):
     if len(repeated_node) > 1:
         if verbose:
             print("Input metapath repeats more than one nodetype")
-        return dwpc_matrix
+        return None
 
-    elif len(repeated_node) == 0:
+    # Compute DWPC
+    dwpc_matrix = None
+    elif len(repeated_node) == 0:  # case 1: no repeated node types
         if verbose:
             print("Input metapath has no repeated nodetypes")
         # Now perform multiplications
@@ -41,8 +58,8 @@ def dwpc(graph, metapath, damping=1.0, verbose=False):
                 dwpc_matrix = csr_matrix(adj_mat).copy()
             else:
                 dwpc_matrix = dwpc_matrix @ adj_mat
-    else:
-        # Determine start/endpoints for left,loop,right
+    else:  # case 2: one node type repeated
+        # Determine start/endpoints for head, loop, tail
         if verbose:
             print("Input metapath repeats exactly one nodetype")
             print("Repeated node list: {}, type {}"
@@ -61,7 +78,7 @@ def dwpc(graph, metapath, damping=1.0, verbose=False):
                   "".format(len(metapath),
                             [first_appearance, last_appearance]))
 
-        # Handle head
+        # Iterate over each meta-edge adjacency matrix
         head_matrix = None
         for idx, metaedge in enumerate(metapath):
             if verbose:
