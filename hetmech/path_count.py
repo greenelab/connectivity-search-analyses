@@ -14,15 +14,15 @@ def dwpc(graph, metapath, damping=1.0, verbose=False):
     The 'loop' segment contains all instances of repeated nodes;
     the three segments are handled with different multiplication rules.
     """
-    print("Calling DWPC")
+
     dwpc_matrix = None
-    # First read through sequence of metanode types
+
+    # Check sequence of metanode types for repeats
     nodetype_sequence = collections.defaultdict(int)
     for metaedge in metapath:
         nodetype_sequence[metaedge.source] += 1
         nodetype_sequence[metaedge.target] += 1
-    # Identify the repeated node type
-    # and check that no more than 1 metanodetype is repeated
+    # Check that no more than 1 metanodetype is repeated
     repeated_node = list(filter(lambda x: nodetype_sequence[x] > 2,
                          nodetype_sequence))
     if len(repeated_node) > 1:
@@ -111,7 +111,8 @@ def dwpc(graph, metapath, damping=1.0, verbose=False):
                                 ).astype(float)], [0])
             else:  # covers the tail cases
                 if verbose:
-                    print("\t\ttail_matrix {}".format(idx))
+                    print("\t\ttail_matrix {} multiply; shape adj {}"
+                          "".format(idx, adj_mat.shape))
                 dwpc_matrix = dwpc_matrix @ adj_mat
 
     return head_matrix @ dwpc_matrix
