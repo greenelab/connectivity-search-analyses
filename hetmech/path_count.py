@@ -4,6 +4,7 @@ import scipy.sparse
 
 from .matrix import metaedge_to_adjacency_matrix
 from .degree_weight import dwwc_step
+from .degree_weight import dwwc
 
 
 def dwpc(graph, metapath, damping=1.0, verbose=False):
@@ -43,7 +44,7 @@ def dwpc(graph, metapath, damping=1.0, verbose=False):
     if len(repeated_node) > 1:
         if verbose:
             print("Input metapath repeats more than one nodetype")
-        return None
+        raise NotImplementedError("Metapath repeats more than one metanode")
 
     # Compute DWPC
     dwpc_matrix = None
@@ -51,13 +52,8 @@ def dwpc(graph, metapath, damping=1.0, verbose=False):
         if verbose:
             print("Input metapath has no repeated nodetypes")
         # Now perform multiplications
-        for metaedge in metapath:
-            adj_mat = metaedge_to_adjacency_matrix(graph, metaedge)
-            adj_mat = dwwc_step(adj_mat, damping, damping)
-            if dwpc_matrix is None:
-                dwpc_matrix = csr_matrix(adj_mat).copy()
-            else:
-                dwpc_matrix = dwpc_matrix @ adj_mat
+        dwc_matrix = dwwc(graph, metapath, damping)
+
     else:  # case 2: one node type repeated
         # Determine start/endpoints for head, loop, tail
         if verbose:
