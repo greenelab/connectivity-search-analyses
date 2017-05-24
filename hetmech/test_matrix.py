@@ -47,8 +47,5 @@ def test_sparse_matrix():
     mat_eff = metaedge_to_adjacency_matrix(graph, 'GiG')
     print("matrix.py should be giving a sparse array.")
     assert numpy.array_equal(mat_ineff[2].toarray(), mat_eff[2].toarray())
-    
-def test_matrix_not_sparse():
-    with pytest.raises(AttributeError):
-        print("Returns true if matrix.py is still giving numpy array")     
-        test_sparse_matrix()
+
+
