@@ -14,12 +14,12 @@ def dwpc(graph, metapath, damping=1.0, verbose=False):
 
     This function computes the dwpc for all paths of the given metpath
     type, via matrix multiplies and corrections to handle non-path walks.
-    
+
     NOTE: this function can handle metapaths that do not repeat
     metatnode typs, and metapaths that repeat exactly one node type
     any number of times, but cannot handle metapaths that repeat
     more than one type of node.
-    
+
     Parameters
     ==========
     graph : hetio.hetnet.Graph
@@ -33,13 +33,10 @@ def dwpc(graph, metapath, damping=1.0, verbose=False):
         (temporary, for debugging)
     """
 
-    # Check sequence of metanode types for repeats
-    nodetype_sequence = collections.defaultdict(int)
-    for metaedge in metapath:
-        nodetype_sequence[metaedge.source] += 1
-        nodetype_sequence[metaedge.target] += 1
-    # Check that no more than 1 metanodetype is repeated
-    repeated_node = list(filter(lambda x: nodetype_sequence[x] > 2,
+    # Check that no more than 1 metanodetype is repeated in metapath
+    nodetype_sequence = collections.Counter(str(item) for item
+                                            in metapath.get_nodes())
+    repeated_node = list(filter(lambda x: nodetype_sequence[x] >= 2,
                          nodetype_sequence))
     if len(repeated_node) > 1:
         if verbose:
@@ -47,15 +44,15 @@ def dwpc(graph, metapath, damping=1.0, verbose=False):
         raise NotImplementedError("Metapath repeats more than one metanode")
 
     # Compute DWPC
-    dwpc_matrix = None
     elif len(repeated_node) == 0:  # case 1: no repeated node types
         if verbose:
             print("Input metapath has no repeated nodetypes")
         # Now perform multiplications
-        dwc_matrix = dwwc(graph, metapath, damping)
+        return dwwc(graph, metapath, damping)
 
     else:  # case 2: one node type repeated
         # Determine start/endpoints for head, loop, tail
+        dwpc_matrix = None
         if verbose:
             print("Input metapath repeats exactly one nodetype")
             print("Repeated node list: {}, type {}"
@@ -64,10 +61,10 @@ def dwpc(graph, metapath, damping=1.0, verbose=False):
         first_appearance = None
         last_appearance = None
         for idx, metaedge in enumerate(metapath):
-            if repeated_node[0] == metaedge.source:
+            if repeated_node[0] == str(metaedge.source):
                 if first_appearance is None:
                     first_appearance = idx
-            if repeated_node[0] == metaedge.target:
+            if repeated_node[0] == str(metaedge.target):
                 last_appearance = idx
         if verbose:
             print("metapath has {} nodes, and {} are the repeated ones"
@@ -116,7 +113,7 @@ def dwpc(graph, metapath, damping=1.0, verbose=False):
                     dwpc_matrix = dwpc_matrix @ adj_mat
 
                     # if endpoints are same type, subtract diagonal after mult
-                    if metaedge.target == repeated_node[0]:
+                    if str(metaedge.target) == repeated_node[0]:
                         if verbose:
                             print("\tsubtracting diag {} ".format(idx))
                         dwpc_matrix -= \
@@ -128,4 +125,4 @@ def dwpc(graph, metapath, damping=1.0, verbose=False):
                           "".format(idx, adj_mat.shape))
                 dwpc_matrix = dwpc_matrix @ adj_mat
 
-    return head_matrix @ dwpc_matrix
+        return head_matrix @ dwpc_matrix
