@@ -45,7 +45,9 @@ def test_sparse_matrix():
 
     mat_ineff = inefficient_metaedge_to_adjacency_matrix(graph, 'GiG')
     mat_eff = metaedge_to_adjacency_matrix(graph, 'GiG')
-    print("matrix.py should be giving a sparse array.")
-    assert numpy.array_equal(mat_ineff[2].toarray(), mat_eff[2].toarray())
+    assert mat_ineff[2][1,2] is mat_eff[2][1,2]
+    assert mat_ineff[2][4,2] is mat_eff[2][4,2]
+    assert all([mat_eff[2][6,2], mat_eff[2][0,4], mat_eff[2][2,0]])
+    
 
 
