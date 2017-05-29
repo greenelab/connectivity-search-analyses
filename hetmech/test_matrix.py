@@ -5,10 +5,9 @@ import numpy as np
 
 def test_metaedge_to_adjacency_matrix():
     """
-    Test the functionality of metaedge_to_adjacency_matrix in
-    generating sparse matrices vs numpy arrays. Uses same test
-    data as in test_degree_weight.py Figure 2D of Himmelstein &
-    Baranzini (2015) PLOS Comp Bio.
+    Test the functionality of metaedge_to_adjacency_matrix in generating
+    numpy arrays. Uses same test data as in test_degree_weight.py
+    Figure 2D of Himmelstein & Baranzini (2015) PLOS Comp Bio.
     https://doi.org/10.1371/journal.pcbi.1004259.g002
     """
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
