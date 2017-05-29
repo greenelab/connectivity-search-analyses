@@ -1,6 +1,7 @@
 import hetio.readwrite
 from .matrix import metaedge_to_adjacency_matrix
 import numpy as np
+from scipy import sparse
 
 
 def test_metaedge_to_adjacency_matrix():
@@ -19,49 +20,61 @@ def test_metaedge_to_adjacency_matrix():
     # Verify GiG matrix
     gig_rows = ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1']
     gig_cols = ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1']
+    gig_adj = sparse.csc_matrix([[0, 0, 1, 0, 1, 0, 0],
+                                 [0, 0, 1, 0, 0, 0, 0],
+                                 [1, 1, 0, 1, 0, 0, 1],
+                                 [0, 0, 1, 0, 0, 0, 0],
+                                 [1, 0, 0, 0, 0, 0, 0],
+                                 [0, 0, 0, 0, 0, 0, 0],
+                                 [0, 0, 1, 0, 0, 0, 0]])
 
     row_names, col_names, adj_mat = metaedge_to_adjacency_matrix(graph, 'GiG')
     assert np.array_equal(row_names, gig_rows)
     assert np.array_equal(col_names, gig_cols)
-    assert np.array_equal(adj_mat, [[0, 0, 1, 0, 1, 0, 0],
-                                    [0, 0, 1, 0, 0, 0, 0],
-                                    [1, 1, 0, 1, 0, 0, 1],
-                                    [0, 0, 1, 0, 0, 0, 0],
-                                    [1, 0, 0, 0, 0, 0, 0],
-                                    [0, 0, 0, 0, 0, 0, 0],
-                                    [0, 0, 1, 0, 0, 0, 0]])
+
+    assert adj_mat.shape == gig_adj.shape
+    assert (adj_mat != gig_adj).nnz == 0
 
     # Verify GaD matrix
     gad_rows = ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1']
     gad_cols = ["Crohn's Disease", 'Multiple Sclerosis']
+    gad_adj = sparse.csc_matrix([[0, 1],
+                                 [0, 1],
+                                 [1, 0],
+                                 [0, 1],
+                                 [0, 0],
+                                 [1, 1],
+                                 [0, 0]])
 
     row_names, col_names, adj_mat = metaedge_to_adjacency_matrix(graph, 'GaD')
     assert np.array_equal(row_names, gad_rows)
     assert np.array_equal(col_names, gad_cols)
-    assert np.array_equal(adj_mat, [[0, 1],
-                                    [0, 1],
-                                    [1, 0],
-                                    [0, 1],
-                                    [0, 0],
-                                    [1, 1],
-                                    [0, 0]])
+
+    assert adj_mat.shape == gad_adj.shape
+    assert (adj_mat != gad_adj).nnz == 0
 
     # Verify DlT matrix
     dlt_rows = ["Crohn's Disease", 'Multiple Sclerosis']
     dlt_cols = ['Leukocyte', 'Lung']
+    dlt_adj = sparse.csc_matrix([[0, 0],
+                                 [1, 0]])
 
     row_names, col_names, adj_mat = metaedge_to_adjacency_matrix(graph, 'DlT')
     assert np.array_equal(row_names, dlt_rows)
     assert np.array_equal(col_names, dlt_cols)
-    assert np.array_equal(adj_mat, [[0, 0],
-                                    [1, 0]])
+
+    assert adj_mat.shape == dlt_adj.shape
+    assert (adj_mat != dlt_adj).nnz == 0
 
     # Verify TlD matrix
     tld_rows = ['Leukocyte', 'Lung']
     tld_cols = ["Crohn's Disease", 'Multiple Sclerosis']
+    tld_adj = sparse.csc_matrix([[0, 1],
+                                 [0, 0]])
 
     row_names, col_names, adj_mat = metaedge_to_adjacency_matrix(graph, "TlD")
     assert np.array_equal(row_names, tld_rows)
     assert np.array_equal(col_names, tld_cols)
-    assert np.array_equal(adj_mat, [[0, 1],
-                                    [0, 0]])
+
+    assert adj_mat.shape == tld_adj.shape
+    assert (adj_mat != tld_adj).nnz == 0

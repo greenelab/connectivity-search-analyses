@@ -2,6 +2,8 @@ from collections import OrderedDict
 
 import numpy
 
+from scipy import sparse
+
 import hetio.hetnet
 
 
@@ -18,7 +20,8 @@ def get_node_to_position(graph, metanode):
     return node_to_position
 
 
-def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_):
+def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_,
+                                 mattype=sparse.csc_matrix):
     """
     Returns an adjacency matrix where source nodes are rows and target
     nodes are columns.
@@ -29,11 +32,13 @@ def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_):
     source_nodes = list(get_node_to_position(graph, metaedge.source))
     target_node_to_position = get_node_to_position(graph, metaedge.target)
     shape = len(source_nodes), len(target_node_to_position)
-    adjacency_matrix = numpy.zeros(shape, dtype=dtype)
+    row, col, data = [], [], []
     for i, source_node in enumerate(source_nodes):
         for edge in source_node.edges[metaedge]:
-            j = target_node_to_position[edge.target]
-            adjacency_matrix[i, j] = 1
+            row.append(i)
+            col.append(target_node_to_position[edge.target])
+            data.append(dtype(1))
+    adjacency_matrix = mattype((data, (row, col)), shape=shape)
     row_names = [node.identifier for node in source_nodes]
     column_names = [node.identifier for node in target_node_to_position]
     return row_names, column_names, adjacency_matrix
