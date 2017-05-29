@@ -17,20 +17,52 @@ def test_metaedge_to_adjacency_matrix():
     )
     graph = hetio.readwrite.read_graph(url)
 
-    mat_gig = metaedge_to_adjacency_matrix(graph, 'GiG')
-    assert np.array_equal(mat_gig[2], [[0, 0, 1, 0, 1, 0, 0],
-                                       [0, 0, 1, 0, 0, 0, 0],
-                                       [1, 1, 0, 1, 0, 0, 1],
-                                       [0, 0, 1, 0, 0, 0, 0],
-                                       [1, 0, 0, 0, 0, 0, 0],
-                                       [0, 0, 0, 0, 0, 0, 0],
-                                       [0, 0, 1, 0, 0, 0, 0]])
+    # Verify GiG matrix
+    gig_rows = ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1']
+    gig_cols = ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1']
 
-    mat_gad = metaedge_to_adjacency_matrix(graph, 'GaD')
-    assert np.array_equal(mat_gad[2], [[0, 1],
-                                       [0, 1],
-                                       [1, 0],
-                                       [0, 1],
-                                       [0, 0],
-                                       [1, 1],
-                                       [0, 0]])
+    row_names, col_names, adj_mat = metaedge_to_adjacency_matrix(graph, 'GiG')
+    assert np.array_equal(row_names, gig_rows)
+    assert np.array_equal(col_names, gig_cols)
+    assert np.array_equal(adj_mat, [[0, 0, 1, 0, 1, 0, 0],
+                                    [0, 0, 1, 0, 0, 0, 0],
+                                    [1, 1, 0, 1, 0, 0, 1],
+                                    [0, 0, 1, 0, 0, 0, 0],
+                                    [1, 0, 0, 0, 0, 0, 0],
+                                    [0, 0, 0, 0, 0, 0, 0],
+                                    [0, 0, 1, 0, 0, 0, 0]])
+
+    # Verify GaD matrix
+    gad_rows = ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1']
+    gad_cols = ["Crohn's Disease", 'Multiple Sclerosis']
+
+    row_names, col_names, adj_mat = metaedge_to_adjacency_matrix(graph, 'GaD')
+    assert np.array_equal(row_names, gad_rows)
+    assert np.array_equal(col_names, gad_cols)
+    assert np.array_equal(adj_mat, [[0, 1],
+                                    [0, 1],
+                                    [1, 0],
+                                    [0, 1],
+                                    [0, 0],
+                                    [1, 1],
+                                    [0, 0]])
+
+    # Verify DlT matrix
+    dlt_rows = ["Crohn's Disease", 'Multiple Sclerosis']
+    dlt_cols = ['Leukocyte', 'Lung']
+
+    row_names, col_names, adj_mat = metaedge_to_adjacency_matrix(graph, 'DlT')
+    assert np.array_equal(row_names, dlt_rows)
+    assert np.array_equal(col_names, dlt_cols)
+    assert np.array_equal(adj_mat, [[0, 0],
+                                    [1, 0]])
+
+    # Verify TlD matrix
+    tld_rows = ['Leukocyte', 'Lung']
+    tld_cols = ["Crohn's Disease", 'Multiple Sclerosis']
+
+    row_names, col_names, adj_mat = metaedge_to_adjacency_matrix(graph, "TlD")
+    assert np.array_equal(row_names, tld_rows)
+    assert np.array_equal(col_names, tld_cols)
+    assert np.array_equal(adj_mat, [[0, 1],
+                                    [0, 0]])
