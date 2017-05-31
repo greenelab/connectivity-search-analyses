@@ -2,7 +2,6 @@ import hetio.readwrite
 import pytest
 
 from .degree_weight import dwwc
-from .matrix import get_node_to_position
 
 
 def test_disease_gene_example_dwwc():
