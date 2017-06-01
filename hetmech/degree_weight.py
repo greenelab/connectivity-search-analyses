@@ -4,7 +4,7 @@ import itertools
 import operator
 
 import numpy
-import scipy.sparse
+# import scipy.sparse
 
 from .matrix import normalize, metaedge_to_adjacency_matrix
 
@@ -52,17 +52,7 @@ def dwwc(graph, metapath, damping=0.5):
     """
     Compute the degree-weighted walk count (DWWC).
     """
-    dwwc_matrix = None
-    row_names = None
-    for metaedge in metapath:
-        rows, cols, adj_mat = metaedge_to_adjacency_matrix(graph, metaedge)
-        adj_mat = dwwc_step(adj_mat, damping, damping)
-        if dwwc_matrix is None:
-            row_names = rows
-            dwwc_matrix = adj_mat
-        else:
-            dwwc_matrix = dwwc_matrix @ adj_mat
-    return row_names, cols, dwwc_matrix
+    return dwpc_duplicated_metanode(graph, metapath, None, damping)
 
 
 def pairwise(iterable):
@@ -125,14 +115,14 @@ def get_segments(graph, metapath):
     return segments, duplicates
 
 
-def dwpc_duplicated_metanode(graph, metapath, metanode, damping=0.5):
+def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5):
     """
-    Compute the degree-weighted path count (DWPC) when metanode is duplicated.
-
-    TODO: update doc and consider consolidating fxn with dwwc
+    Compute the degree-weighted path count (DWPC) when a single metanode is
+    duplicated (any number of times). User must specify the duplicated
+    metanode.
     """
-    if metanode is not None:
-        assert metapath.source() == metanode
+    if duplicate is not None:
+        assert metapath.source() == duplicate
     dwpc_matrix = None
     row_names = None
     for metaedge in metapath:
@@ -143,7 +133,7 @@ def dwpc_duplicated_metanode(graph, metapath, metanode, damping=0.5):
             dwpc_matrix = adj_mat
         else:
             dwpc_matrix = dwpc_matrix @ adj_mat
-        if metaedge.target == metanode:
+        if metaedge.target == duplicate:
             # # scipy.sparse method threw ValueError:
             # # Different number of diagonals and offsets.
             # diag_matrix = scipy.sparse.diags(dwpc_matrix.diagonal())
