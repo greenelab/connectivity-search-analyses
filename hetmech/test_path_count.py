@@ -1,7 +1,8 @@
+import hetio.pathtools
 import hetio.readwrite
 import pytest
 
-from hetmech.path_count import dwpc
+from .degree_weight import dwpc
 
 
 def get_bupropion_subgraph():
@@ -31,3 +32,31 @@ def test_CbGpPWpGaD_traversal():
     j = cols.index(disease)
     assert pc_matrix[i, j] == 142
     assert dwpc_matrix[i, j] == pytest.approx(0.03287590886921623)
+
+
+def test_CbGiGiGaD_traversal():
+    """
+    Test path counts and degree-weighted path counts for the CbGpPWpGaD
+    metapath between bupropion and nicotine dependence. Expected values from
+    the network traversal methods at https://git.io/vHBh2.
+    """
+    graph = get_bupropion_subgraph()
+    compound = 'DB01156'  # Bupropion
+    disease = 'DOID:0050742'  # nicotine dependences
+    metapath = graph.metagraph.metapath_from_abbrev('CbGiGiGaD')
+    paths = hetio.pathtools.paths_between(
+        graph,
+        source=('Compound', compound),
+        target=('Disease', disease),
+        metapath=metapath,
+        duplicates=False,
+    )
+    hetio_dwpc = hetio.pathtools.DWPC(paths, damping_exponent=0.4)
+    
+    rows, cols, pc_matrix = dwpc(graph, metapath, damping=0)
+    rows, cols, dwpc_matrix = dwpc(graph, metapath, damping=0.4)
+    i = rows.index(compound)
+    j = cols.index(disease)
+
+    assert pc_matrix[i, j] == len(paths)
+    assert dwpc_matrix[i, j] == pytest.approx(hetio_dwpc)
