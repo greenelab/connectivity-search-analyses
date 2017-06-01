@@ -121,7 +121,7 @@ def get_segments(graph, metapath):
     ranges = list(pairwise(split_at))
     segments = (metapath[start:stop] for start, stop in ranges)
     segments = [metagraph.get_metapath(metaedges) for metaedges in segments]
-    duplicates = [range_to_duplicate.get(range, None) for range in ranges]
+    duplicates = [range_to_duplicate.get(range_, None) for range_ in ranges]
     return segments, duplicates
 
 
