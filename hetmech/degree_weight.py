@@ -31,7 +31,7 @@ def dwwc_step(
         Normalized matrix with dtype.float64.
     """
     # returns a newly allocated numpy.ndarray
-    matrix = numpy.array(matrix.toarray(), numpy.float64, copy=copy)
+    matrix = numpy.array(matrix, numpy.float64, copy=copy)
     assert matrix.ndim == 2
 
     row_sums = matrix.sum(axis=1)
