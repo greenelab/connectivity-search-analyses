@@ -1,4 +1,10 @@
+import collections
+import functools
+import itertools
+import operator
+
 import numpy
+import scipy.sparse
 
 from .matrix import normalize, metaedge_to_adjacency_matrix
 
@@ -57,3 +63,115 @@ def dwwc(graph, metapath, damping=0.5):
         else:
             dwwc_matrix = dwwc_matrix @ adj_mat
     return row_names, cols, dwwc_matrix
+
+
+def pairwise(iterable):
+    """
+    Yield consequitive pairs of items from the iterable, but skip pairs where
+    the items are equal.
+    Modified from recipe in itertools docs at
+    https://docs.python.org/3/library/itertools.html
+
+    s -> (s0,s1), (s1,s2), (s2, s3), ...
+    """
+    a, b = itertools.tee(iterable)
+    next(b, None)
+    for a, b in zip(a, b):
+        if b != a:
+            yield a, b
+
+
+def get_segments(graph, metapath):
+    """
+    Break metapath into sub-metapaths that have at most one duplicate
+    node type.
+    """
+    metagraph = graph.metagraph
+    metanodes = metapath.get_nodes()
+    metanode_to_indexes = collections.OrderedDict()
+    for i, metanode in enumerate(metanodes):
+        indexes = metanode_to_indexes.setdefault(metanode, [])
+        indexes.append(i)
+
+    # Ensure no overlapping metanode duplications
+    last_stop = -1
+    for metanode, indexes in metanode_to_indexes.items():
+        if len(indexes) == 1:
+            continue
+        if min(indexes) <= last_stop:
+            msg = ('Metapath f{metapath} contains overlapping'
+                   'segments with duplicate metanodes.')
+            raise ValueError(msg)
+        last_stop = max(indexes)
+
+    # Find indices to split at
+    split_at = [0]
+    range_to_duplicate = collections.OrderedDict()
+    for metanode, indexes in metanode_to_indexes.items():
+        if len(indexes) == 1:
+            continue
+        start = min(indexes)
+        stop = max(indexes)
+        range_to_duplicate[(start, stop)] = metanode
+        split_at.append(start)
+        split_at.append(stop)
+    split_at.append(len(metapath))
+
+    # Split at indices
+    ranges = list(pairwise(split_at))
+    segments = (metapath[start:stop] for start, stop in ranges)
+    segments = [metagraph.get_metapath(metaedges) for metaedges in segments]
+    duplicates = [range_to_duplicate.get(range, None) for range in ranges]
+    return segments, duplicates
+
+
+def dwpc_duplicated_metanode(graph, metapath, metanode, damping=0.5):
+    """
+    Compute the degree-weighted path count (DWPC) when metanode is duplicated.
+
+    TODO: update doc and consider consolidating fxn with dwwc
+    """
+    if metanode is not None:
+        assert metapath.source() == metanode
+    dwpc_matrix = None
+    row_names = None
+    for metaedge in metapath:
+        rows, cols, adj_mat = metaedge_to_adjacency_matrix(graph, metaedge)
+        adj_mat = dwwc_step(adj_mat, damping, damping)
+        if dwpc_matrix is None:
+            row_names = rows
+            dwpc_matrix = adj_mat
+        else:
+            dwpc_matrix = dwpc_matrix @ adj_mat
+        if metaedge.target == metanode:
+            # # scipy.sparse method threw ValueError:
+            # # Different number of diagonals and offsets.
+            # diag_matrix = scipy.sparse.diags(dwpc_matrix.diagonal())
+            diag_matrix = numpy.diag(dwpc_matrix.diagonal())
+            dwpc_matrix -= diag_matrix
+    return row_names, cols, dwpc_matrix
+
+
+def dwpc(graph, metapath, damping=0.5):
+    """
+    Compute the degree-weighted path count (DWPC).
+    """
+    try:
+        segments, duplicates = get_segments(graph, metapath)
+    except ValueError as e:
+        raise NotImplementedError(e)
+
+    parts = list()
+    row_names = None
+    for segment, duplicate in zip(segments, duplicates):
+        if duplicate is None:
+            rows, cols, matrix = dwwc(graph, segment, damping)
+        else:
+            rows, cols, matrix = dwpc_duplicated_metanode(
+                graph, segment, duplicate, damping)
+        if row_names is None:
+            row_names = rows
+        parts.append(matrix)
+
+    dwpc_matrix = functools.reduce(operator.matmul, parts)
+    return row_names, cols, dwpc_matrix
