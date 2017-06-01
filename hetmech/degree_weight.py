@@ -71,12 +71,11 @@ def pairwise(iterable):
             yield a, b
 
 
-def get_segments(graph, metapath):
+def get_segments(metagraph, metapath):
     """
     Break metapath into sub-metapaths that have at most one duplicate
     node type.
     """
-    metagraph = graph.metagraph
     metanodes = metapath.get_nodes()
     metanode_to_indexes = collections.OrderedDict()
     for i, metanode in enumerate(metanodes):
@@ -147,7 +146,7 @@ def dwpc(graph, metapath, damping=0.5):
     Compute the degree-weighted path count (DWPC).
     """
     try:
-        segments, duplicates = get_segments(graph, metapath)
+        segments, duplicates = get_segments(graph.metagraph, metapath)
     except ValueError as e:
         raise NotImplementedError(e)
 
