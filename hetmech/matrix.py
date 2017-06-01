@@ -34,7 +34,7 @@ def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_,
         for edge in source_node.edges[metaedge]:
             j = target_node_to_position[edge.target]
             adjacency_matrix[i, j] = 1
-    adjacency_matrix = matrix_type(adjacency_matrix)
+    adjacency_matrix = matrix_type(adjacency_matrix, dtype=dtype)
     row_names = [node.identifier for node in source_nodes]
     column_names = [node.identifier for node in target_node_to_position]
     return row_names, column_names, adjacency_matrix
