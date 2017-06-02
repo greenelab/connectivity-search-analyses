@@ -32,8 +32,10 @@ def get_arrays(edge, mat_type, dtype):
         'TlD': [[0, 1],
                 [0, 0]]
     }
-    return node_dict[edge[0]], node_dict[edge[-1]], mat_type(adj_dict[edge],
-                                                             dtype=dtype)
+    row_names = node_dict[edge[0]]
+    col_names = node_dict[edge[-1]]
+    adj_matrix = mat_type(adj_dict[edge], dtype=dtype)
+    return row_names, col_names, adj_matrix
 
 
 @pytest.mark.parametrize("test_edge", ['GiG', 'GaD', 'DlT', 'TlD'])
