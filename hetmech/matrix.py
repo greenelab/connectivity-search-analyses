@@ -38,12 +38,11 @@ def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_,
             data.append(1)
     adjacency_matrix = sparse.csc_matrix((data, (row, col)), shape=shape,
                                          dtype=dtype)
-    if matrix_type == numpy.array:
+    if matrix_type == numpy.array or matrix_type == numpy.ndarray:
         adjacency_matrix = adjacency_matrix.toarray()
     elif matrix_type == numpy.matrix:
         adjacency_matrix = adjacency_matrix.todense()
-    elif matrix_type != type(adjacency_matrix) and issubclass(matrix_type,
-                                                              sparse.spmatrix):
+    else:
         adjacency_matrix = matrix_type(adjacency_matrix)
     row_names = [node.identifier for node in source_nodes]
     column_names = [node.identifier for node in target_node_to_position]

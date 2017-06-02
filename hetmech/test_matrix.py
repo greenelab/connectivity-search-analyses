@@ -5,53 +5,49 @@ from scipy import sparse
 
 from .matrix import metaedge_to_adjacency_matrix
 
-gig_rows = ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1']
-gig_cols = ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1']
-gig_adj = numpy.array([[0, 0, 1, 0, 1, 0, 0],
-                       [0, 0, 1, 0, 0, 0, 0],
-                       [1, 1, 0, 1, 0, 0, 1],
-                       [0, 0, 1, 0, 0, 0, 0],
-                       [1, 0, 0, 0, 0, 0, 0],
-                       [0, 0, 0, 0, 0, 0, 0],
-                       [0, 0, 1, 0, 0, 0, 0]], dtype=numpy.bool_)
-gig_adj_csc = sparse.csc_matrix(gig_adj)
-gad_rows = ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1']
-gad_cols = ["Crohn's Disease", 'Multiple Sclerosis']
-gad_adj = numpy.array([[0, 1],
-                       [0, 1],
-                       [1, 0],
-                       [0, 1],
-                       [0, 0],
-                       [1, 1],
-                       [0, 0]], dtype=numpy.float64)
-gad_adj_csc = sparse.csc_matrix(gad_adj, dtype=numpy.bool_)
-dlt_rows = ["Crohn's Disease", 'Multiple Sclerosis']
-dlt_cols = ['Leukocyte', 'Lung']
-dlt_adj = numpy.matrix([[0, 0],
-                        [1, 0]], dtype=numpy.bool_)
-dlt_adj_csc = sparse.csc_matrix(dlt_adj)
-tld_rows = ['Leukocyte', 'Lung']
-tld_cols = ["Crohn's Disease", 'Multiple Sclerosis']
-tld_adj = numpy.array([[0, 1],
-                       [0, 0]])
-tld_adj_csc = sparse.csc_matrix(tld_adj, dtype=numpy.int64)
+
+def get_arrays(edge, mat_type, dtype):  # Define a dictionary
+    rows_dict = {
+        'GiG': ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1'],
+        'GaD': ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1'],
+        'DlT': ["Crohn's Disease", 'Multiple Sclerosis'],
+        'TlD': ['Leukocyte', 'Lung']
+    }
+    cols_dict = {
+        'GiG': ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1'],
+        'GaD': ["Crohn's Disease", 'Multiple Sclerosis'],
+        'DlT': ['Leukocyte', 'Lung'],
+        'TlD': ["Crohn's Disease", 'Multiple Sclerosis']
+    }
+    adj_dict = {
+        'GiG': [[0, 0, 1, 0, 1, 0, 0],
+                [0, 0, 1, 0, 0, 0, 0],
+                [1, 1, 0, 1, 0, 0, 1],
+                [0, 0, 1, 0, 0, 0, 0],
+                [1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 0, 0, 0, 0]],
+        'GaD': [[0, 1],
+                [0, 1],
+                [1, 0],
+                [0, 1],
+                [0, 0],
+                [1, 1],
+                [0, 0]],
+        'DlT': [[0, 0],
+                [1, 0]],
+        'TlD': [[0, 1],
+                [0, 0]]
+    }
+    return rows_dict[edge], cols_dict[edge], mat_type(adj_dict[edge],
+                                                      dtype=dtype)
 
 
-@pytest.mark.parametrize("test_edge,exp_row,exp_col,exp_adj,mat_type,dtype", [
-    ('GiG', gig_rows, gig_cols, gig_adj, numpy.array, numpy.bool_),
-    ('GiG', gig_rows, gig_cols, gig_adj_csc, sparse.csc_matrix, numpy.int32),
-
-    ('GaD', gad_rows, gad_cols, gad_adj, numpy.array, numpy.float64),
-    ('GaD', gad_rows, gad_cols, gad_adj_csc, sparse.csc_matrix, numpy.bool_),
-
-    ('DlT', dlt_rows, dlt_cols, dlt_adj, numpy.matrix, numpy.bool_),
-    ('DlT', dlt_rows, dlt_cols, dlt_adj_csc, sparse.csc_matrix, numpy.int32),
-
-    ('TlD', tld_rows, tld_cols, tld_adj, numpy.array, numpy.int32),
-    ('TlD', tld_rows, tld_cols, tld_adj_csc, sparse.csc_matrix, numpy.int64)
-])
-def test_metaedge_to_adjacency_matrix(test_edge, exp_row, exp_col, exp_adj,
-                                      mat_type, dtype):
+@pytest.mark.parametrize("test_edge", ['GiG', 'GaD', 'DlT', 'TlD'])
+@pytest.mark.parametrize("mat_type", [numpy.array, sparse.csc_matrix,
+                                      sparse.csr_matrix, numpy.matrix])
+@pytest.mark.parametrize("dtype", [numpy.bool_, numpy.int64, numpy.int32])
+def test_metaedge_to_adjacency_matrix(test_edge, mat_type, dtype):
     """
     Test the functionality of metaedge_to_adjacency_matrix in generating
     numpy arrays. Uses same test data as in test_degree_weight.py
@@ -66,9 +62,13 @@ def test_metaedge_to_adjacency_matrix(test_edge, exp_row, exp_col, exp_adj,
     row_names, col_names, adj_mat = \
         metaedge_to_adjacency_matrix(graph, test_edge, matrix_type=mat_type,
                                      dtype=dtype)
+    exp_row, exp_col, exp_adj = get_arrays(test_edge, mat_type, dtype)
 
-    assert numpy.array_equal(row_names, exp_row)
-    assert numpy.array_equal(col_names, exp_col)
-    assert not type((exp_adj != adj_mat)).max(exp_adj != adj_mat)
+    assert row_names == exp_row
+    assert col_names == exp_col
+    assert type(adj_mat) == type(exp_adj)  # Arrays same type
+    assert not sparse.csc_matrix(adj_mat != exp_adj).nnz  # Arrays equal
     assert adj_mat.dtype == dtype
-    assert isinstance(adj_mat, type(exp_adj))
+    assert isinstance(
+        adj_mat, mat_type if mat_type != numpy.array else numpy.ndarray
+    )
