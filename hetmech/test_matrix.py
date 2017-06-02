@@ -27,8 +27,8 @@ gad_adj = numpy.array([[0, 1],
 gad_adj_csc = sparse.csc_matrix(gad_adj, dtype=numpy.bool_)
 dlt_rows = ["Crohn's Disease", 'Multiple Sclerosis']
 dlt_cols = ['Leukocyte', 'Lung']
-dlt_adj = numpy.array([[0, 0],
-                       [1, 0]], dtype=numpy.bool_)
+dlt_adj = numpy.matrix([[0, 0],
+                        [1, 0]], dtype=numpy.bool_)
 dlt_adj_csc = sparse.csc_matrix(dlt_adj)
 tld_rows = ['Leukocyte', 'Lung']
 tld_cols = ["Crohn's Disease", 'Multiple Sclerosis']
@@ -44,7 +44,7 @@ tld_adj_csc = sparse.csc_matrix(tld_adj, dtype=numpy.int64)
     ('GaD', gad_rows, gad_cols, gad_adj, numpy.array, numpy.float64),
     ('GaD', gad_rows, gad_cols, gad_adj_csc, sparse.csc_matrix, numpy.bool_),
 
-    ('DlT', dlt_rows, dlt_cols, dlt_adj, numpy.array, numpy.bool_),
+    ('DlT', dlt_rows, dlt_cols, dlt_adj, numpy.matrix, numpy.bool_),
     ('DlT', dlt_rows, dlt_cols, dlt_adj_csc, sparse.csc_matrix, numpy.int32),
 
     ('TlD', tld_rows, tld_cols, tld_adj, numpy.array, numpy.int32),
