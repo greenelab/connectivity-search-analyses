@@ -40,9 +40,10 @@ def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_,
                                          dtype=dtype)
     if matrix_type == numpy.array:
         adjacency_matrix = adjacency_matrix.toarray()
-    if matrix_type == numpy.matrix:
+    elif matrix_type == numpy.matrix:
         adjacency_matrix = adjacency_matrix.todense()
-    elif matrix_type != type(adjacency_matrix):
+    elif matrix_type != type(adjacency_matrix) and issubclass(matrix_type,
+                                                              sparse.spmatrix):
         adjacency_matrix = matrix_type(adjacency_matrix)
     row_names = [node.identifier for node in source_nodes]
     column_names = [node.identifier for node in target_node_to_position]
