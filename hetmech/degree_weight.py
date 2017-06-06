@@ -4,7 +4,7 @@ import itertools
 import operator
 
 import numpy
-# import scipy.sparse
+import scipy.sparse
 
 from .matrix import normalize, metaedge_to_adjacency_matrix
 
