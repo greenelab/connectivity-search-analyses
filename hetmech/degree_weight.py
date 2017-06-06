@@ -135,8 +135,8 @@ def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5):
         if metaedge.target == duplicate:
             # # scipy.sparse method threw ValueError:
             # # Different number of diagonals and offsets.
-            # diag_matrix = scipy.sparse.diags(dwpc_matrix.diagonal())
-            diag_matrix = numpy.diag(dwpc_matrix.diagonal())
+            # diag_matrix = numpy.diag(dwpc_matrix.diagonal())
+            diag_matrix = scipy.sparse.diags(dwpc_matrix.diagonal(), 0)
             dwpc_matrix -= diag_matrix
     return row_names, cols, dwpc_matrix
 
