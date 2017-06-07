@@ -26,7 +26,7 @@ def diffusion_step(
     column_damping : int or float
         exponent to use in scaling each node's column by its column-sum
     copy : bool
-        `True` gaurantees matrix will not be modified in place. `False`
+        `True` guarantees matrix will not be modified in place. `False`
         modifies in-place if and only if matrix.dtype == numpy.float64.
         Users are recommended not to rely on in-place conversion, but instead
         use `False` when in-place modification is acceptable and efficiency
@@ -37,18 +37,21 @@ def diffusion_step(
     numpy.ndarray
         Normalized matrix with dtype.float64.
     """
-    # returns a newly allocated numpy.ndarray
-    matrix = numpy.array(matrix, numpy.float64, copy=copy)
+    # returns a newly allocated array
+    mat_type = type(matrix)
+    if mat_type == numpy.ndarray:
+        mat_type = numpy.array
+    matrix = mat_type(matrix, dtype=numpy.float64, copy=copy)
     assert matrix.ndim == 2
 
     # Perform column normalization
     if column_damping != 0:
-        column_sums = matrix.sum(axis=0)
+        column_sums = numpy.array(matrix.sum(axis=0)).flatten()
         matrix = normalize(matrix, column_sums, 'columns', column_damping)
 
     # Perform row normalization
     if row_damping != 0:
-        row_sums = matrix.sum(axis=1)
+        row_sums = numpy.array(matrix.sum(axis=1)).flatten()
         matrix = normalize(matrix, row_sums, 'rows', row_damping)
 
     return matrix
@@ -60,6 +63,7 @@ def diffuse(
         source_node_weights,
         column_damping=0,
         row_damping=1,
+        mat_type=numpy.ndarray
         ):
     """
     Performs diffusion from the specified source nodes.
@@ -67,7 +71,7 @@ def diffuse(
     Parameters
     ==========
     graph : hetio.hetnet.Graph
-        graph to extract adjacency matrixes along
+        graph to extract adjacency matrices along
     metapath : hetio.hetnet.MetaPath
         metapath to diffuse along
     source_node_weights : dict
@@ -76,6 +80,8 @@ def diffuse(
         exponent of (out)degree in column normalization
     row_damping : scalar
         exponent of (in)degree in row normalization
+    mat_type : type
+        type of adjacency matrix to be produced
     """
 
     # Initialize node weights
@@ -88,7 +94,8 @@ def diffuse(
 
     for metaedge in metapath:
         row_names, column_names, adjacency_matrix = (
-            metaedge_to_adjacency_matrix(graph, metaedge))
+            metaedge_to_adjacency_matrix(graph, metaedge,
+                                         matrix_type=mat_type))
 
         # Row/column normalization with degree damping
         adjacency_matrix = diffusion_step(

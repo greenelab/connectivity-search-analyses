@@ -4,8 +4,7 @@ import itertools
 import operator
 
 import numpy
-# import scipy.sparse
-
+from scipy import sparse
 from .matrix import normalize, metaedge_to_adjacency_matrix
 
 
@@ -25,7 +24,7 @@ def dwwc_step(
     column_damping : int or float
         exponent to use in scaling each node's column by its column-sum
     copy : bool
-        `True` gaurantees matrix will not be modified in place. `False`
+        `True` guarantees matrix will not be modified in place. `False`
         modifies in-place if and only if matrix.dtype == numpy.float64.
         Users are recommended not to rely on in-place conversion, but instead
         use `False` when in-place modification is acceptable and efficiency
@@ -36,19 +35,22 @@ def dwwc_step(
     numpy.ndarray
         Normalized matrix with dtype.float64.
     """
-    # returns a newly allocated numpy.ndarray
-    matrix = numpy.array(matrix, numpy.float64, copy=copy)
+    # returns a newly allocated array
+    mat_type = type(matrix)
+    if mat_type == numpy.ndarray:
+        mat_type = numpy.array
+    matrix = mat_type(matrix, dtype=numpy.float64, copy=copy)
     assert matrix.ndim == 2
 
-    row_sums = matrix.sum(axis=1)
-    column_sums = matrix.sum(axis=0)
+    row_sums = numpy.array(matrix.sum(axis=1)).flatten()
+    column_sums = numpy.array(matrix.sum(axis=0)).flatten()
     matrix = normalize(matrix, row_sums, 'rows', row_damping)
     matrix = normalize(matrix, column_sums, 'columns', column_damping)
 
     return matrix
 
 
-def dwwc(graph, metapath, damping=0.5):
+def dwwc(graph, metapath, damping=0.5, auto=False, mat_type=numpy.ndarray):
     """
     Compute the degree-weighted walk count (DWWC).
     """
@@ -125,7 +127,9 @@ def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5):
     dwpc_matrix = None
     row_names = None
     for metaedge in metapath:
-        rows, cols, adj_mat = metaedge_to_adjacency_matrix(graph, metaedge)
+        rows, cols, adj_mat = \
+            metaedge_to_adjacency_matrix(graph, metaedge, auto=auto,
+                                         matrix_type=mat_type)
         adj_mat = dwwc_step(adj_mat, damping, damping)
         if dwpc_matrix is None:
             row_names = rows

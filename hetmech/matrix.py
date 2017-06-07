@@ -19,7 +19,7 @@ def get_node_to_position(graph, metanode):
 
 
 def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_,
-                                 matrix_type=numpy.array):
+                                 auto=False, matrix_type=numpy.ndarray):
     """
     Returns an adjacency matrix where source nodes are rows and target
     nodes are columns.
@@ -38,7 +38,12 @@ def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_,
             data.append(1)
     adjacency_matrix = sparse.csc_matrix((data, (row, col)), shape=shape,
                                          dtype=dtype)
-    if matrix_type == numpy.array or matrix_type == numpy.ndarray:
+    if auto:
+        if adjacency_matrix.nnz < (1/3) * numpy.prod(adjacency_matrix.shape):
+            matrix_type = sparse.csc_matrix
+        else:
+            matrix_type = numpy.ndarray
+    if matrix_type in (numpy.array, numpy.ndarray):
         adjacency_matrix = adjacency_matrix.toarray()
     elif matrix_type == numpy.matrix:
         adjacency_matrix = adjacency_matrix.todense()
@@ -55,11 +60,13 @@ def normalize(matrix, vector, axis, damping_exponent):
 
     Parameters
     ==========
-    matrix : numpy.ndarray
+    matrix : numpy.ndarray or scipy.sparse
     vector : numpy.ndarray
         Vector used for row or column normalization of matrix.
     axis : str
         'rows' or 'columns' for which axis to normalize
+    damping_exponent : int or float
+        exponent to use in scaling a node's row or column
     """
     assert matrix.ndim == 2
     assert vector.ndim == 1
@@ -69,5 +76,8 @@ def normalize(matrix, vector, axis, damping_exponent):
         vector **= -damping_exponent
     vector[numpy.isinf(vector)] = 0
     shape = (len(vector), 1) if axis == 'rows' else (1, len(vector))
-    matrix *= vector.reshape(shape)
+    if sparse.issparse(matrix):
+        matrix = matrix.multiply(vector.reshape(shape))
+    else:
+        matrix *= vector.reshape(shape)
     return matrix

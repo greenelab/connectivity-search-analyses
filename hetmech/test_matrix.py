@@ -55,8 +55,8 @@ def test_metaedge_to_adjacency_matrix(test_edge, mat_type, dtype):
     )
     graph = hetio.readwrite.read_graph(url)
     row_names, col_names, adj_mat = \
-        metaedge_to_adjacency_matrix(graph, test_edge, matrix_type=mat_type,
-                                     dtype=dtype)
+        metaedge_to_adjacency_matrix(graph, test_edge, dtype=dtype,
+                                     matrix_type=mat_type)
     exp_row, exp_col, exp_adj = get_arrays(test_edge, mat_type, dtype)
 
     assert row_names == exp_row
@@ -65,3 +65,32 @@ def test_metaedge_to_adjacency_matrix(test_edge, mat_type, dtype):
     assert adj_mat.dtype == dtype
     assert adj_mat.shape == exp_adj.shape
     assert (adj_mat != exp_adj).sum() == 0
+
+
+@pytest.mark.parametrize('mat_type', [numpy.ndarray, sparse.csc_matrix])
+@pytest.mark.parametrize("auto", [True, False])
+@pytest.mark.parametrize("test_edge", ['GiG', 'GaD', 'DlT', 'TlD'])
+def test_meta_auto(test_edge, mat_type, auto):
+    """
+    Test the functionality of metaedge_to_adjacency_matrix in generating
+    arrays with automatic type. If the percent nonzero is above 30% of the
+    matrix, then the matrix will be a numpy.ndarray. Otherwise, the matrix
+    will be a sparse.csc_matrix.
+    """
+    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
+        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
+        'test/data/disease-gene-example-graph.json',
+    )
+    graph = hetio.readwrite.read_graph(url)
+    row, col, adj = metaedge_to_adjacency_matrix(graph, test_edge, auto=auto,
+                                                 matrix_type=mat_type)
+
+    # Define a dict with adjacency matrices having known percent nonzero
+    edge_to_nnz = {'GiG': sparse.csc_matrix,
+                   'GaD': numpy.ndarray,
+                   'DlT': sparse.csc_matrix,
+                   'TlD': sparse.csc_matrix}
+    auto_to_mat_type = {True: edge_to_nnz[test_edge],
+                        False: mat_type}
+
+    assert type(adj) == auto_to_mat_type[auto]

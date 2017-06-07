@@ -1,5 +1,7 @@
 import hetio.readwrite
 import pytest
+from scipy import sparse
+import numpy
 
 from .degree_weight import dwwc
 
@@ -31,7 +33,37 @@ def test_disease_gene_example_dwwc():
 
     # Warning: the WC (walk count) and PC (path count) are only equivalent
     # because none of the GiGaD paths contain duplicate nodes. Since, GiGaD
-    # contains duplicate metanodes, WC and PC are not gauranteed to be the
+    # contains duplicate metanodes, WC and PC are not guaranteed to be the
     # same. However, they happen to be equivalent for this example.
     assert wc_matrix[i, j] == 3
     assert dwwc_matrix[i, j] == pytest.approx(0.25 + 0.25 + 32**-0.5)
+
+
+@pytest.mark.parametrize('auto', [True, False])
+def test_dwwc_auto(auto):
+    """
+    Test the ability of dwwc to convert dwwc_matrix to a dense array when
+    the percent nonzero goes above the 1/3 threshold. If auto is off, the
+    matrices will start as sparse and stay sparse throughout. If auto is on,
+    the matrices start sparse and will be converted to dense arrays when their
+    density exceeds 1/3.
+    """
+    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
+        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
+        'test/data/disease-gene-example-graph.json',
+    )
+    graph = hetio.readwrite.read_graph(url)
+    metagraph = graph.metagraph
+    metapath = metagraph.metapath_from_abbrev('GiGaD')
+
+    rows, cols, pc_matrix = dwwc(graph, metapath, damping=0, auto=auto,
+                                 mat_type=sparse.csc_matrix)
+    rows, cols, dwwc_matrix = dwwc(graph, metapath, damping=0.5, auto=auto,
+                                   mat_type=sparse.csc_matrix)
+
+    if auto:
+        assert isinstance(dwwc_matrix, numpy.ndarray)
+        assert isinstance(pc_matrix, numpy.ndarray)
+    else:
+        assert sparse.issparse(dwwc_matrix)
+        assert sparse.issparse(pc_matrix)
