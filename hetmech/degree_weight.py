@@ -8,15 +8,14 @@ from scipy import sparse
 from .matrix import normalize, metaedge_to_adjacency_matrix
 
 
-def dwwc_step(
-        matrix, row_damping=0, column_damping=0, copy=True):
+def dwwc_step(matrix, row_damping=0, column_damping=0, copy=True):
     """
     Return the degree-weighted adjacency matrix produced by the input matrix
     with the specified row and column normalization exponents.
 
     Parameters
     ==========
-    matrix : numpy.ndarray
+    matrix : numpy.ndarray or scipy.sparse
         adjacency matrix for a given metaedge, where the source nodes are
         rows and the target nodes are columns
     row_damping : int or float
@@ -32,7 +31,7 @@ def dwwc_step(
 
     Returns
     =======
-    numpy.ndarray
+    numpy.ndarray or scipy.sparse
         Normalized matrix with dtype.float64.
     """
     # returns a newly allocated array
@@ -52,14 +51,16 @@ def dwwc_step(
 
 def dwwc(graph, metapath, damping=0.5, auto=False, mat_type=numpy.ndarray):
     """
-    Compute the degree-weighted walk count (DWWC).
+    Compute the degree-weighted walk count (DWWC). Special case of function
+    dwpc_duplicated_metanode.
     """
-    return dwpc_duplicated_metanode(graph, metapath, None, damping)
+    return dwpc_duplicated_metanode(graph, metapath, None, damping, auto=auto,
+                                    mat_type=mat_type)
 
 
 def pairwise(iterable):
     """
-    Yield consequitive pairs of items from the iterable, but skip pairs where
+    Yield consecutive pairs of items from the iterable, but skip pairs where
     the items are equal.
     Modified from recipe in itertools docs at
     https://docs.python.org/3/library/itertools.html
@@ -116,7 +117,8 @@ def get_segments(metagraph, metapath):
     return segments, duplicates
 
 
-def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5):
+def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5,
+                             auto=False, mat_type=numpy.ndarray):
     """
     Compute the degree-weighted path count (DWPC) when a single metanode is
     duplicated (any number of times). User must specify the duplicated
@@ -136,11 +138,14 @@ def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5):
             dwpc_matrix = adj_mat
         else:
             dwpc_matrix = dwpc_matrix @ adj_mat
+            if auto and sparse.issparse(dwpc_matrix):
+                if dwpc_matrix.nnz > (1/3) * numpy.prod(dwpc_matrix.shape):
+                    dwpc_matrix = dwpc_matrix.toarray()
         if metaedge.target == duplicate:
-            # # scipy.sparse method threw ValueError:
-            # # Different number of diagonals and offsets.
-            # diag_matrix = scipy.sparse.diags(dwpc_matrix.diagonal())
-            diag_matrix = numpy.diag(dwpc_matrix.diagonal())
+            if sparse.issparse(dwpc_matrix):
+                diag_matrix = sparse.diags(dwpc_matrix.diagonal())
+            else:
+                diag_matrix = numpy.diag(dwpc_matrix.diagonal())
             dwpc_matrix -= diag_matrix
     return row_names, cols, dwpc_matrix
 
