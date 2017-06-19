@@ -64,7 +64,7 @@ def test_metaedge_to_adjacency_matrix(test_edge, mat_type, dtype):
     assert type(adj_mat) == type(exp_adj)
     assert adj_mat.dtype == dtype
     assert adj_mat.shape == exp_adj.shape
-    assert (adj_mat != exp_adj).sum() == 0
+    assert not (adj_mat != exp_adj).sum()
 
 
 @pytest.mark.parametrize('mat_type', [numpy.ndarray, sparse.csc_matrix])
