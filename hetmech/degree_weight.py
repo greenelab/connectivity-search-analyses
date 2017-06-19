@@ -142,8 +142,12 @@ def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5,
                 if dwpc_matrix.nnz > (1/3) * numpy.prod(dwpc_matrix.shape):
                     dwpc_matrix = dwpc_matrix.toarray()
         if metaedge.target == duplicate:
+            mat_type = type(dwpc_matrix)
+            if mat_type == numpy.ndarray:
+                mat_type = numpy.array
+
             diag_matrix = sparse.diags(dwpc_matrix.diagonal())
-            dwpc_matrix = numpy.array(dwpc_matrix - diag_matrix)
+            dwpc_matrix = mat_type(dwpc_matrix - diag_matrix)
     return row_names, cols, dwpc_matrix
 
 
