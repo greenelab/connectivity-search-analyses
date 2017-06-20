@@ -135,7 +135,7 @@ def test_dwpc_duplicated_metanode(m_path, auto):
         assert sparse.issparse(dwpc_mat)
 
     # Test matrix, row, and column label output
-    assert (dwwc_mat - exp_dwwc).sum() < 0.00001  # Assert equal
-    assert (dwpc_mat - exp_dwpc).sum() < 0.00001  # Assert equal
+    assert (dwwc_mat - exp_dwwc).sum() < 0.00001  # Assert approx equal
+    assert (dwpc_mat - exp_dwpc).sum() < 0.00001  # Assert approx equal
     assert rows == exp_row
     assert cols == exp_col

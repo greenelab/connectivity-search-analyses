@@ -152,7 +152,7 @@ def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5,
     return row_names, cols, dwpc_matrix
 
 
-def dwpc(graph, metapath, damping=0.5):
+def dwpc(graph, metapath, damping=0.5, auto=False):
     """
     Compute the degree-weighted path count (DWPC).
     """
@@ -165,10 +165,10 @@ def dwpc(graph, metapath, damping=0.5):
     row_names = None
     for segment, duplicate in zip(segments, duplicates):
         if duplicate is None:
-            rows, cols, matrix = dwwc(graph, segment, damping)
+            rows, cols, matrix = dwwc(graph, segment, damping, auto=auto)
         else:
             rows, cols, matrix = dwpc_duplicated_metanode(
-                graph, segment, duplicate, damping)
+                graph, segment, duplicate, damping, auto=auto)
         if row_names is None:
             row_names = rows
         parts.append(matrix)
