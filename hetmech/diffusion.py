@@ -81,7 +81,7 @@ def diffuse(
     row_damping : scalar
         exponent of (in)degree in row normalization
     mat_type : type
-        type of adjacency matrix to be produced
+        type of adjacency matrix to be made. scipy.sparse or numpy.ndarray
     """
 
     # Initialize node weights

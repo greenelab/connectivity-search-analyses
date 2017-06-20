@@ -147,7 +147,8 @@ def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5,
                 mat_type = numpy.array
 
             diag_matrix = sparse.diags(dwpc_matrix.diagonal())
-            dwpc_matrix = mat_type(dwpc_matrix - diag_matrix)
+            dwpc_matrix = mat_type(dwpc_matrix - diag_matrix,
+                                   dtype=numpy.float64)
     return row_names, cols, dwpc_matrix
 
 

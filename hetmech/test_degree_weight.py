@@ -101,12 +101,12 @@ def get_expect(m_path, auto):
 @pytest.mark.parametrize('m_path', ('GiGaD', 'GaDaG', 'GeTlD', 'GiG'))
 def test_dwpc_duplicated_metanode(m_path, auto):
     """
-    Test the ability of dwwc to convert dwwc_matrix to a dense array when the
-    percent nonzero goes above the 1/3 threshold. If auto is off, the matrices
-    will start as sparse and stay sparse throughout. If auto is on, the
-    matrices start sparse and will be converted to dense arrays when their
-    densities exceeds 1/3.
-    Also tests the matrix output in generating degree-weighted paths.
+    Test the ability of dwpc_duplicated_metanode to convert dwpc_matrix to a
+    dense array when the percent nonzero goes above the 1/3 threshold. If auto
+    is off, the matrices will start and stay sparse or dense throughout.
+    If auto is on, the matrices start sparse and will be converted to dense
+    arrays when their densities exceeds 1/3.
+   Checks output of dwpc_duplicated_metanode.
     """
 
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
@@ -134,7 +134,7 @@ def test_dwpc_duplicated_metanode(m_path, auto):
         assert sparse.issparse(dwwc_mat)
         assert sparse.issparse(dwpc_mat)
 
-    # Test row and column label output
+    # Test matrix, row, and column label output
     assert (dwwc_mat - exp_dwwc).sum() < 0.00001  # Assert equal
     assert (dwpc_mat - exp_dwpc).sum() < 0.00001  # Assert equal
     assert rows == exp_row

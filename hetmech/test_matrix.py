@@ -73,7 +73,7 @@ def test_metaedge_to_adjacency_matrix(test_edge, mat_type, dtype):
 def test_meta_auto(test_edge, mat_type, auto):
     """
     Test the functionality of metaedge_to_adjacency_matrix in generating
-    arrays with automatic type. If the percent nonzero is above 30% of the
+    arrays with automatic type. If the percent nonzero is above 1/3 of the
     matrix, then the matrix will be a numpy.ndarray. Otherwise, the matrix
     will be a sparse.csc_matrix.
     """
