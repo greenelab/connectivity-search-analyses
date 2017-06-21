@@ -18,12 +18,27 @@ def get_node_to_position(graph, metanode):
     return node_to_position
 
 
-def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_,
-                                 auto=False, matrix_type=numpy.ndarray):
+def metaedge_to_adjacency_matrix(
+        graph, metaedge, dtype=numpy.bool_, sparse_threshold=0,
+        matrix_type=numpy.ndarray):
     """
     Returns an adjacency matrix where source nodes are rows and target
     nodes are columns.
+
+    Parameters
+    ==========
+    graph : hetio.hetnet.graph
+    metaedge : hetio.hetnet.MetaEdge
+    dtype : type
+    sparse_threshold : float (0 < sparse_threshold < 1)
+        sets the density threshold above which a sparse matrix will be
+        converted to a dense automatically. Supersedes mat_type if the
+        density is below the threshold.
+    matrix_type : type or None
+        type of matrix to be used. Only relevant above the
+        sparse_threshold.
     """
+
     if not isinstance(metaedge, hetio.hetnet.MetaEdge):
         # metaedge is an abbreviation
         metaedge = graph.metagraph.metapath_from_abbrev(metaedge)[0]
@@ -38,17 +53,9 @@ def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_,
             data.append(1)
     adjacency_matrix = sparse.csc_matrix((data, (row, col)), shape=shape,
                                          dtype=dtype)
-    if auto:
-        if adjacency_matrix.nnz < (1/3) * numpy.prod(adjacency_matrix.shape):
-            matrix_type = sparse.csc_matrix
-        else:
-            matrix_type = numpy.ndarray
-    if matrix_type in (numpy.array, numpy.ndarray):
-        adjacency_matrix = adjacency_matrix.toarray()
-    elif matrix_type == numpy.matrix:
-        adjacency_matrix = adjacency_matrix.todense()
-    else:
-        adjacency_matrix = matrix_type(adjacency_matrix)
+    adjacency_matrix = auto_convert(adjacency_matrix, sparse_threshold,
+                                    matrix_type=matrix_type)
+
     row_names = [node.identifier for node in source_nodes]
     column_names = [node.identifier for node in target_node_to_position]
     return row_names, column_names, adjacency_matrix
@@ -65,7 +72,7 @@ def normalize(matrix, vector, axis, damping_exponent):
         Vector used for row or column normalization of matrix.
     axis : str
         'rows' or 'columns' for which axis to normalize
-    damping_exponent : int or float
+    damping_exponent : float
         exponent to use in scaling a node's row or column
     """
     assert matrix.ndim == 2
@@ -76,8 +83,49 @@ def normalize(matrix, vector, axis, damping_exponent):
         vector **= -damping_exponent
     vector[numpy.isinf(vector)] = 0
     shape = (len(vector), 1) if axis == 'rows' else (1, len(vector))
+    vector = vector.reshape(shape)
     if sparse.issparse(matrix):
-        matrix = matrix.multiply(vector.reshape(shape))
+        matrix = matrix.multiply(vector)
     else:
-        matrix *= vector.reshape(shape)
+        matrix *= vector
+    return matrix
+
+
+def auto_convert(matrix, threshold, matrix_type=numpy.ndarray):
+    """
+    Automatically convert a scipy.sparse to a numpy.ndarray if the percent
+    nonzero is above a given threshold. Automatically convert a numpy.ndarray
+    to scipy.sparse if the percent nonzero is below a given threshold.
+
+    Parameters
+    ==========
+    matrix : numpy.ndarray or scipy.sparse
+    threshold : float (0 < threshold < 1)
+        percent nonzero above which the matrix is converted to dense
+    matrix_type : type or None
+        if density is above threshold, convert to this type
+
+    Returns
+    =======
+    matrix : numpy.ndarray or scipy.sparse
+    """
+    if sparse.issparse(matrix):
+        if (matrix != 0).sum() / numpy.prod(matrix.shape) >= threshold:
+            matrix = matrix.toarray()
+            if matrix_type == numpy.ndarray or not matrix_type:
+                matrix_type = numpy.array
+            matrix = matrix_type(matrix)
+    elif not sparse.issparse(matrix):
+        if (matrix != 0).sum() / numpy.prod(matrix.shape) < threshold:
+            matrix = sparse.csc_matrix(matrix)
+    return matrix
+
+
+def new_array(matrix, copy=True):
+    """Returns a newly allocated array"""
+    mat_type = type(matrix)
+    if mat_type == numpy.ndarray:
+        mat_type = numpy.array
+    matrix = mat_type(matrix, dtype=numpy.float64, copy=copy)
+    assert matrix.ndim == 2
     return matrix

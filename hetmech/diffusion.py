@@ -4,7 +4,8 @@ import numpy
 
 from .matrix import (normalize,
                      get_node_to_position,
-                     metaedge_to_adjacency_matrix)
+                     metaedge_to_adjacency_matrix,
+                     new_array)
 
 
 def diffusion_step(
@@ -38,11 +39,7 @@ def diffusion_step(
         Normalized matrix with dtype.float64.
     """
     # returns a newly allocated array
-    mat_type = type(matrix)
-    if mat_type == numpy.ndarray:
-        mat_type = numpy.array
-    matrix = mat_type(matrix, dtype=numpy.float64, copy=copy)
-    assert matrix.ndim == 2
+    matrix = new_array(matrix, copy=copy)
 
     # Perform column normalization
     if column_damping != 0:
