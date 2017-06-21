@@ -49,15 +49,13 @@ def dwwc_step(matrix, row_damping=0, column_damping=0, copy=True):
     return matrix
 
 
-def dwwc(graph, metapath, damping=0.5, sparse_threshold=0,
-         mat_type=numpy.ndarray):
+def dwwc(graph, metapath, damping=0.5, sparse_threshold=0):
     """
     Compute the degree-weighted walk count (DWWC). Special case of function
     dwpc_duplicated_metanode.
     """
     return dwpc_duplicated_metanode(graph, metapath, None, damping,
-                                    sparse_threshold=sparse_threshold,
-                                    mat_type=mat_type)
+                                    sparse_threshold=sparse_threshold)
 
 
 def pairwise(iterable):
@@ -120,7 +118,7 @@ def get_segments(metagraph, metapath):
 
 
 def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5,
-                             mat_type=numpy.ndarray, sparse_threshold=0):
+                             sparse_threshold=0):
     """
     Compute the degree-weighted path count (DWPC) when a single metanode is
     duplicated (any number of times). User must specify the duplicated
@@ -132,13 +130,9 @@ def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5,
     metapath : hetio.hetnet.MetaPath
     duplicate : hetio.hetnet.MetaNode or None
     damping : float
-    mat_type : type or None
-        type of matrix to be used. Only relevant above the
-        sparse_threshold.
     sparse_threshold : float (0 < sparse_threshold < 1)
         sets the density threshold above which a sparse matrix will be
-        converted to a dense automatically. Supersedes mat_type if the
-        density is below the threshold.
+        converted to a dense automatically.
     """
     if duplicate is not None:
         assert metapath.source() == duplicate
@@ -146,7 +140,7 @@ def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5,
     row_names = None
     for metaedge in metapath:
         rows, cols, adj_mat = \
-            metaedge_to_adjacency_matrix(graph, metaedge, matrix_type=mat_type,
+            metaedge_to_adjacency_matrix(graph, metaedge,
                                          sparse_threshold=sparse_threshold)
         adj_mat = dwwc_step(adj_mat, damping, damping)
         if dwpc_matrix is None:
@@ -154,8 +148,7 @@ def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5,
             dwpc_matrix = adj_mat
         else:
             dwpc_matrix = dwpc_matrix @ adj_mat
-            dwpc_matrix = auto_convert(dwpc_matrix, sparse_threshold,
-                                       matrix_type=mat_type)
+            dwpc_matrix = auto_convert(dwpc_matrix, sparse_threshold)
         if metaedge.target == duplicate:
             mat_type = type(dwpc_matrix)
             if mat_type == numpy.ndarray:
@@ -164,8 +157,7 @@ def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5,
             dwpc_matrix = mat_type(dwpc_matrix - diag_matrix,
                                    dtype=numpy.float64)
 
-    dwpc_matrix = auto_convert(dwpc_matrix, sparse_threshold,
-                               matrix_type=mat_type)
+    dwpc_matrix = auto_convert(dwpc_matrix, sparse_threshold)
     return row_names, cols, dwpc_matrix
 
 
@@ -183,7 +175,7 @@ def dwpc(graph, metapath, damping=0.5, sparse_threshold=0):
     for segment, duplicate in zip(segments, duplicates):
         if duplicate is None:
             rows, cols, matrix = dwwc(
-                graph, segment, damping, sparse_threshold)
+                graph, segment, damping, sparse_threshold=sparse_threshold)
         else:
             rows, cols, matrix = dwpc_duplicated_metanode(
                 graph, segment, duplicate, damping,

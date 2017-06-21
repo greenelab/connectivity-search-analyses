@@ -39,7 +39,7 @@ def test_disease_gene_example_dwwc():
     assert dwwc_matrix[i, j] == pytest.approx(0.25 + 0.25 + 32 ** -0.5)
 
 
-def get_expect(m_path, threshold, mattype):
+def get_expect(m_path, threshold):
     mat_dict = {
         'GiGaD': ([[0.25, 0.],
                    [0.35355339, 0.],
@@ -85,7 +85,7 @@ def get_expect(m_path, threshold, mattype):
         'T': ['Leukocyte', 'Lung']
     }
     type_dict = {
-        True: mattype if mattype else numpy.array,
+        True: numpy.array,
         False: sparse.csc_matrix
     }
 
@@ -108,10 +108,9 @@ def get_expect(m_path, threshold, mattype):
     return type_dwwc, dwwc_mat, type_dwpc, dwpc_mat, row_names, col_names
 
 
-@pytest.mark.parametrize('mattype', [sparse.csc_matrix])
 @pytest.mark.parametrize('thresh', (0, 0.2, 0.3, 0.5, 0.7, 0.9, 1))
 @pytest.mark.parametrize('m_path', ('GiGaD', 'GaDaG', 'GeTlD', 'GiG'))
-def test_dwpc_duplicated_metanode(m_path, thresh, mattype):
+def test_dwpc_duplicated_metanode(m_path, thresh):
     """
     Test the ability of dwpc_duplicated_metanode to convert dwpc_matrix to a
     dense array when the percent nonzero goes above the 1/3 threshold. If auto
@@ -129,14 +128,12 @@ def test_dwpc_duplicated_metanode(m_path, thresh, mattype):
     metapath = metagraph.metapath_from_abbrev(m_path)
     dup = metapath.get_nodes()[0]
     rows, cols, dwwc_mat = dwpc_duplicated_metanode(
-        graph, metapath, damping=0.5, mat_type=mattype,
-        duplicate=None, sparse_threshold=thresh)
+        graph, metapath, damping=0.5, duplicate=None, sparse_threshold=thresh)
     rows, cols, dwpc_mat = dwpc_duplicated_metanode(
-        graph, metapath, damping=0.5, mat_type=mattype,
-        duplicate=dup, sparse_threshold=thresh)
+        graph, metapath, damping=0.5, duplicate=dup, sparse_threshold=thresh)
 
     exp_type_dwwc, exp_dwwc, exp_type_dwpc, exp_dwpc, exp_row, exp_col = \
-        get_expect(m_path, thresh, mattype)
+        get_expect(m_path, thresh)
 
     if exp_type_dwwc == numpy.array:
         assert isinstance(dwwc_mat, numpy.ndarray)

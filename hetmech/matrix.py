@@ -19,8 +19,7 @@ def get_node_to_position(graph, metanode):
 
 
 def metaedge_to_adjacency_matrix(
-        graph, metaedge, dtype=numpy.bool_, sparse_threshold=0,
-        matrix_type=numpy.ndarray):
+        graph, metaedge, dtype=numpy.bool_, sparse_threshold=0):
     """
     Returns an adjacency matrix where source nodes are rows and target
     nodes are columns.
@@ -34,9 +33,6 @@ def metaedge_to_adjacency_matrix(
         sets the density threshold above which a sparse matrix will be
         converted to a dense automatically. Supersedes mat_type if the
         density is below the threshold.
-    matrix_type : type or None
-        type of matrix to be used. Only relevant above the
-        sparse_threshold.
     """
 
     if not isinstance(metaedge, hetio.hetnet.MetaEdge):
@@ -53,8 +49,7 @@ def metaedge_to_adjacency_matrix(
             data.append(1)
     adjacency_matrix = sparse.csc_matrix((data, (row, col)), shape=shape,
                                          dtype=dtype)
-    adjacency_matrix = auto_convert(adjacency_matrix, sparse_threshold,
-                                    matrix_type=matrix_type)
+    adjacency_matrix = auto_convert(adjacency_matrix, sparse_threshold)
 
     row_names = [node.identifier for node in source_nodes]
     column_names = [node.identifier for node in target_node_to_position]
@@ -91,7 +86,7 @@ def normalize(matrix, vector, axis, damping_exponent):
     return matrix
 
 
-def auto_convert(matrix, threshold, matrix_type=numpy.ndarray):
+def auto_convert(matrix, threshold):
     """
     Automatically convert a scipy.sparse to a numpy.ndarray if the percent
     nonzero is above a given threshold. Automatically convert a numpy.ndarray
@@ -102,8 +97,6 @@ def auto_convert(matrix, threshold, matrix_type=numpy.ndarray):
     matrix : numpy.ndarray or scipy.sparse
     threshold : float (0 < threshold < 1)
         percent nonzero above which the matrix is converted to dense
-    matrix_type : type or None
-        if density is above threshold, convert to this type
 
     Returns
     =======
@@ -112,9 +105,6 @@ def auto_convert(matrix, threshold, matrix_type=numpy.ndarray):
     if sparse.issparse(matrix):
         if (matrix != 0).sum() / numpy.prod(matrix.shape) >= threshold:
             matrix = matrix.toarray()
-            if matrix_type == numpy.ndarray or not matrix_type:
-                matrix_type = numpy.array
-            matrix = matrix_type(matrix)
     elif not sparse.issparse(matrix):
         if (matrix != 0).sum() / numpy.prod(matrix.shape) < threshold:
             matrix = sparse.csc_matrix(matrix)

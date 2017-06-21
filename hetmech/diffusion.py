@@ -59,8 +59,7 @@ def diffuse(
         metapath,
         source_node_weights,
         column_damping=0,
-        row_damping=1,
-        mat_type=numpy.ndarray
+        row_damping=1
         ):
     """
     Performs diffusion from the specified source nodes.
@@ -77,8 +76,6 @@ def diffuse(
         exponent of (out)degree in column normalization
     row_damping : scalar
         exponent of (in)degree in row normalization
-    mat_type : type
-        type of adjacency matrix to be made. scipy.sparse or numpy.ndarray
     """
 
     # Initialize node weights
@@ -91,8 +88,7 @@ def diffuse(
 
     for metaedge in metapath:
         row_names, column_names, adjacency_matrix = (
-            metaedge_to_adjacency_matrix(graph, metaedge,
-                                         matrix_type=mat_type))
+            metaedge_to_adjacency_matrix(graph, metaedge))
 
         # Row/column normalization with degree damping
         adjacency_matrix = diffusion_step(
