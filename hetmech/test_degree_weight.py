@@ -117,7 +117,7 @@ def test_dwpc_duplicated_metanode(m_path, thresh):
     is off, the matrices will start and stay sparse or dense throughout.
     If auto is on, the matrices start sparse and will be converted to dense
     arrays when their densities exceeds 1/3.
-   Checks output of dwpc_duplicated_metanode.
+    Checks output of dwpc_duplicated_metanode.
     """
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
         '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
