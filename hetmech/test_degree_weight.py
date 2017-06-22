@@ -40,6 +40,7 @@ def test_disease_gene_example_dwwc():
 
 
 def get_expect(m_path, threshold):
+    # Dictionary with tuples of matrix and percent nonzero
     mat_dict = {
         'GiGaD': ([[0.25, 0.],
                    [0.35355339, 0.],
@@ -88,7 +89,6 @@ def get_expect(m_path, threshold):
         True: numpy.array,
         False: sparse.csc_matrix
     }
-
     row_names = node_dict[m_path[0]]
     col_names = node_dict[m_path[-1]]
 

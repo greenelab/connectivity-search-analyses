@@ -7,11 +7,7 @@ from .matrix import metaedge_to_adjacency_matrix
 
 
 def get_arrays(edge, dtype, threshold):
-    node_dict = {
-        'G': ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1'],
-        'D': ["Crohn's Disease", 'Multiple Sclerosis'],
-        'T': ['Leukocyte', 'Lung']
-    }
+    # Dictionary with tuples of matrix and percent nonzero
     adj_dict = {
         'GiG': ([[0, 0, 1, 0, 1, 0, 0],
                  [0, 0, 1, 0, 0, 0, 0],
@@ -31,6 +27,11 @@ def get_arrays(edge, dtype, threshold):
                  [1, 0]], 0.25),
         'TlD': ([[0, 1],
                  [0, 0]], 0.25)
+    }
+    node_dict = {
+        'G': ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1'],
+        'D': ["Crohn's Disease", 'Multiple Sclerosis'],
+        'T': ['Leukocyte', 'Lung']
     }
     row_names = node_dict[edge[0]]
     col_names = node_dict[edge[-1]]

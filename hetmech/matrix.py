@@ -102,12 +102,11 @@ def auto_convert(matrix, threshold):
     =======
     matrix : numpy.ndarray or scipy.sparse
     """
-    if sparse.issparse(matrix):
-        if (matrix != 0).sum() / numpy.prod(matrix.shape) >= threshold:
-            matrix = matrix.toarray()
-    elif not sparse.issparse(matrix):
-        if (matrix != 0).sum() / numpy.prod(matrix.shape) < threshold:
-            matrix = sparse.csc_matrix(matrix)
+    above_thresh = (matrix != 0).sum() / numpy.prod(matrix.shape) >= threshold
+    if sparse.issparse(matrix) and above_thresh:
+        matrix = matrix.toarray()
+    elif not sparse.issparse(matrix) and not above_thresh:
+        matrix = sparse.csc_matrix(matrix)
     return matrix
 
 
