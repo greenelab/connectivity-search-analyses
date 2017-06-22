@@ -36,7 +36,7 @@ def get_arrays(edge, dtype, threshold):
     row_names = node_dict[edge[0]]
     col_names = node_dict[edge[-1]]
 
-    if adj_dict[edge][1] <= threshold:
+    if adj_dict[edge][1] < threshold:
         adj_matrix = sparse.csc_matrix(adj_dict[edge][0], dtype=dtype)
     else:
         adj_matrix = numpy.array(adj_dict[edge][0], dtype=dtype)
@@ -44,7 +44,7 @@ def get_arrays(edge, dtype, threshold):
     return row_names, col_names, adj_matrix
 
 
-@pytest.mark.parametrize('threshold', [0, 0.5, 1])
+@pytest.mark.parametrize('threshold', [0, 0.25, 0.5, 1])
 @pytest.mark.parametrize("test_edge", ['GiG', 'GaD', 'DlT', 'TlD'])
 @pytest.mark.parametrize("dtype", [numpy.bool_, numpy.int64, numpy.float64])
 def test_metaedge_to_adjacency_matrix(test_edge, dtype, threshold):

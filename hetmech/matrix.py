@@ -50,7 +50,6 @@ def metaedge_to_adjacency_matrix(
     adjacency_matrix = sparse.csc_matrix((data, (row, col)), shape=shape,
                                          dtype=dtype)
     adjacency_matrix = auto_convert(adjacency_matrix, sparse_threshold)
-
     row_names = [node.identifier for node in source_nodes]
     column_names = [node.identifier for node in target_node_to_position]
     return row_names, column_names, adjacency_matrix
