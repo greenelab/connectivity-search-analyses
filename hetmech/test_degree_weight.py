@@ -108,15 +108,12 @@ def get_expect(m_path, threshold):
     return type_dwwc, dwwc_mat, type_dwpc, dwpc_mat, row_names, col_names
 
 
-@pytest.mark.parametrize('thresh', (0, 0.2, 0.3, 0.5, 0.7, 0.9, 1))
+@pytest.mark.parametrize('thresh', (0, 0.25, 0.3, 0.5, 0.7, 1))
 @pytest.mark.parametrize('m_path', ('GiGaD', 'GaDaG', 'GeTlD', 'GiG'))
 def test_dwpc_duplicated_metanode(m_path, thresh):
     """
     Test the ability of dwpc_duplicated_metanode to convert dwpc_matrix to a
-    dense array when the percent nonzero goes above the 1/3 threshold. If auto
-    is off, the matrices will start and stay sparse or dense throughout.
-    If auto is on, the matrices start sparse and will be converted to dense
-    arrays when their densities exceeds 1/3.
+    dense array when the percent nonzero goes above the threshold.
     Checks output of dwpc_duplicated_metanode.
     """
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(

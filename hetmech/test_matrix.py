@@ -45,8 +45,8 @@ def get_arrays(edge, dtype, threshold):
 
 
 @pytest.mark.parametrize('threshold', [0, 0.25, 0.5, 1])
-@pytest.mark.parametrize("test_edge", ['GiG', 'GaD', 'DlT', 'TlD'])
 @pytest.mark.parametrize("dtype", [numpy.bool_, numpy.int64, numpy.float64])
+@pytest.mark.parametrize("test_edge", ['GiG', 'GaD', 'DlT', 'TlD'])
 def test_metaedge_to_adjacency_matrix(test_edge, dtype, threshold):
     """
     Test the functionality of metaedge_to_adjacency_matrix in generating
