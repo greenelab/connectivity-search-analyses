@@ -18,8 +18,8 @@ def get_node_to_position(graph, metanode):
     return node_to_position
 
 
-def metaedge_to_adjacency_matrix(
-        graph, metaedge, dtype=numpy.bool_, sparse_threshold=0):
+def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_,
+                                 sparse_threshold=0):
     """
     Returns an adjacency matrix where source nodes are rows and target
     nodes are columns.
@@ -31,10 +31,8 @@ def metaedge_to_adjacency_matrix(
     dtype : type
     sparse_threshold : float (0 < sparse_threshold < 1)
         sets the density threshold above which a sparse matrix will be
-        converted to a dense automatically. Supersedes mat_type if the
-        density is below the threshold.
+        converted to a dense automatically.
     """
-
     if not isinstance(metaedge, hetio.hetnet.MetaEdge):
         # metaedge is an abbreviation
         metaedge = graph.metagraph.metapath_from_abbrev(metaedge)[0]
