@@ -39,7 +39,7 @@ def test_disease_gene_example_dwwc():
     assert dwwc_matrix[i, j] == pytest.approx(0.25 + 0.25 + 32 ** -0.5)
 
 
-def get_expect(m_path, threshold):
+def get_expected(metapath, threshold):
     # Dictionary with tuples of matrix and percent nonzero
     mat_dict = {
         'GiGaD': ([[0.25, 0.],
@@ -89,18 +89,18 @@ def get_expect(m_path, threshold):
         True: numpy.array,
         False: sparse.csc_matrix
     }
-    row_names = node_dict[m_path[0]]
-    col_names = node_dict[m_path[-1]]
+    row_names = node_dict[metapath[0]]
+    col_names = node_dict[metapath[-1]]
 
-    if m_path == 'GaDaG':
+    if metapath == 'GaDaG':
         dwwc_mat = mat_dict['GaDaG'][0]
         dwpc_mat = mat_dict['GaDaG_dwpc'][0]
         type_dwwc = type_dict[mat_dict['GaDaG'][1] >= threshold]
         type_dwpc = type_dict[mat_dict['GaDaG_dwpc'][1] >= threshold]
     else:
-        dwwc_mat = dwpc_mat = mat_dict[m_path][0]
-        type_dwwc = type_dict[mat_dict[m_path][1] >= threshold]
-        type_dwpc = type_dict[mat_dict[m_path][1] >= threshold]
+        dwwc_mat = dwpc_mat = mat_dict[metapath][0]
+        type_dwwc = type_dict[mat_dict[metapath][1] >= threshold]
+        type_dwpc = type_dict[mat_dict[metapath][1] >= threshold]
 
     dwwc_mat = type_dwwc(dwwc_mat)
     dwpc_mat = type_dwpc(dwpc_mat)
@@ -130,7 +130,7 @@ def test_dwpc_duplicated_metanode(m_path, thresh):
         graph, metapath, damping=0.5, duplicate=dup, sparse_threshold=thresh)
 
     exp_type_dwwc, exp_dwwc, exp_type_dwpc, exp_dwpc, exp_row, exp_col = \
-        get_expect(m_path, thresh)
+        get_expected(m_path, thresh)
 
     if exp_type_dwwc == numpy.array:
         assert isinstance(dwwc_mat, numpy.ndarray)
@@ -143,7 +143,7 @@ def test_dwpc_duplicated_metanode(m_path, thresh):
         assert sparse.issparse(dwpc_mat)
 
     # Test matrix, row, and column label output
-    assert (dwwc_mat - exp_dwwc).sum() < 0.000001  # Assert approx equal
-    assert (dwpc_mat - exp_dwpc).sum() < 0.000001  # Assert approx equal
+    assert pytest.approx((dwwc_mat - exp_dwwc).sum(), 0)  # Assert approx equal
+    assert pytest.approx((dwpc_mat - exp_dwpc).sum(), 0)  # Assert approx equal
     assert rows == exp_row
     assert cols == exp_col

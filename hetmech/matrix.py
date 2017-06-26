@@ -101,14 +101,14 @@ def auto_convert(matrix, threshold):
     """
     above_thresh = (matrix != 0).sum() / numpy.prod(matrix.shape) >= threshold
     if sparse.issparse(matrix) and above_thresh:
-        matrix = matrix.toarray()
-    elif not sparse.issparse(matrix) and not above_thresh:
-        matrix = sparse.csc_matrix(matrix)
+        return matrix.toarray()
+    elif not above_thresh:
+        return sparse.csc_matrix(matrix)
     return matrix
 
 
-def new_array(matrix, copy=True):
-    """Returns a newly allocated array"""
+def copy_array(matrix, copy=True):
+    """Returns a newly allocated array if copy is True"""
     mat_type = type(matrix)
     if mat_type == numpy.ndarray:
         mat_type = numpy.array

@@ -9,7 +9,7 @@ from scipy import sparse
 from .matrix import (normalize,
                      metaedge_to_adjacency_matrix,
                      auto_convert,
-                     new_array)
+                     copy_array)
 
 
 def dwwc_step(matrix, row_damping=0, column_damping=0, copy=True):
@@ -39,7 +39,7 @@ def dwwc_step(matrix, row_damping=0, column_damping=0, copy=True):
         Normalized matrix with dtype.float64.
     """
     # returns a newly allocated array
-    matrix = new_array(matrix, copy)
+    matrix = copy_array(matrix, copy)
 
     row_sums = numpy.array(matrix.sum(axis=1)).flatten()
     column_sums = numpy.array(matrix.sum(axis=0)).flatten()
@@ -130,7 +130,7 @@ def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5,
     metapath : hetio.hetnet.MetaPath
     duplicate : hetio.hetnet.MetaNode or None
     damping : float
-    sparse_threshold : float (0 < sparse_threshold < 1)
+    sparse_threshold : float (0 <= sparse_threshold <= 1)
         sets the density threshold above which a sparse matrix will be
         converted to a dense automatically.
     """
@@ -139,9 +139,8 @@ def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5,
     dwpc_matrix = None
     row_names = None
     for metaedge in metapath:
-        rows, cols, adj_mat = \
-            metaedge_to_adjacency_matrix(graph, metaedge,
-                                         sparse_threshold=sparse_threshold)
+        rows, cols, adj_mat = metaedge_to_adjacency_matrix(
+            graph, metaedge, sparse_threshold=sparse_threshold)
         adj_mat = dwwc_step(adj_mat, damping, damping)
         if dwpc_matrix is None:
             row_names = rows
@@ -155,7 +154,7 @@ def dwpc_duplicated_metanode(graph, metapath, duplicate=None, damping=0.5,
                 mat_type = numpy.array
             diag_matrix = sparse.diags(dwpc_matrix.diagonal())
             dwpc_matrix = mat_type(dwpc_matrix - diag_matrix,
-                                   dtype=numpy.float64)
+                                   dtype=numpy.float64, copy=False)
 
     dwpc_matrix = auto_convert(dwpc_matrix, sparse_threshold)
     return row_names, cols, dwpc_matrix

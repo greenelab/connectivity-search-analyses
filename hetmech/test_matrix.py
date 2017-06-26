@@ -68,4 +68,4 @@ def test_metaedge_to_adjacency_matrix(test_edge, dtype, threshold):
     assert type(adj_mat) == type(exp_adj)
     assert adj_mat.dtype == dtype
     assert adj_mat.shape == exp_adj.shape
-    assert not (adj_mat != exp_adj).sum()
+    assert (adj_mat != exp_adj).sum() == 0

@@ -59,7 +59,7 @@ def test_CbGpPWpGaD_traversal():
     """
     graph = get_bupropion_subgraph()
     compound = 'DB01156'  # Bupropion
-    disease = 'DOID:0050742'  # nicotine dependencies
+    disease = 'DOID:0050742'  # nicotine dependence
     metapath = graph.metagraph.metapath_from_abbrev('CbGpPWpGaD')
     rows, cols, pc_matrix = dwpc(graph, metapath, damping=0)
     rows, cols, dwpc_matrix = dwpc(graph, metapath, damping=0.4)
@@ -78,7 +78,7 @@ def test_CbGiGiGaD_traversal():
     """
     graph = get_bupropion_subgraph()
     compound = 'DB01156'  # Bupropion
-    disease = 'DOID:0050742'  # nicotine dependencies
+    disease = 'DOID:0050742'  # nicotine dependence
     metapath = graph.metagraph.metapath_from_abbrev('CbGiGiGaD')
     paths = hetio.pathtools.paths_between(
         graph,
