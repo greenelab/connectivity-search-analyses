@@ -28,10 +28,10 @@ def get_segments_multi(metagraph, metapath):
 def dwpc_baba(graph, metapath, duplicates=None, damping=0.5,
               sparse_threshold=0):
     """
-    Compute the degree-weighted path count (DWPC) when a two metanodes are
+    Compute the degree-weighted path count (DWPC) when two metanodes are
     duplicated and interleaved as BABA.
     User must specify the duplicated metanodes.
-    This should be called from 
+    This should be called from inside the larger dwpc function
 
     Parameters
     ==========
