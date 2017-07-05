@@ -82,4 +82,5 @@ class TestDualNormalize:
             assert numpy.array_equal(original, input_matrix)
             assert input_matrix is not matrix
         else:
-            assert input_matrix is matrix
+            # assert input_matrix is matrix
+            assert not (input_matrix != matrix).sum()
