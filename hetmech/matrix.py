@@ -76,7 +76,7 @@ def normalize(matrix, vector, axis, damping_exponent):
     vector[numpy.isinf(vector)] = 0
     vector = sparse.diags(vector)
     if axis == 'rows':
-        matrix = vector @ matrix
+        matrix = (matrix.T @ vector).T
     else:
         matrix = matrix @ vector
     return matrix
