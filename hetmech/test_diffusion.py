@@ -78,10 +78,5 @@ class TestDualNormalize:
         input_matrix = original.copy()
         matrix = diffusion_step(input_matrix, 0.6, 0.9, copy=copy)
         # Test whether the original matrix is unmodified
-        if copy or dtype != 'float64':
-            assert numpy.array_equal(original, input_matrix)
-            assert input_matrix is not matrix
-        else:
-            # assert input_matrix is matrix
-            # assert not (input_matrix != matrix).sum()
-            pass
+        assert numpy.array_equal(original, input_matrix)
+        assert input_matrix is not matrix
