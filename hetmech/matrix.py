@@ -74,13 +74,12 @@ def normalize(matrix, vector, axis, damping_exponent):
     with numpy.errstate(divide='ignore'):
         vector **= -damping_exponent
     vector[numpy.isinf(vector)] = 0
-    vector = sparse.coo_matrix(vector) if sparse.issparse(matrix) else vector
-    matrix = matrix.T if axis == 'rows' else matrix
+    shape = (len(vector), 1) if axis == 'rows' else (1, len(vector))
+    vector = vector.reshape(shape)
     if sparse.issparse(matrix):
         matrix = matrix.multiply(vector)
     else:
         matrix *= vector
-    matrix = matrix.T if axis == 'rows' else matrix
     return matrix
 
 
@@ -103,7 +102,7 @@ def auto_convert(matrix, threshold):
     above_thresh = (matrix != 0).sum() / numpy.prod(matrix.shape) >= threshold
     if sparse.issparse(matrix) and above_thresh:
         return matrix.toarray()
-    elif not sparse.isspmatrix_csc(matrix) and not above_thresh:
+    elif not above_thresh:
         return sparse.csc_matrix(matrix)
     return matrix
 
