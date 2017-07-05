@@ -74,13 +74,11 @@ def normalize(matrix, vector, axis, damping_exponent):
     with numpy.errstate(divide='ignore'):
         vector **= -damping_exponent
     vector[numpy.isinf(vector)] = 0
-    vector = sparse.coo_matrix(vector) if sparse.issparse(matrix) else vector
-    matrix = matrix.T if axis == 'rows' else matrix
-    if sparse.issparse(matrix):
-        matrix = matrix.multiply(vector)
+    vector = sparse.diags(vector)
+    if axis == 'rows':
+        matrix = vector @ matrix
     else:
-        matrix *= vector
-    matrix = matrix.T if axis == 'rows' else matrix
+        matrix = matrix @ vector
     return matrix
 
 
