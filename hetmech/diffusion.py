@@ -38,7 +38,7 @@ def diffusion_step(
     numpy.ndarray
         Normalized matrix with dtype.float64.
     """
-    # returns a newly allocated array
+    # returns a newly allocated array if copy is True
     matrix = copy_array(matrix, copy=copy)
 
     # Perform column normalization
