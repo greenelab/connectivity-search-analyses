@@ -55,7 +55,7 @@ def metaedge_to_adjacency_matrix(graph, metaedge, dtype=numpy.bool_,
 
 def normalize(matrix, vector, axis, damping_exponent):
     """
-    Normalize a 2D numpy.ndarray in place.
+    Normalize a 2D numpy.ndarray.
 
     Parameters
     ==========
@@ -76,7 +76,8 @@ def normalize(matrix, vector, axis, damping_exponent):
     vector[numpy.isinf(vector)] = 0
     vector = sparse.diags(vector)
     if axis == 'rows':
-        matrix = (matrix.T @ vector).T
+        # equivalent to `vector @ matrix` but returns sparse.csc not sparse.csr
+        matrix = (matrix.transpose() @ vector).transpose()
     else:
         matrix = matrix @ vector
     return matrix
