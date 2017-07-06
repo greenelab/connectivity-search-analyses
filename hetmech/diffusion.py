@@ -8,8 +8,7 @@ from .matrix import (normalize,
                      copy_array)
 
 
-def diffusion_step(
-        matrix, row_damping=0, column_damping=0):
+def diffusion_step(matrix, row_damping=0, column_damping=0):
     """
     Return the diffusion adjacency matrix produced by the input matrix
     with the specified row and column normalization exponents.
