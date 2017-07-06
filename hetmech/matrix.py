@@ -109,9 +109,17 @@ def auto_convert(matrix, threshold):
 
 def copy_array(matrix, copy=True):
     """Returns a newly allocated array if copy is True"""
+    assert matrix.ndim == 2
+    assert matrix.dtype != 'O'
+    if not sparse.issparse(matrix):
+        assert numpy.isfinite(matrix).all()
+    try:
+        matrix[0, 0]
+    except IndexError:
+        raise AssertionError
+
     mat_type = type(matrix)
     if mat_type == numpy.ndarray:
         mat_type = numpy.array
     matrix = mat_type(matrix, dtype=numpy.float64, copy=copy)
-    assert matrix.ndim == 2
     return matrix

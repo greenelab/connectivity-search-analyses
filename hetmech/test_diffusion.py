@@ -69,3 +69,25 @@ class TestDualNormalize:
         expect = numpy.array(expect, dtype='float64')
         matrix = diffusion_step(input_matrix, row_damping, column_damping)
         assert numpy.allclose(expect, matrix)
+
+    @staticmethod
+    def get_problem_mat(type):
+        matrix_dict = {
+            'empty_row': numpy.array([[1, 2], [3, 4], []]),
+            'empty_matrix': numpy.array([[], [], []]),
+            'nan_matrix': numpy.array([[numpy.nan, numpy.nan], [1, 0.5]]),
+            'infinite_matrix': numpy.array([[numpy.inf, numpy.inf], [1, 0.5]]),
+            'zero_matrix': numpy.zeros((3, 3))
+        }
+        return matrix_dict[type]
+
+    @pytest.mark.parametrize('corner_type', ['empty_row', 'empty_matrix',
+                                             'nan_matrix', 'infinite_matrix',
+                                             'zero_matrix'])
+    def test_corner_cases(self, corner_type):
+        input_matrix = self.get_problem_mat(corner_type)
+        if corner_type == 'zero_matrix':  # All zero
+            assert not diffusion_step(input_matrix, 0.5, 0.5).any()
+        else:
+            with pytest.raises(AssertionError):
+                assert diffusion_step(input_matrix, 0.5, 0.5)
