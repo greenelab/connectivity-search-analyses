@@ -72,6 +72,7 @@ class TestDualNormalize:
 
     @staticmethod
     def get_problem_matrix(type):
+        """Return a problematic matrix of specified type"""
         matrix_dict = {
             'empty_row': numpy.array([[1, 2], [3, 4], []]),
             'empty_matrix': numpy.array([[], [], []]),
@@ -85,6 +86,10 @@ class TestDualNormalize:
                                              'nan_matrix', 'infinite_matrix',
                                              'zero_matrix'])
     def test_corner_cases(self, corner_type):
+        """
+        Test that errors are returned for matrices with errors like NaN, Inf,
+        emptiness, etc.
+        """
         input_matrix = self.get_problem_matrix(corner_type)
         if corner_type == 'zero_matrix':  # Assert output is all zero
             assert not diffusion_step(input_matrix, 0.5, 0.5).any()
