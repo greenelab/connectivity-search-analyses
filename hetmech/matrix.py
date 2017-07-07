@@ -116,7 +116,7 @@ def copy_array(matrix, copy=True):
     try:
         matrix[0, 0]  # Checks that there is a value in the matrix
     except IndexError:
-        raise AssertionError
+        raise AssertionError("Array may have empty rows")
 
     mat_type = type(matrix)
     if mat_type == numpy.ndarray:
