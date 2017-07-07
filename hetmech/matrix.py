@@ -110,11 +110,11 @@ def auto_convert(matrix, threshold):
 def copy_array(matrix, copy=True):
     """Returns a newly allocated array if copy is True"""
     assert matrix.ndim == 2
-    assert matrix.dtype != 'O'
+    assert matrix.dtype != 'O'  # Ensures no empty row
     if not sparse.issparse(matrix):
-        assert numpy.isfinite(matrix).all()
+        assert numpy.isfinite(matrix).all()  # Checks NaN and Inf
     try:
-        matrix[0, 0]
+        matrix[0, 0]  # Checks that there is a value in the matrix
     except IndexError:
         raise AssertionError
 

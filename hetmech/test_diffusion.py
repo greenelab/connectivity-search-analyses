@@ -86,7 +86,7 @@ class TestDualNormalize:
                                              'zero_matrix'])
     def test_corner_cases(self, corner_type):
         input_matrix = self.get_problem_mat(corner_type)
-        if corner_type == 'zero_matrix':  # All zero
+        if corner_type == 'zero_matrix':  # Assert output is all zero
             assert not diffusion_step(input_matrix, 0.5, 0.5).any()
         else:
             with pytest.raises(AssertionError):
