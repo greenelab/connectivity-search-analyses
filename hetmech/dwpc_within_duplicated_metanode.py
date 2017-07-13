@@ -3,7 +3,8 @@ import numpy
 
 def node_to_children(node, adjacency, history=None):
     """
-    Returns a list of history-accounted child nodes
+    Returns a dictionary of history-accounted child nodes and a history
+    vector
 
     Parameters
     ----------
@@ -17,8 +18,8 @@ def node_to_children(node, adjacency, history=None):
 
     Returns
     -------
-    List of child nodes as vectors. Will not include any nodes which were
-    given zero in the history vector.
+    Dictionary of child nodes and history vector. Will not include any
+    nodes which were given zero in the history vector.
     """
     if history is None:
         history = numpy.ones(len(node), dtype=numpy.float64)
