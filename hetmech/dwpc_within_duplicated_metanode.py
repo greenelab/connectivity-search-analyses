@@ -1,5 +1,4 @@
 import numpy
-from scipy import sparse
 
 
 def node_to_children(node, adjacency, history=None):
