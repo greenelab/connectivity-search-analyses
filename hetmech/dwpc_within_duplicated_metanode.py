@@ -1,4 +1,5 @@
 import numpy
+from scipy import sparse
 
 
 def node_to_children(node, adjacency, history=None):
@@ -30,7 +31,7 @@ def node_to_children(node, adjacency, history=None):
     vector *= history
     history = numpy.array(history != 0, dtype=numpy.float64)
     children = [i for i in numpy.diag(vector) if i.any()]
-    if children == []:
+    if not children:
         children = [numpy.zeros(len(node), dtype=numpy.float64)]
     return {'children': children, 'history': history}
 
