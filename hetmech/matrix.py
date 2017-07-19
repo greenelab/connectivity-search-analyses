@@ -1,7 +1,9 @@
+import itertools
 from collections import OrderedDict
 
 import hetio.hetnet
 import numpy
+import regex as re
 from scipy import sparse
 
 
@@ -123,3 +125,45 @@ def copy_array(matrix, copy=True):
         mat_type = numpy.array
     matrix = mat_type(matrix, dtype=numpy.float64, copy=copy)
     return matrix
+
+
+def categorize(metapath):
+    """
+    Returns the classification of a given metapath as one of
+    a set of metapath types which we approach differently.
+
+    Parameters
+    ----------
+    metapath : string
+
+    Returns
+    -------
+    classification : string
+        One of ['no_repeats', 'disjoint', 'abba', 'abab', 'Other']
+    """
+    nodes = re.split('[a-z<>]{1,2}', metapath)
+    repeated_nodes = [v for i, v in enumerate(nodes) if v in nodes[i+1:]]
+    repeats_only = [node for node in nodes if node in repeated_nodes]
+    # Group neighbors if they are the same
+    grouped = [''.join(list(v)) for i, v in itertools.groupby(repeats_only)]
+    # Group [A, BB, A] or [A, B, A, B] into one
+    if len(repeats_only) - len(grouped) <= 1:
+        grouped = [''.join(grouped)]
+
+    # Categorize the reformatted metapath
+    if not grouped[0]:  # Empty list
+        category = "no_repeats"
+    elif len(grouped) == 1:
+        if len(grouped[0]) < 4:
+            category = 'disjoint'  # Just one repeat ABBC
+        elif grouped[0][0] == grouped[0][-1]:
+            category = 'abba'
+        else:
+            category = 'abab'
+    else:
+        if all([i == len(i) * i[0] and len(i) != 1 for i in grouped]):
+            category = 'disjoint'
+        else:
+            category = 'Other'
+
+    return category

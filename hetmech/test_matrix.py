@@ -3,7 +3,7 @@ import numpy
 import pytest
 from scipy import sparse
 
-from .matrix import metaedge_to_adjacency_matrix
+from .matrix import metaedge_to_adjacency_matrix, categorize
 
 
 def get_arrays(edge, dtype, threshold):
@@ -69,3 +69,14 @@ def test_metaedge_to_adjacency_matrix(test_edge, dtype, threshold):
     assert adj_mat.dtype == dtype
     assert adj_mat.shape == exp_adj.shape
     assert (adj_mat != exp_adj).sum() == 0
+
+
+@pytest.mark.parametrize('metapath', [('CpDtCpD', 'abab'),
+                                      ('CbGeAlD', 'no_repeats'),
+                                      ('CuGiG<rGaD', 'disjoint'),
+                                      ('CuGpBPpGaD', 'disjoint'),
+                                      ('CuGuDdGuD', 'abab'),
+                                      ('CuGiGuCpD', 'abba'),
+                                      ('CuGiGr>GaD', 'disjoint')])
+def test_categorize(metapath):
+    assert categorize(metapath[0]) == metapath[1]
