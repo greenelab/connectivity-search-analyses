@@ -1,6 +1,8 @@
-import pytest
 import numpy
-from .dwpc_within_duplicated_metanode import *
+import pytest
+
+from .dwpc_within_duplicated_metanode import node_to_children, Traverse, \
+    PathCount
 
 
 def get_node(index):
