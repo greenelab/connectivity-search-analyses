@@ -1,5 +1,5 @@
 import pytest
-
+import numpy
 from .dwpc_within_duplicated_metanode import *
 
 
