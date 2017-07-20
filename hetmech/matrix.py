@@ -3,7 +3,6 @@ from collections import OrderedDict
 
 import hetio.hetnet
 import numpy
-import regex as re
 from scipy import sparse
 
 
@@ -134,36 +133,50 @@ def categorize(metapath):
 
     Parameters
     ----------
-    metapath : string
+    metapath : hetio.hetnet.MetaPath
 
     Returns
     -------
     classification : string
-        One of ['no_repeats', 'disjoint', 'abba', 'abab', 'Other']
+        One of ['no_repeats', 'disjoint', 'BAAB', 'BABA', 'other']
     """
-    nodes = re.split('[a-z<>]{1,2}', metapath)
-    repeated_nodes = [v for i, v in enumerate(nodes) if v in nodes[i+1:]]
-    repeats_only = [node for node in nodes if node in repeated_nodes]
+    metanodes = list(metapath.get_nodes())
+
+    repeated_nodes = {v for i, v in enumerate(metanodes) if
+                      v in metanodes[i + 1:]}
+
+    if not repeated_nodes:
+        return 'no_repeats'
+
+    repeats_only = [node for node in metanodes if node in repeated_nodes]
+
     # Group neighbors if they are the same
-    grouped = [''.join(list(v)) for i, v in itertools.groupby(repeats_only)]
+    grouped = [list(v) for k, v in itertools.groupby(repeats_only)]
+
+    # Handle multiple disjoint repeats, even 3, ie. AABBCC
+    if len(grouped) == len(repeated_nodes):
+        return 'disjoint'
+
+    # Multi-repeats that aren't disjoint, eg. ABCBAC
+    if len(repeated_nodes) > 2:
+        raise NotImplementedError("Only two repeats supported at the moment")
+
+    if len(metanodes) > 5:
+        raise NotImplementedError(
+            "Metapaths of that length are not yet supported")
+
     # Group [A, BB, A] or [A, B, A, B] into one
     if len(repeats_only) - len(grouped) <= 1:
-        grouped = [''.join(grouped)]
+        grouped = [[item for sublist in grouped for item in sublist]]
 
     # Categorize the reformatted metapath
-    if not grouped[0]:  # Empty list
-        category = "no_repeats"
-    elif len(grouped) == 1:
-        if len(grouped[0]) < 4:
-            category = 'disjoint'  # Just one repeat ABBC
-        elif grouped[0][0] == grouped[0][-1]:
-            category = 'abba'
+    if len(grouped) == 1 and len(grouped[0]) == 4:
+        if grouped[0][0] == grouped[0][-1]:
+            return 'BAAB'
         else:
-            category = 'abab'
+            return 'BABA'
     else:
-        if all([i == len(i) * i[0] and len(i) != 1 for i in grouped]):
-            category = 'disjoint'
+        if all([len(set(i)) == 1 and len(i) != 1 for i in grouped]):
+            return 'disjoint'
         else:
-            category = 'Other'
-
-    return category
+            return 'other'
