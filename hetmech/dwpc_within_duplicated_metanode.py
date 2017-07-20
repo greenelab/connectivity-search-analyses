@@ -108,7 +108,15 @@ class Traverse:
                 self.go_to_depth(child, depth - 1, nodes['history'])
 
 
-class AllPaths:
+class PathCount:
+    """
+    Generate a full path-count matrix (unweighted)
+
+    Run with the following commands:
+    --------------------------------
+    var_name = PathCount(adjacency_matrix, depth, None)
+    var_name.iterate_rows()
+    """
     def __init__(self, adjacency, depth, damping):
         self.dep = depth
         self.adj = adjacency

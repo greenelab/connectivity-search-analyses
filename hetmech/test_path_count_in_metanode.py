@@ -114,7 +114,7 @@ def test_all_paths(matrix, depth):
     solution = numpy.array(get_matrices(matrix, depth), dtype=numpy.float64)
     adj = numpy.array(get_matrices(matrix, 1), dtype=numpy.float64)
 
-    a = AllPaths(adj, depth, None)
+    a = PathCount(adj, depth, None)
     output = a.iterate_rows()
 
     assert numpy.array_equal(solution, output)
