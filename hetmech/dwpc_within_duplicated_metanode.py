@@ -106,3 +106,27 @@ class Traverse:
             nodes = node_to_children(node, self.adj, history)
             for child in nodes['children']:
                 self.go_to_depth(child, depth - 1, nodes['history'])
+
+
+class AllPaths:
+    def __init__(self, adjacency, depth, damping):
+        self.dep = depth
+        self.adj = adjacency
+        self.nrows = adjacency.shape[0]
+        self.base = numpy.zeros(self.nrows)
+        self.damp = damping
+
+    def index_to_nodes_vector(self, index):
+        search = self.base.copy()
+        search[index] = 1
+        a = Traverse(search, self.adj)
+        a.go_to_depth(a.start, self.dep)
+        return a.paths
+
+    def iterate_rows(self):
+        full_array = []
+        for i in range(self.nrows):
+            paths = self.index_to_nodes_vector(i)
+            full_array.append(paths)
+        full_array = numpy.array(full_array, dtype=numpy.float64)
+        return full_array
