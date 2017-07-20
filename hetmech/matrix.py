@@ -141,7 +141,6 @@ def categorize(metapath):
         One of ['no_repeats', 'disjoint', 'BAAB', 'BABA', 'other']
     """
     metanodes = list(metapath.get_nodes())
-
     repeated_nodes = {v for i, v in enumerate(metanodes) if
                       v in metanodes[i + 1:]}
 
@@ -153,17 +152,9 @@ def categorize(metapath):
     # Group neighbors if they are the same
     grouped = [list(v) for k, v in itertools.groupby(repeats_only)]
 
-    # Handle multiple disjoint repeats, even 3, ie. AABBCC
+    # Handle multiple disjoint repeats, any number, ie. AA,BB,CC,DD,...
     if len(grouped) == len(repeated_nodes):
         return 'disjoint'
-
-    # Multi-repeats that aren't disjoint, eg. ABCBAC
-    if len(repeated_nodes) > 2:
-        raise NotImplementedError("Only two repeats supported at the moment")
-
-    if len(metanodes) > 5:
-        raise NotImplementedError(
-            "Metapaths of that length are not yet supported")
 
     # Group [A, BB, A] or [A, B, A, B] into one
     if len(repeats_only) - len(grouped) <= 1:
@@ -176,7 +167,12 @@ def categorize(metapath):
         else:
             return 'BABA'
     else:
-        if all([len(set(i)) == 1 and len(i) != 1 for i in grouped]):
-            return 'disjoint'
-        else:
-            return 'other'
+        # Multi-repeats that aren't disjoint, eg. ABCBAC
+        if len(repeated_nodes) > 2:
+            raise NotImplementedError(
+                "Only two overlapping repeats currently supported")
+
+        if len(metanodes) > 5:
+            raise NotImplementedError(
+                "Metapaths of that length are not yet supported")
+        return 'other'
