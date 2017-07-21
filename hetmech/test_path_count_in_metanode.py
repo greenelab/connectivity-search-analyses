@@ -3,7 +3,7 @@ import numpy
 import pytest
 
 from .dwpc_within_duplicated_metanode import node_to_children, Traverse, \
-    dwpc_same_metanode
+    dwpc_same_metanode, index_to_nodes
 
 
 def get_node(index):
@@ -78,7 +78,62 @@ def test_traverse(node, step):
     assert numpy.array_equal(output, solution)
 
 
-def get_expected(m_path):
+def get_matrices(abbrev, depth):
+    """
+    Return a path-count matrix for a chosen example adjacency
+    matrix and chosen depth
+    """
+    A = get_step_solutions(None, None, whole=True)
+    B = {
+        0: list(numpy.eye(4, dtype=numpy.float64)),
+        1: [[0, 1, 0, 0], [1, 0, 1, 1], [0, 1, 0, 1], [0, 1, 1, 0]],
+        2: [[0, 0, 1, 1], [0, 0, 1, 1], [1, 1, 0, 1], [1, 1, 1, 0]],
+        3: [[0, 0, 1, 1], [0, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0]],
+        4: 4*[[0, 0, 0, 0]],
+        5: 4*[[0, 0, 0, 0]]}
+    C = {
+        0: list(numpy.eye(8, dtype=numpy.float64)),
+        1: [[0, 1, 0, 0, 0, 0, 0, 0], [1, 0, 1, 0, 0, 1, 0, 1],
+            [0, 1, 0, 1, 0, 0, 1, 1], [0, 0, 1, 0, 1, 0, 0, 0],
+            [0, 0, 0, 1, 0, 1, 0, 0], [0, 1, 0, 0, 1, 0, 0, 0],
+            [0, 0, 1, 0, 0, 0, 0, 0], [0, 1, 1, 0, 0, 0, 0, 0]],
+        2: [[0, 0, 1, 0, 0, 1, 0, 1], [0, 0, 1, 1, 1, 0, 1, 1],
+            [1, 1, 0, 0, 1, 1, 0, 1], [0, 1, 0, 0, 0, 1, 1, 1],
+            [0, 1, 1, 0, 0, 0, 0, 0], [1, 0, 1, 1, 0, 0, 0, 1],
+            [0, 1, 0, 1, 0, 0, 0, 1], [1, 1, 1, 1, 0, 1, 1, 0]],
+        3: [[0, 0, 1, 1, 1, 0, 1, 1], [0, 0, 0, 2, 1, 0, 1, 0],
+            [1, 0, 0, 0, 1, 2, 0, 0], [1, 2, 0, 0, 0, 1, 0, 1],
+            [1, 1, 1, 0, 0, 0, 1, 2], [0, 0, 2, 1, 0, 0, 1, 1],
+            [1, 1, 0, 0, 1, 1, 0, 1], [1, 0, 0, 1, 2, 1, 1, 0]],
+        4: [[0, 0, 0, 2, 1, 0, 1, 0], [0, 0, 1, 0, 1, 1, 0, 0],
+            [0, 1, 0, 1, 1, 0, 0, 0], [2, 0, 1, 0, 1, 1, 0, 1],
+            [1, 1, 1, 1, 0, 1, 1, 2], [0, 1, 0, 1, 1, 0, 2, 1],
+            [1, 0, 0, 0, 1, 2, 0, 0], [0, 0, 0, 1, 2, 1, 0, 0]],
+        5: [[0, 0, 1, 0, 1, 1, 0, 0], [0, 0, 0, 0, 0, 1, 1, 1],
+            [1, 0, 0, 1, 0, 0, 0, 1], [0, 0, 1, 0, 1, 0, 1, 1],
+            [1, 0, 0, 1, 0, 1, 1, 0], [1, 1, 0, 0, 1, 0, 0, 1],
+            [0, 1, 0, 1, 1, 0, 0, 0], [0, 1, 1, 1, 0, 1, 0, 0]]}
+    matrix_dict = {'A': A, 'B': B, 'C': C}
+    return matrix_dict[abbrev][depth]
+
+
+@pytest.mark.parametrize('depth', [0, 1, 2, 3, 4, 5])
+@pytest.mark.parametrize('matrix', ['A', 'B', 'C'])
+def test_index_to_nodes(matrix, depth):
+    """
+    Test the ability to get path-count vectors from the
+    index_to_nodes function
+    """
+    solution = numpy.array(get_matrices(matrix, depth), dtype=numpy.float64)
+    adj = numpy.array(get_matrices(matrix, 1), dtype=numpy.float64)
+
+    output = [index_to_nodes(adj, i, depth) for i, v in enumerate(adj)]
+    output = numpy.array(output, dtype=numpy.float64)
+
+    assert numpy.array_equal(solution, output)
+
+
+def get_expected(length):
     """
     Return degree-weighted path counts for the genes in the
     example graph below.
@@ -105,15 +160,15 @@ def get_expected(m_path):
             [0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0.125, 0, 0]]
     gig4 = gig5 = gig6 = numpy.zeros((7, 7))
-    mat_dict = {'GiG': gig1, 'GiGiG': gig2, 'GiGiGiG': gig3, 'GiGiGiGiG': gig4,
-                'GiGiGiGiGiG': gig5, 'GiGiGiGiGiGiG': gig6}
+    mat_dict = {1: gig1, 2: gig2, 3: gig3, 4: gig4,
+                5: gig5, 6: gig6}
     genes = ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1']
-    exp_mat = numpy.array(mat_dict[m_path], dtype=numpy.float64)
+    exp_mat = numpy.array(mat_dict[length], dtype=numpy.float64)
     return genes, genes, exp_mat
 
 
-@pytest.mark.parametrize('m_path', ['GiG' + i*'iG' for i in range(6)])
-def test_dwpc_same_metanode(m_path):
+@pytest.mark.parametrize('length', list(range(1, 6)))
+def test_dwpc_same_metanode(length):
     """
     Test the functionality of dwpc_same_metanode to find DWPC
     within a metapath (segment) of metanode and metaedge repeats.
@@ -124,9 +179,10 @@ def test_dwpc_same_metanode(m_path):
     )
     graph = hetio.readwrite.read_graph(url)
     metagraph = graph.metagraph
+    m_path = 'GiG' + length*'iG'
     metapath = metagraph.metapath_from_abbrev(m_path)
     rows, cols, dwpc_mat = dwpc_same_metanode(graph, metapath, damping=0.5)
-    exp_row, exp_col, exp_dwpc = get_expected(m_path)
+    exp_row, exp_col, exp_dwpc = get_expected(length)
 
     # Test matrix, row, and column label output
     assert pytest.approx((dwpc_mat - exp_dwpc).sum(), 0, abs=1e-7)
