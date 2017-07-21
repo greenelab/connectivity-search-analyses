@@ -1,3 +1,5 @@
+import functools
+
 import numpy
 
 from .matrix import normalize, metaedge_to_adjacency_matrix
@@ -110,48 +112,85 @@ class Traverse:
                 self.go_to_depth(child, depth - 1, nodes['history'])
 
 
-class PathCount:
+def index_to_nodes(adj, index, depth):
     """
-    Generate a full path-count matrix (weighted)
+    Traces a single node through the graph to a given depth
+    and returns the nodes which can be reached in exactly
+    the number of steps specified.
 
-    Run with the following commands:
-    --------------------------------
-    var_name = PathCount(adjacency_matrix, depth, damping)
-    var_name.iterate_rows()
+    Parameters
+    ----------
+    adj : numpy.ndarray
+        an adjacency matrix will give the path counts, while
+        a normalized adjacency matrix will return the degree-
+        weighted path counts
+    index : int
+        index of the start node
+    depth : int
+        number of edges in the metapath
+
+    Returns
+    -------
+    1-dimensional numpy.ndarray
+        the nodes which can be reached within the exact number
+        of steps specified and the DWPC for each
     """
-    def __init__(self, adjacency, depth, damping):
-        self.dep = depth
-        rowsums = adjacency.sum(axis=1)
-        colsums = adjacency.sum(axis=0)
-        adj = normalize(adjacency, rowsums, 'rows', damping)
-        adj = normalize(adj, colsums, 'columns', damping)
-        self.adj = adj
-        self.nrows = adjacency.shape[0]
-        self.base = numpy.zeros(self.nrows)
-        self.damp = damping
-
-    def index_to_nodes_vector(self, index):
-        search = self.base.copy()
-        search[index] = 1
-        a = Traverse(search, self.adj)
-        a.go_to_depth(a.start, self.dep)
-        return a.paths
-
-    def iterate_rows(self):
-        full_array = []
-        for i in range(self.nrows):
-            paths = self.index_to_nodes_vector(i)
-            full_array.append(paths)
-        full_array = numpy.array(full_array, dtype=numpy.float64)
-        return full_array
+    search = numpy.zeros(adj.shape[0])
+    search[index] = 1
+    a = Traverse(search, adj)
+    a.go_to_depth(a.start, depth)
+    return a.paths
 
 
 def dwpc_same_metanode(graph, metapath, damping=0.5):
-    metanodes = metapath.get_nodes()
-    assert len(set(metanodes)) == 1  # all metanodes are the same
+    """
+    Computes the degree-weighted path count when a single
+    metanode/metaedge is repeated an arbitrary number of times.
+
+    Parameters
+    ----------
+    graph : hetio.hetnet.Graph
+    metapath : hetio.hetnet.MetaPath
+    damping : float
+        damping=0 returns the unweighted path counts
+
+    The metapath given must be either a metaedge-repeat only
+    metapath or a segment which follows this criterion. It is
+    only useful to use this function over dwpc_duplicated_metanode
+    in metapaths and metapath segments which have three or more
+    edges. The purpose of this DWPC method is to eliminate the
+    counting of (within metapath A-A-A-A) the path a-b-c-b.
+    This method is nonspecific to length, and eliminate node
+    repeats for any length metanode repeats. However, this is
+    a very slow method compared to others, and should be used
+    sparingly, only for the few metapaths that demand its
+    application.
+    """
+
+    # Check that the metapath is uniform in metanodes and metaedges
+    metanodes = set(metapath.get_nodes())
+    metaedges = set(metapath.edges)
+    assert len(metanodes) == 1
+    assert len(metaedges) == 1
+
     depth = len(metapath)
-    metaedge = metapath.edges[0].get_abbrev()
+    metaedge = metaedges.pop().get_abbrev()
+
     row, col, adjacency_matrix = metaedge_to_adjacency_matrix(
-        graph, metaedge, sparse_threshold=0, dtype=numpy.float64)
-    a = PathCount(adjacency_matrix, depth, damping=damping)
-    return row, col, a.iterate_rows()
+        graph, metaedge, dtype=numpy.float64, sparse_threshold=0)
+    nnode = adjacency_matrix.shape[0]  # number of nodes
+
+    # Weight the adjacency matrix
+    rowsums = adjacency_matrix.sum(axis=1)
+    colsums = adjacency_matrix.sum(axis=0)
+    weighted_adj = normalize(adjacency_matrix, rowsums, 'rows', damping)
+    weighted_adj = normalize(weighted_adj, colsums, 'columns', damping)
+
+    source_to_destinations = functools.partial(index_to_nodes,
+                                               adj=weighted_adj,
+                                               depth=depth)
+
+    # Perform the actual path counting
+    full_array = [source_to_destinations(index=i) for i in range(nnode)]
+    full_array = numpy.array(full_array, dtype=numpy.float64)
+    return row, col, full_array
