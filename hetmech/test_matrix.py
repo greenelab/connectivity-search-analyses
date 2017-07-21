@@ -103,8 +103,9 @@ def test_categorize(metapath):
     metapath, correct = metapath
     metapath = metagraph.metapath_from_abbrev(metapath)
     if not correct:
-        err_dict = {0: "Only two overlapping repeats currently supported",
-                    None: "Metapaths of that length are not yet supported"}
+        err_dict = {
+            0: "Only two overlapping repeats currently supported",
+            None: "Complex metapaths of length > 5 are not yet supported"}
         with pytest.raises(NotImplementedError) as err:
             categorize(metapath)
         assert str(err.value) == err_dict[correct]

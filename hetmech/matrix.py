@@ -139,6 +139,21 @@ def categorize(metapath):
     -------
     classification : string
         One of ['no_repeats', 'disjoint', 'BAAB', 'BABA', 'other']
+
+    Examples
+    --------
+    GbCtDlA -> 'no_repeats'
+    GiGiGiG -> 'disjoint'
+    GiGiGcG -> 'disjoint'
+    GiGcGiG -> 'other'
+    GiGbCrC -> 'disjoint'
+    GbCbGbC -> 'BABA'
+    GbCrCbG -> 'BAAB'
+    DaGiGbCrC -> 'disjoint'
+    GiGaDpCrC -> 'disjoint'
+    GiGbCrCpDrD -> 'disjoint'
+    GbCpDaGbCpD -> NotImplementedError
+    GbCrCrCrCrCbG -> NotImplementedError
     """
     metanodes = list(metapath.get_nodes())
     repeated_nodes = {v for i, v in enumerate(metanodes) if
@@ -168,7 +183,7 @@ def categorize(metapath):
 
     # Group [A, BB, A] or [A, B, A, B] into one
     if len(repeats_only) - len(grouped) <= 1:
-        grouped = [[item for sublist in grouped for item in sublist]]
+        grouped = [repeats_only]
 
     # Categorize the reformatted metapath
     if len(grouped) == 1 and len(grouped[0]) == 4:
@@ -184,5 +199,5 @@ def categorize(metapath):
 
         if len(metanodes) > 5:
             raise NotImplementedError(
-                "Metapaths of that length are not yet supported")
+                "Complex metapaths of length > 5 are not yet supported")
         return 'other'
