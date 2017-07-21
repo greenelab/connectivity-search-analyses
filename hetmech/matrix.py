@@ -199,5 +199,5 @@ def categorize(metapath):
 
         if len(metanodes) > 5:
             raise NotImplementedError(
-                "Complex metapaths of length > 5 are not yet supported")
+                "Complex metapaths of length > 4 are not yet supported")
         return 'other'
