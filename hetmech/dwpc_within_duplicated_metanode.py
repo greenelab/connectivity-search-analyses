@@ -95,9 +95,9 @@ class Traverse:
 
         Returns
         -------
-        numpy.ndarray, dtype=numpy.float64 of target nodes where
-        ones indicate a path connection of the correct length from
-        the queried start node to the end node.
+        numpy.ndarray, dtype=numpy.float64
+            target nodes where ones indicate a path connection of the
+            correct length from the queried start node to the end node.
         """
         assert depth <= 10  # We don't need arbitrarily high depths.
         if depth == 0:
@@ -154,6 +154,12 @@ def dwpc_same_metanode(graph, metapath, damping=0.5):
     damping : float
         damping=0 returns the unweighted path counts
 
+    Returns
+    -------
+    nodes, nodes, path_matrix : Tuple[list, list, numpy.ndarray]
+
+    Notes
+    -----
     The metapath given must be either a metaedge-repeat only
     metapath or a segment which follows this criterion. It is
     only useful to use this function over dwpc_duplicated_metanode
