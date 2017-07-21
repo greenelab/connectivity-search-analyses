@@ -166,14 +166,14 @@ def dwpc_same_metanode(graph, metapath, damping=0.5):
     in metapaths and metapath segments which have three or more
     edges. The purpose of this DWPC method is to eliminate the
     counting of (within metapath A-A-A-A) the path a-b-c-b.
-    This method is nonspecific to length, and eliminate node
+    This method is nonspecific to length, and will eliminate node
     repeats for any length metanode repeats. However, this is
     a very slow method compared to others, and should be used
     sparingly, only for the few metapaths that demand its
     application.
     """
 
-    # Check that the metapath is uniform in metanodes and metaedges
+    # Check that the metapath is just one repeated metaedge
     metanodes = set(metapath.get_nodes())
     metaedges = set(metapath.edges)
     assert len(metanodes) == 1
