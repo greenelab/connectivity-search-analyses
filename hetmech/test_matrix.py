@@ -3,7 +3,7 @@ import numpy
 import pytest
 from scipy import sparse
 
-from .matrix import metaedge_to_adjacency_matrix, categorize
+from .matrix import metaedge_to_adjacency_matrix
 
 
 def get_arrays(edge, dtype, threshold):
@@ -69,47 +69,3 @@ def test_metaedge_to_adjacency_matrix(test_edge, dtype, threshold):
     assert adj_mat.dtype == dtype
     assert adj_mat.shape == exp_adj.shape
     assert (adj_mat != exp_adj).sum() == 0
-
-
-@pytest.mark.parametrize('metapath', [('GiG', 'disjoint'),
-                                      ('GiGiGiG', 'disjoint'),
-                                      ('G' + 10*'iG', 'disjoint'),
-                                      ('GiGiGcGcG', 'disjoint'),    # iicc
-                                      ('GiGcGcGiG', 'other'),       # icci
-                                      ('GcGiGcGaDrD', 'other'),     # cicDD
-                                      ('GcGiGaDrDrD', 'disjoint'),  # ciDDD
-                                      ('CpDaG', 'no_repeats'),      # ABC
-                                      ('DaGiGaDaG', 'other'),       # ABBAB
-                                      ('DaGiGbC', 'disjoint'),      # ABBC
-                                      ('DaGiGaD', 'BAAB'),          # ABBA
-                                      ('GeAlDlAeG', 'BAAB'),        # ABCBA
-                                      ('CbGaDrDaGeA', 'BAAB'),      # ABCCBD
-                                      ('AlDlAlD', 'BABA'),          # ABAB
-                                      ('CrCbGbCbG', 'other'),       # BBABA
-                                      ('CbGiGbCrC', 'other'),
-                                      ('CbGaDaGeAlD', 'BABA'),      # ABCBDC
-                                      ('AlDaGiG', 'disjoint'),      # ABCC
-                                      ('AeGaDaGiG', 'disjoint'),    # ABCB
-                                      ('CbGaDpCbGaD', 0),           # ABCABC
-                                      ('DaGiGiGiGiGaD', None),      # ABBBBBA
-                                      ('CbGaDrDaGbC', 0),           # ABCCBA
-                                      ('DlAuGcGpBPpGaDlA', 0),      # ABCCDCAB
-                                      ('CrCbGiGaDrD', 'disjoint'),  # AABBCC
-                                      ('CbGbCbGbC', 'other')])      # ABABA
-def test_categorize(metapath):
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
-        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
-        'test/data/hetionet-v1.0-metagraph.json',
-    )
-    metagraph = hetio.readwrite.read_metagraph(url)
-    metapath, correct = metapath
-    metapath = metagraph.metapath_from_abbrev(metapath)
-    if not correct:
-        err_dict = {
-            0: "Only two overlapping repeats currently supported",
-            None: "Complex metapaths of length > 4 are not yet supported"}
-        with pytest.raises(NotImplementedError) as err:
-            categorize(metapath)
-        assert str(err.value) == err_dict[correct]
-    else:
-        assert categorize(metapath) == correct
