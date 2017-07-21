@@ -74,6 +74,10 @@ def test_metaedge_to_adjacency_matrix(test_edge, dtype, threshold):
 @pytest.mark.parametrize('metapath', [('GiG', 'disjoint'),
                                       ('GiGiGiG', 'disjoint'),
                                       ('G' + 10*'iG', 'disjoint'),
+                                      ('GiGiGcGcG', 'disjoint'),    # iicc
+                                      ('GiGcGcGiG', 'other'),       # icci
+                                      ('GcGiGcGaDrD', 'other'),     # cicDD
+                                      ('GcGiGaDrDrD', 'disjoint'),  # ciDDD
                                       ('CpDaG', 'no_repeats'),      # ABC
                                       ('DaGiGaDaG', 'other'),       # ABBAB
                                       ('DaGiGbC', 'disjoint'),      # ABBC
