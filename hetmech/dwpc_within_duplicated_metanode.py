@@ -1,5 +1,7 @@
 import numpy
 
+from .matrix import normalize, metaedge_to_adjacency_matrix
+
 
 def node_to_children(node, adjacency, history=None):
     """
@@ -25,7 +27,7 @@ def node_to_children(node, adjacency, history=None):
         history = numpy.ones(len(node), dtype=numpy.float64)
     else:
         history = numpy.array(history != 0, dtype=numpy.float64)
-    history -= node
+    history -= numpy.array(node != 0)
     vector = node @ adjacency
     vector *= history
     history = numpy.array(history != 0, dtype=numpy.float64)
@@ -110,16 +112,20 @@ class Traverse:
 
 class PathCount:
     """
-    Generate a full path-count matrix (unweighted)
+    Generate a full path-count matrix (weighted)
 
     Run with the following commands:
     --------------------------------
-    var_name = PathCount(adjacency_matrix, depth, None)
+    var_name = PathCount(adjacency_matrix, depth, damping)
     var_name.iterate_rows()
     """
     def __init__(self, adjacency, depth, damping):
         self.dep = depth
-        self.adj = adjacency
+        rowsums = adjacency.sum(axis=1)
+        colsums = adjacency.sum(axis=0)
+        adj = normalize(adjacency, rowsums, 'rows', damping)
+        adj = normalize(adj, colsums, 'columns', damping)
+        self.adj = adj
         self.nrows = adjacency.shape[0]
         self.base = numpy.zeros(self.nrows)
         self.damp = damping
@@ -138,3 +144,14 @@ class PathCount:
             full_array.append(paths)
         full_array = numpy.array(full_array, dtype=numpy.float64)
         return full_array
+
+
+def dwpc_same_metanode(graph, metapath, damping=0.5):
+    metanodes = metapath.get_nodes()
+    assert len(set(metanodes)) == 1  # all metanodes are the same
+    depth = len(metapath)
+    metaedge = metapath.edges[0].get_abbrev()
+    row, col, adjacency_matrix = metaedge_to_adjacency_matrix(
+        graph, metaedge, sparse_threshold=0, dtype=numpy.float64)
+    a = PathCount(adjacency_matrix, depth, damping=damping)
+    return row, col, a.iterate_rows()
