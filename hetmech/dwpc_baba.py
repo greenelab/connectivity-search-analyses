@@ -92,14 +92,14 @@ def dwpc_baab(graph, metapath, damping=0.5):
 
     # Start with the center
     row, col, dwpc_matrix = metaedge_to_adjacency_matrix(
-        graph, middle_edge, dtype=np.float64, sparse_threshold=0)
-    dwpc_matrix = degree_weight(dwpc_matrix, damping)
+        graph, middle_edge, dtype=numpy.float64, sparse_threshold=0)
+    dwpc_matrix = dwwc_step(dwpc_matrix, damping, damping)
 
     # Move backwards from the center, multiplying around the existing matrix
     while index >= 0:
         r, c, adj = metaedge_to_adjacency_matrix(
-            graph, metapath[index], dtype=np.float64, sparse_threshold=0)
-        adj = degree_weight(adj, damping)
+            graph, metapath[index], dtype=numpy.float64, sparse_threshold=0)
+        adj = dwwc_step(adj, damping, damping)
         dwpc_matrix = remove_diag(adj @ dwpc_matrix @ adj.T)
         index -= 1
     return row, col, dwpc_matrix
