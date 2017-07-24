@@ -1,6 +1,7 @@
 import numpy
 
-from .matrix import metaedge_to_adjacency_matrix, normalize
+from .degree_weight import dwwc_step
+from .matrix import metaedge_to_adjacency_matrix
 
 
 def index_to_baba(index, adjacency):
@@ -65,10 +66,7 @@ def dwpc_baba(graph, metapath, damping=0.5):
     # Get and normalize the adjacency matrix
     row, col, adjacency = metaedge_to_adjacency_matrix(
         graph, metaedges[0], dtype=numpy.float64, sparse_threshold=0)
-    rowsums = adjacency.sum(axis=1)
-    colsums = adjacency.sum(axis=0)
-    adjacency = normalize(adjacency, rowsums, 'rows', damping)
-    adjacency = normalize(adjacency, colsums, 'columns', damping)
+    adjacency = dwwc_step(adjacency, damping, damping)
 
     ret = [index_to_baba(i, adjacency) for i in range(adjacency.shape[0])]
     ret = numpy.array(ret, dtype=numpy.float64)
