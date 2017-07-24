@@ -4,6 +4,11 @@ from .degree_weight import dwwc_step
 from .matrix import metaedge_to_adjacency_matrix
 
 
+def remove_diag(mat):
+    """Set the main diagonal of a square matrix to zeros."""
+    return mat - np.diag(mat.diagonal())
+
+
 def index_to_baba(index, adjacency):
     """
     Takes an index and adjacency matrix and outputs an array of the child
