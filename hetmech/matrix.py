@@ -164,16 +164,6 @@ def categorize(metapath):
     # Group neighbors if they are the same
     grouped = [list(v) for k, v in itertools.groupby(repeats_only)]
 
-    # Handle the different edges (GiG, GcG, GrG) between same metanode
-    num_gg_edges = sum([i in str(metapath.sub) for i in ['Gi', 'Gc', 'Gr']])
-    if num_gg_edges > 1:
-        group_edges = [k for k, v in itertools.groupby(list(metapath.edges))]
-        if len(group_edges) == num_gg_edges:
-            return 'disjoint'
-        else:
-            # More discriminative work needs to be done eg. GiGcGcGiG
-            return 'other'
-
     # Handle multiple disjoint repeats, any number, ie. AA,BB,CC,DD,...
     if len(grouped) == len(repeated_nodes):
         return 'disjoint'
