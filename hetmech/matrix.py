@@ -142,7 +142,7 @@ def categorize(metapath):
     GbCtDlA -> 'no_repeats'
     GiGiGiG -> 'disjoint'
     GiGiGcG -> 'disjoint'
-    GiGcGiG -> 'other'
+    GiGcGiG -> 'disjoint'
     GiGbCrC -> 'disjoint'
     GbCbGbC -> 'BABA'
     GbCrCbG -> 'BAAB'
