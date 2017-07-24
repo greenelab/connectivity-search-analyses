@@ -6,7 +6,7 @@ from .matrix import metaedge_to_adjacency_matrix
 
 def remove_diag(mat):
     """Set the main diagonal of a square matrix to zeros."""
-    return mat - np.diag(mat.diagonal())
+    return mat - numpy.diag(mat.diagonal())
 
 
 def index_to_baba(index, adjacency):
