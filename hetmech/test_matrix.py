@@ -75,8 +75,8 @@ def test_metaedge_to_adjacency_matrix(test_edge, dtype, threshold):
                                       ('GiGiGiG', 'disjoint'),
                                       ('G' + 10*'iG', 'disjoint'),
                                       ('GiGiGcGcG', 'disjoint'),    # iicc
-                                      ('GiGcGcGiG', 'other'),       # icci
-                                      ('GcGiGcGaDrD', 'other'),     # cicDD
+                                      ('GiGcGcGiG', 'disjoint'),    # icci
+                                      ('GcGiGcGaDrD', 'disjoint'),  # cicDD
                                       ('GcGiGaDrDrD', 'disjoint'),  # ciDDD
                                       ('CpDaG', 'no_repeats'),      # ABC
                                       ('DaGiGaDaG', 'other'),       # ABBAB
