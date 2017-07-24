@@ -2,7 +2,8 @@ import functools
 
 import numpy
 
-from .matrix import normalize, metaedge_to_adjacency_matrix
+from .degree_weight import dwwc_step
+from .matrix import metaedge_to_adjacency_matrix
 
 
 def node_to_children(node, adjacency, history=None):
@@ -187,10 +188,7 @@ def dwpc_same_metanode(graph, metapath, damping=0.5):
     nnode = adjacency_matrix.shape[0]  # number of nodes
 
     # Weight the adjacency matrix
-    rowsums = adjacency_matrix.sum(axis=1)
-    colsums = adjacency_matrix.sum(axis=0)
-    weighted_adj = normalize(adjacency_matrix, rowsums, 'rows', damping)
-    weighted_adj = normalize(weighted_adj, colsums, 'columns', damping)
+    weighted_adj = dwwc_step(adjacency_matrix, damping, damping)
 
     source_to_destinations = functools.partial(index_to_nodes,
                                                adj=weighted_adj,
