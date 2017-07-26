@@ -83,7 +83,7 @@ def dwpc_baab(graph, metapath, damping=0.5):
     A function to handle metapath (segments) of the form BAAB.
     This function will handle arbitrary lengths of this repeated
     pattern. For example, ABCCBA, ABCDDCBA, etc. all work with this
-    function.
+    function. As it stands, random single inserts are not supported.
     """
     assert len(metapath) % 2
     assert len(set(metapath)) % 2
