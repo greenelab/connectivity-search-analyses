@@ -8,7 +8,7 @@ from .matrix import metaedge_to_adjacency_matrix, normalize, copy_array
 
 def remove_diag(mat):
     """Set the main diagonal of a square matrix to zeros."""
-    assert len(set(mat.shape)) == 1  # must be square
+    assert mat.shape[0] == mat.shape[1]  # must be square
     return mat - numpy.diag(mat.diagonal())
 
 
@@ -27,14 +27,14 @@ def dwpc_no_repeats(graph, metapath, damping=0.5):
     assert len(set(metapath.edges)) == len(metapath)
 
     parts = list()
-    for edge in metapath:
+    for metaedge in metapath:
         rows, cols, adj = metaedge_to_adjacency_matrix(
-            graph, edge, dtype=numpy.float64, sparse_threshold=0)
+            graph, metaedge, dtype=numpy.float64, sparse_threshold=0)
         adj = degree_weight(adj, damping)
 
-        if edge == metapath[0]:
+        if metaedge == metapath[0]:
             row_names = rows
-        if edge == metapath[-1]:
+        if metaedge == metapath[-1]:
             col_names = cols
         parts.append(adj)
 
@@ -66,24 +66,43 @@ def dwpc_short_repeat(graph, metapath, damping=0.5):
     """
     One metanode repeated 3 or fewer times (A-A-A), not (A-A-A-A)
     This can include other random inserts, so long as they are not
-    repeats. Must start with the repeated node. Acceptable examples:
-    A-B-A-A) (A-B-A-C-D-E-F-A) (A-B-A-A-C), etc.
+    repeats. Must start and end with the repeated node. Acceptable
+    examples: (A-B-A-A), (A-B-A-C-D-E-F-A), (A-B-A-A), etc.
     """
-    start_node = metapath.get_nodes()[0]
+    start_metanode = metapath.source()
+    assert start_metanode == metapath.target()
+
     dwpc_matrix = None
-    for edge in metapath:
-        rows, cols, adj = metaedge_to_adjacency_matrix(
-            graph, edge, dtype=numpy.float64, sparse_threshold=0)
+    dwpc_tail = None
+    index_of_repeats = [i for i, v in enumerate(metapath.get_nodes()) if
+                        v == start_metanode]
+
+    for metaedge in metapath[:index_of_repeats[1]]:
+        row, col, adj = metaedge_to_adjacency_matrix(
+            graph, metaedge, dtype=numpy.float64, sparse_threshold=0)
         adj = degree_weight(adj, damping)
         if dwpc_matrix is None:
-            row_names = rows
+            row_names = col_names = row
             dwpc_matrix = adj
         else:
             dwpc_matrix = dwpc_matrix @ adj
-        if edge.target == start_node:
-            dwpc_matrix = remove_diag(dwpc_matrix)
 
-    return row_names, cols, dwpc_matrix
+    dwpc_matrix = remove_diag(dwpc_matrix)
+
+    if len(index_of_repeats) == 3:
+        for metaedge in metapath[index_of_repeats[1]:]:
+            row, col, adj = metaedge_to_adjacency_matrix(
+                graph, metaedge, dtype=numpy.float64, sparse_threshold=0)
+            adj = degree_weight(adj, damping)
+            if dwpc_tail is None:
+                dwpc_tail = adj
+            else:
+                dwpc_tail = dwpc_tail @ adj
+        dwpc_tail = remove_diag(dwpc_tail)
+        dwpc_matrix = dwpc_matrix @ dwpc_tail
+        dwpc_matrix = remove_diag(dwpc_matrix)
+
+    return row_names, col_names, dwpc_matrix
 
 
 def dwpc_long_repeat(graph, metapath, damping=0.5):
