@@ -47,9 +47,53 @@ def dwpc_baab(graph, metapath, damping=0.5):
     A function to handle metapath (segments) of the form BAAB.
     This function will handle arbitrary lengths of this repeated
     pattern. For example, ABCCBA, ABCDDCBA, etc. all work with this
-    function.
+    function. As it stands, random single inserts are not supported.
     """
-    raise NotImplementedError("See PR #61")
+    metanodes = list(metapath.get_nodes())
+    repeated_nodes = [v for i, v in enumerate(metanodes) if
+                      v in metanodes[i + 1:]]
+    # Find the indices of the innermost repeat (eg. BACAB -> 1,3)
+    first_inner = list(metanodes).index(repeated_nodes[-1])
+    second_inner = list(metanodes[first_inner + 1:]).index(
+        repeated_nodes[-1]) + first_inner + 1
+
+    dwpc_inner = None
+
+    for metaedge in metapath[first_inner:second_inner]:
+        row, col, adj = metaedge_to_adjacency_matrix(graph, metaedge,
+                                                     np.float64)
+        if dwpc_inner is None:
+            dwpc_inner = adj
+        else:
+            dwpc_inner = dwpc_inner @ adj
+    dwpc_inner = remove_diag(dwpc_inner)
+
+    def next_outer(first_ind, last_ind, inner_array):
+        if metanodes[last_ind + 1] in repeated_nodes:
+            if metanodes[first_ind - 1] == metanodes[last_ind + 1]:
+                adj1 = metaedge_to_adjacency_matrix(
+                    graph, metapath[first_ind - 1])[2]
+                adj2 = metaedge_to_adjacency_matrix(
+                    graph, metapath[last_ind])[2]
+
+                inner_array = adj1 @ (inner_array @ adj2)
+                inner_array = remove_diag(inner_array)
+                first_ind, last_ind = first_ind - 1, last_ind + 1
+            else:
+                adj = metaedge_to_adjacency_matrix(
+                    graph, metapath[first_ind - 1])[2]
+                inner_array = adj @ inner_array
+                first_ind -= 1
+        else:
+            adj = metaedge_to_adjacency_matrix(graph, metapath[last_ind])[2]
+            inner_array = inner_array @ adj
+            last_ind += 1
+        if len(metapath) == last_ind - first_ind:
+            return inner_array
+        else:
+            return next_outer(first_ind, last_ind, inner_array)
+
+    return next_outer(first_inner, second_inner, dwpc_inner)
 
 
 def dwpc_baba(graph, metapath, damping=0.5):
