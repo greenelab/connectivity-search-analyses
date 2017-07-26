@@ -57,7 +57,7 @@ def index_to_baba(graph, metapath, index, damping=0.5):
     for edge in metapath:
         row, col, adj = metaedge_to_adjacency_matrix(
             graph, edge, dtype=numpy.float64, sparse_threshold=0)
-        adj = degree_weight(adj, damping)
+        adj = dwwc_step(adj, damping)
 
         # multiply each vector by the adjacency matrix and transfer the history
         vectors = [numpy.insert(vec[1:] @ adj, 0, vec[0]) for vec in vectors]

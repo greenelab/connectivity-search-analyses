@@ -27,7 +27,14 @@ def get_matrices(metapath):
                 [0, 0],
                 [0, 0],
                 [0, 0],
-                [0, 0]]
+                [0, 0]],
+        'c': [[1, 0],
+              [1, 0],
+              [0, 0],
+              [1, 0],
+              [0, 0],
+              [1, 0],
+              [0, 0]]
     }
     mat_dict = {
         'GaDaGaD': ('GaD', 0),
@@ -35,7 +42,8 @@ def get_matrices(metapath):
         'DlTlDlT': ('DlT', 0),
         'TlDlTlD': ('DlT', 0),
         'GeTeGeT': ('TeG', 0),
-        'TeGeTeG': ('TeG', 1)
+        'TeGeTeG': ('TeG', 1),
+        'GaDlTeGaD': ('c', 0)
     }
     first = node_dict[metapath[0]]
     last = node_dict[metapath[-1]]
@@ -47,7 +55,8 @@ def get_matrices(metapath):
 
 
 @pytest.mark.parametrize('m_path', ('GaDaGaD', 'DaGaDaG', 'DlTlDlT',
-                                    'TlDlTlD', 'GeTeGeT', 'TeGeTeG'))
+                                    'TlDlTlD', 'GeTeGeT', 'TeGeTeG',
+                                    'GaDlTeGaD'))
 def test_dwpc_baba(m_path):
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
         '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
