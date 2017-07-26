@@ -2,8 +2,7 @@ import hetio.readwrite
 import numpy
 import pytest
 
-from .dwpc_within_duplicated_metanode import node_to_children, Traverse, \
-    dwpc_same_metanode, index_to_nodes
+from .dwpc import TraverseLongRepeat, index_to_nodes, dwpc_long_repeat
 
 
 def get_node(index):
@@ -38,7 +37,8 @@ def test_node_to_children(node):
     child nodes and an updated history vector"""
     adj = get_adj(1)
 
-    children = node_to_children(get_node(node[0]), adj)['children']
+    children = TraverseLongRepeat.node_to_children(
+        get_node(node[0]), adj)['children']
     solution = [get_node(i) for i in node[1]]
     diff = [v - solution[i] for i, v in enumerate(children)]
     those_equal = [not i.any() for i in diff]
@@ -72,7 +72,7 @@ def test_traverse(node, step):
     start_node = get_node(node)
     solution = numpy.array(get_step_solutions(node, step), dtype=numpy.float64)
 
-    a = Traverse(start_node, adj)
+    a = TraverseLongRepeat(start_node, adj)
     a.go_to_depth(a.start, step)
     output = a.paths
     assert numpy.array_equal(output, solution)
@@ -181,7 +181,7 @@ def test_dwpc_same_metanode(length):
     metagraph = graph.metagraph
     m_path = 'GiG' + length*'iG'
     metapath = metagraph.metapath_from_abbrev(m_path)
-    rows, cols, dwpc_mat = dwpc_same_metanode(graph, metapath, damping=0.5)
+    rows, cols, dwpc_mat = dwpc_long_repeat(graph, metapath, damping=0.5)
     exp_row, exp_col, exp_dwpc = get_expected(length)
 
     # Test matrix, row, and column label output
