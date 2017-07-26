@@ -79,7 +79,7 @@ def dwpc_short_repeat(graph, metapath, damping=0.5):
             row_names = rows
             dwpc_matrix = adj
         else:
-            dwpc_matrix = dwpc_matrix@adj
+            dwpc_matrix = dwpc_matrix @ adj
         if edge.target == start_node:
             dwpc_matrix = remove_diag(dwpc_matrix)
 
