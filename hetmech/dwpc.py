@@ -9,7 +9,7 @@ from .matrix import metaedge_to_adjacency_matrix, normalize, copy_array
 def remove_diag(mat):
     """Set the main diagonal of a square matrix to zeros."""
     assert len(set(mat.shape)) == 1  # must be square
-    return mat - np.diag(mat.diagonal())
+    return mat - numpy.diag(mat.diagonal())
 
 
 def degree_weight(matrix, damping, copy=True):
