@@ -2,7 +2,7 @@ import hetio.readwrite
 import numpy
 import pytest
 
-from .dwpc_baba import dwpc_baba
+from .dwpc import dwpc_baba
 
 
 def get_matrices(metapath):
