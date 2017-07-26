@@ -6,41 +6,7 @@ from .degree_weight import dwwc_step
 from .matrix import metaedge_to_adjacency_matrix
 
 
-def node_to_children(node, adjacency, history=None):
-    """
-    Returns a dictionary of history-accounted child nodes and a history
-    vector
-
-    Parameters
-    ----------
-    node : numpy.ndarray
-        vector with only the node to query
-    adjacency : numpy.ndarray
-        square adjacency matrix
-    history : numpy.ndarray or None
-        A vector with zero corresponding to a node which has already been
-        traversed, and one corresponding to a yet-untouched node.
-
-    Returns
-    -------
-    Dictionary of child nodes and history vector. Will not include any
-    nodes which were given zero in the history vector.
-    """
-    if history is None:
-        history = numpy.ones(len(node), dtype=numpy.float64)
-    else:
-        history = numpy.array(history != 0, dtype=numpy.float64)
-    history -= numpy.array(node != 0)
-    vector = node @ adjacency
-    vector *= history
-    history = numpy.array(history != 0, dtype=numpy.float64)
-    children = [i for i in numpy.diag(vector) if i.any()]
-    if not children:
-        children = [numpy.zeros(len(node), dtype=numpy.float64)]
-    return {'children': children, 'history': history}
-
-
-class Traverse:
+class TraverseLongRepeat:
     """
     Class is run by the following:
 
@@ -59,6 +25,40 @@ class Traverse:
         self.start = start_node
         self.adj = adjacency_matrix
         self.paths = numpy.zeros(len(start_node), dtype=numpy.float64)
+
+    @staticmethod
+    def node_to_children(node, adjacency, history=None):
+        """
+        Returns a dictionary of history-accounted child nodes and a history
+        vector
+
+        Parameters
+        ----------
+        node : numpy.ndarray
+            vector with only the node to query
+        adjacency : numpy.ndarray
+            square adjacency matrix
+        history : numpy.ndarray or None
+            A vector with zero corresponding to a node which has already been
+            traversed, and one corresponding to a yet-untouched node.
+
+        Returns
+        -------
+        Dictionary of child nodes and history vector. Will not include any
+        nodes which were given zero in the history vector.
+        """
+        if history is None:
+            history = numpy.ones(len(node), dtype=numpy.float64)
+        else:
+            history = numpy.array(history != 0, dtype=numpy.float64)
+        history -= numpy.array(node != 0)
+        vector = node @ adjacency
+        vector *= history
+        history = numpy.array(history != 0, dtype=numpy.float64)
+        children = [i for i in numpy.diag(vector) if i.any()]
+        if not children:
+            children = [numpy.zeros(len(node), dtype=numpy.float64)]
+        return {'children': children, 'history': history}
 
     def two_step(self, node, history=None):
         """
@@ -138,7 +138,7 @@ def index_to_nodes(adj, index, depth):
     """
     search = numpy.zeros(adj.shape[0])
     search[index] = 1
-    a = Traverse(search, adj)
+    a = TraverseLongRepeat(search, adj)
     a.go_to_depth(a.start, depth)
     return a.paths
 
