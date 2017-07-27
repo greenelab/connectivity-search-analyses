@@ -137,13 +137,14 @@ def categorize(metapath):
     Returns
     -------
     classification : string
-        One of ['no_repeats', 'disjoint', 'BAAB', 'BABA', 'other']
+        One of ['no_repeats', 'disjoint', 'short_repeat',
+                'long_repeat', 'BAAB', 'BABA', 'other']
     Examples
     --------
     GbCtDlA -> 'no_repeats'
-    GiGiGiG -> 'disjoint'
-    GiGiGcG -> 'disjoint'
-    GiGcGiG -> 'disjoint'
+    GiGiG   -> 'short_repeat'
+    GiGiGcG -> 'long_repeat'
+    GiGcGiG -> 'long_repeat'
     GiGbCrC -> 'disjoint'
     GbCbGbC -> 'BABA'
     GbCrCbG -> 'BAAB'
