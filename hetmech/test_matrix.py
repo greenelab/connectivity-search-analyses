@@ -116,21 +116,24 @@ def test_categorize(metapath, solution):
 
 
 @pytest.mark.parametrize('metapath,solution', [
-    ('TeGiGaDaG', '[TeG, GiGaDaG]'),  # short_repeat
-    ('TeGiGeTlD', '[TeGiGeT, TlD]'),  # BAABC
+    ('AeGiGaDaG', '[AeG, GiGaDaG]'),  # short_repeat
+    ('AeGiGeAlD', '[AeGiGeA, AlD]'),  # BAABC
     ('DaGaDaG', '[DaGaDaG]'),  # BABA
-    ('DlTeGaDaG', '[DlTeGaDaG]'),  # BCABA
-    ('GaDlTeGaD', '[GaDlTeGaD]'),  # BACBA
+    ('DlAeGaDaG', '[DlAeGaDaG]'),  # BCABA
+    ('GaDlAeGaD', '[GaDlAeGaD]'),  # BACBA
     ('GiGiG', '[GiGiG]'),  # short_repeat
-    ('GiGiGiG', '[GiGiGiG]')  # long_repeat
+    ('GiGiGiG', '[GiGiGiG]'),  # long_repeat
+    ('CrCbGiGiGaDrDlA', '[CrC, CbG, GiGiG, GaD, DrD, DlA]'),
+    ('CrCrCbGiGeAlDrD', '[CrCrC, CbG, GiG, GeAlD, DrD]'),
+    ('SEcCrCrCbGiGeAlDrDpS', '[SEcC, CrCrC, CbG, GiG, GeAlD, DrD, DpS]'),
+    ('SEcCrCrCrC', '[SEcC, CrCrCrC]')
 ])
 def test_get_segments(metapath, solution):
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
         '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
-        'test/data/disease-gene-example-graph.json',
+        'test/data/hetionet-v1.0-metagraph.json',
     )
-    graph = hetio.readwrite.read_graph(url)
-    metagraph = graph.metagraph
+    metagraph = hetio.readwrite.read_metagraph(url)
     metapath = metagraph.metapath_from_abbrev(metapath)
     output = str(get_segments(metagraph, metapath))
     assert output == solution

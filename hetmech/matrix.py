@@ -200,14 +200,38 @@ def categorize(metapath):
 
 
 def get_segments(metagraph, metapath):
-    def add_head_tail(path_length, index_list):
+    """
+    Split a metapath into segments of recognized groups and non-repeated
+    nodes. Groups include BAAB, BABA, disjoint short- and long-repeats.
+    Returns an error for categorization 'other'.
+
+    Parameters
+    ----------
+    metagraph : hetio.hetnet.MetaGraph
+    metapath : hetio.hetnet.Metapath
+
+    Returns
+    -------
+    list
+        list of metapaths. If the metapath is not segmentable or is already
+        fully simplified (eg. GaDaGaD), then the list will have only one
+        element.
+
+    Examples
+    --------
+    'CbGaDaGaD' -> ['CbG', 'GaDaGaD']
+    'GbCpDaGaD' -> ['GbCpDaGaD']
+    'CrCbGiGaDrD' -> ['CrCbG', 'GiGaD', 'DrD']
+    """
+
+    def add_head_tail(metapath, indices):
         # handle non-duplicated on the front
-        if index_list[0][0] != 0:
-            index_list = [[0, index_list[0][0]]] + index_list
+        if indices[0][0] != 0:
+            indices = [[0, indices[0][0]]] + indices
         # handle non-duplicated on the end
-        if index_list[-1][-1] != path_length + 1:
-            index_list = index_list + [[index_list[-1][-1], len(metapath) + 1]]
-        return index_list
+        if indices[-1][-1] != len(metapath):
+            indices = indices + [[indices[-1][-1], len(metapath)]]
+        return indices
 
     category = categorize(metapath)
     metanodes = metapath.get_nodes()
@@ -215,18 +239,20 @@ def get_segments(metagraph, metapath):
     repeated_nodes = {i for i in freq.keys() if freq[i] > 1}
 
     if category == 'other':
-        raise NotImplementedError('Metapath not categorized and therefore'
-                                  'not segment-able')
+        raise NotImplementedError("Incompatible metapath")
 
     elif category in ('disjoint', 'short_repeat', 'long_repeat'):
         indices = sorted([[metanodes.index(i), len(metapath) - list(
             reversed(metanodes)).index(i)] for i in repeated_nodes])
-        indices = add_head_tail(len(metapath), indices)
+        indices = add_head_tail(metapath, indices)
         # handle middle cases with non-repeated nodes between disjoint regions
+        # Eg. [[0,2], [3,4]] -> [[0,2],[2,3],[3,4]]
+        inds = []
         for i, v in enumerate(indices[:-1]):
+            inds.append(v)
             if v[-1] != indices[i + 1][0]:
-                indices = indices[:i] + [i, indices[i + 1][0]] + indices[
-                                                                 i + 1:]
+                inds.append([v[-1], indices[i + 1][0]])
+        indices = inds + [indices[-1]]
 
     elif category in ('BAAB', 'BABA'):
         assert len(repeated_nodes) == 2
@@ -234,7 +260,7 @@ def get_segments(metagraph, metapath):
         end_of_baba = len(metapath) - min(
             [list(reversed(metanodes)).index(i) for i in repeated_nodes])
         indices = [[start_of_baba, end_of_baba]]
-        indices = add_head_tail(len(metapath), indices)
+        indices = add_head_tail(metapath, indices)
 
     segments = [metapath[i[0]:i[1]] for i in indices]
     segments = [i for i in segments if i]
