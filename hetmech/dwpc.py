@@ -60,6 +60,7 @@ def dwpc_baab(graph, metapath, damping=0.5):
 
     dwpc_inner = None
 
+    # Traverse between and including innermost repeated metanodes
     for metaedge in metapath[first_inner:second_inner]:
         row, col, adj = metaedge_to_adjacency_matrix(graph, metaedge,
                                                      numpy.float64)
@@ -71,7 +72,27 @@ def dwpc_baab(graph, metapath, damping=0.5):
     dwpc_inner = remove_diag(dwpc_inner)
 
     def next_outer(first_ind, last_ind, inner_array):
+        """
+        A recursive function. Works outward from the middle of a
+        metapath. Multiplies non-repeat metanodes as appropriate and
+        builds outward. When identical metanodes are ahead of and
+        behind the middle segment being worked with, this function
+        multiplies by both and subtracts the main diagonal.
+
+        Parameters
+        ----------
+        first_ind : int
+            index at the beginning of the middle segment
+        last_ind : int
+            index at the end of the middle segment
+        inner_array : numpy.ndarray
+            The working dwpc_matrix, which is multiplied from the front
+            and back depending on which side has a duplicated metanode
+            at the closest position
+        """
+        # case where node at the end is a repeated metanode
         if metanodes[last_ind + 1] in repeated_nodes:
+            # if middle segment surrounded by repeated metanodes
             if metanodes[first_ind - 1] == metanodes[last_ind + 1]:
                 adj1 = metaedge_to_adjacency_matrix(
                     graph, metapath[first_ind - 1])[2]
@@ -83,22 +104,26 @@ def dwpc_baab(graph, metapath, damping=0.5):
                 inner_array = adj1 @ (inner_array @ adj2)
                 inner_array = remove_diag(inner_array)
                 first_ind, last_ind = first_ind - 1, last_ind + 1
+            # only trailing metanode is a repeat
             else:
                 adj = metaedge_to_adjacency_matrix(
                     graph, metapath[first_ind - 1])[2]
                 adj = degree_weight(adj, damping)
                 inner_array = adj @ inner_array
                 first_ind -= 1
+        # trailing metanode is not a repeated
         else:
             adj = metaedge_to_adjacency_matrix(graph, metapath[last_ind])[2]
             adj = degree_weight(adj, damping)
             inner_array = inner_array @ adj
             last_ind += 1
+        # the middle segment spans the entire metapath
         if len(metapath) == last_ind - first_ind:
             return inner_array
         else:
             return next_outer(first_ind, last_ind, inner_array)
 
+    # get source and target ID arrays
     row_names = metaedge_to_adjacency_matrix(
         graph, metapath[0], dtype=numpy.float64)[0]
     col_names = metaedge_to_adjacency_matrix(
