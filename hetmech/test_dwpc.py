@@ -10,7 +10,7 @@ from .dwpc import dwpc_baab
                  [0.47855339, 0.]]),
     ('TeGiGeT', [[0, 0],
                  [0, 0]]),
-    ('DlTeGiGaD', [[0, 0],
+    ('DaGiGeTlD', [[0, 0],
                    [0, 0]]),
     ('DaGeTeGaD', [[0, 0],
                    [0, 0]]),
