@@ -61,7 +61,8 @@ def dwpc_baab(graph, metapath, damping=0.5):
 
     for metaedge in metapath[first_inner:second_inner]:
         row, col, adj = metaedge_to_adjacency_matrix(graph, metaedge,
-                                                     np.float64)
+                                                     numpy.float64)
+        adj = degree_weight(adj, damping)
         if dwpc_inner is None:
             dwpc_inner = adj
         else:
@@ -75,6 +76,8 @@ def dwpc_baab(graph, metapath, damping=0.5):
                     graph, metapath[first_ind - 1])[2]
                 adj2 = metaedge_to_adjacency_matrix(
                     graph, metapath[last_ind])[2]
+                adj1 = degree_weight(adj1, damping)
+                adj2 = degree_weight(adj2, damping)
 
                 inner_array = adj1 @ (inner_array @ adj2)
                 inner_array = remove_diag(inner_array)
@@ -82,10 +85,12 @@ def dwpc_baab(graph, metapath, damping=0.5):
             else:
                 adj = metaedge_to_adjacency_matrix(
                     graph, metapath[first_ind - 1])[2]
+                adj = degree_weight(adj, damping)
                 inner_array = adj @ inner_array
                 first_ind -= 1
         else:
             adj = metaedge_to_adjacency_matrix(graph, metapath[last_ind])[2]
+            adj = degree_weight(adj, damping)
             inner_array = inner_array @ adj
             last_ind += 1
         if len(metapath) == last_ind - first_ind:
@@ -93,7 +98,12 @@ def dwpc_baab(graph, metapath, damping=0.5):
         else:
             return next_outer(first_ind, last_ind, inner_array)
 
-    return next_outer(first_inner, second_inner, dwpc_inner)
+    row_names = metaedge_to_adjacency_matrix(
+        graph, metapath[0], dtype=numpy.float64)[0]
+    col_names = metaedge_to_adjacency_matrix(
+        graph, metapath[-1], dtype=numpy.float64)[1]
+    dwpc_matrix = next_outer(first_inner, second_inner, dwpc_inner)
+    return row_names, col_names, dwpc_matrix
 
 
 def dwpc_baba(graph, metapath, damping=0.5):
