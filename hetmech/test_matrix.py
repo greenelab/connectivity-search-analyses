@@ -3,7 +3,7 @@ import numpy
 import pytest
 from scipy import sparse
 
-from .matrix import metaedge_to_adjacency_matrix, categorize
+from .matrix import metaedge_to_adjacency_matrix, categorize, get_segments
 
 
 def get_arrays(edge, dtype, threshold):
@@ -71,31 +71,31 @@ def test_metaedge_to_adjacency_matrix(test_edge, dtype, threshold):
     assert (adj_mat != exp_adj).sum() == 0
 
 
-@pytest.mark.parametrize('metapath', [('GiG', 'disjoint'),
-                                      ('GiGiGiG', 'disjoint'),
-                                      ('G' + 10*'iG', 'disjoint'),
-                                      ('GiGiGcGcG', 'disjoint'),    # iicc
-                                      ('GiGcGcGiG', 'disjoint'),    # icci
-                                      ('GcGiGcGaDrD', 'disjoint'),  # cicDD
-                                      ('GcGiGaDrDrD', 'disjoint'),  # ciDDD
-                                      ('CpDaG', 'no_repeats'),      # ABC
-                                      ('DaGiGaDaG', 'other'),       # ABBAB
-                                      ('DaGiGbC', 'disjoint'),      # ABBC
-                                      ('DaGiGaD', 'BAAB'),          # ABBA
-                                      ('GeAlDlAeG', 'BAAB'),        # ABCBA
-                                      ('CbGaDrDaGeA', 'BAAB'),      # ABCCBD
-                                      ('AlDlAlD', 'BABA'),          # ABAB
-                                      ('CrCbGbCbG', 'other'),       # BBABA
+@pytest.mark.parametrize('metapath', [('GiG', 'short_repeat'),
+                                      ('GiGiGiG', 'long_repeat'),
+                                      ('G' + 10*'iG', 'long_repeat'),
+                                      ('GiGiGcGcG', 'long_repeat'),  # iicc
+                                      ('GiGcGcGiG', 'long_repeat'),  # icci
+                                      ('GcGiGcGaDrD', 'disjoint'),   # cicDD
+                                      ('GcGiGaDrDrD', 'disjoint'),   # ciDDD
+                                      ('CpDaG', 'no_repeats'),       # ABC
+                                      ('DaGiGaDaG', 'other'),        # ABBAB
+                                      ('DaGiGbC', 'disjoint'),       # ABBC
+                                      ('DaGiGaD', 'BAAB'),           # ABBA
+                                      ('GeAlDlAeG', 'BAAB'),         # ABCBA
+                                      ('CbGaDrDaGeA', 'BAAB'),       # ABCCBD
+                                      ('AlDlAlD', 'BABA'),           # ABAB
+                                      ('CrCbGbCbG', 'other'),        # BBABA
                                       ('CbGiGbCrC', 'other'),
-                                      ('CbGaDaGeAlD', 'BABA'),      # ABCBDC
-                                      ('AlDaGiG', 'disjoint'),      # ABCC
-                                      ('AeGaDaGiG', 'disjoint'),    # ABCB
-                                      ('CbGaDpCbGaD', 0),           # ABCABC
-                                      ('DaGiGiGiGiGaD', None),      # ABBBBBA
-                                      ('CbGaDrDaGbC', 0),           # ABCCBA
-                                      ('DlAuGcGpBPpGaDlA', 0),      # ABCCDCAB
-                                      ('CrCbGiGaDrD', 'disjoint'),  # AABBCC
-                                      ('CbGbCbGbC', 'other')])      # ABABA
+                                      ('CbGaDaGeAlD', 'BABA'),       # ABCBDC
+                                      ('AlDaGiG', 'disjoint'),       # ABCC
+                                      ('AeGaDaGiG', 'disjoint'),     # ABCB
+                                      ('CbGaDpCbGaD', 0),            # ABCABC
+                                      ('DaGiGiGiGiGaD', None),       # ABBBBBA
+                                      ('CbGaDrDaGbC', 0),            # ABCCBA
+                                      ('DlAuGcGpBPpGaDlA', 0),       # ABCCDCAB
+                                      ('CrCbGiGaDrD', 'disjoint'),   # AABBCC
+                                      ('CbGbCbGbC', 'other')])       # ABABA
 def test_categorize(metapath):
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
         '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
@@ -113,3 +113,25 @@ def test_categorize(metapath):
         assert str(err.value) == err_dict[correct]
     else:
         assert categorize(metapath) == correct
+
+
+@pytest.mark.parametrize('mp_source', [
+    ('TeGiGaDaG', '[TeG, GiGaDaG]'),    # short_repeat
+    ('TeGiGeTlD', '[TeGiGeT, TlD]'),    # BAABC
+    ('DaGaDaG', '[DaGaDaG]'),           # BABA
+    ('DlTeGaDaG', '[DlTeGaDaG]'),       # BCABA
+    ('GaDlTeGaD', '[GaDlTeGaD]'),       # BACBA
+    ('GiGiG', '[GiGiG]'),               # short_repeat
+    ('GiGiGiG', '[GiGiGiG]')            # long_repeat
+                                      ])
+def test_get_segments(mp_source):
+    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
+        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
+        'test/data/disease-gene-example-graph.json',
+    )
+    graph = hetio.readwrite.read_graph(url)
+    metagraph = graph.metagraph
+    metapath, correct = mp_source
+    metapath = metagraph.metapath_from_abbrev(metapath)
+    output = str(get_segments(metagraph, metapath))
+    assert output == correct
