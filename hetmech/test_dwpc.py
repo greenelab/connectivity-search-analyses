@@ -1,7 +1,8 @@
 import hetio.readwrite
+import numpy
 import pytest
 
-from .dwpc import *
+from .dwpc import dwpc_baab
 
 
 @pytest.mark.parametrize('metapath,expected', [
