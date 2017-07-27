@@ -12,38 +12,57 @@ def get_matrices(metapath):
         'T': ['Leukocyte', 'Lung']
     }
     edge_dict = {
-        'GaD': [[0.08838835, 0],
-                [0.08838835, 0],
-                [0, 0.125],
-                [0.08838835, 0],
-                [0, 0],
-                [0, 0],
-                [0, 0]],
-        'DlT': [[0, 0],
-                [0, 0]],
-        'TeG': [[0, 0],
-                [0, 0],
-                [0, 0],
-                [0, 0],
-                [0, 0],
-                [0, 0],
-                [0, 0]],
-        'c': [[1, 0],
-              [1, 0],
-              [0, 0],
-              [1, 0],
-              [0, 0],
-              [1, 0],
-              [0, 0]]
+        0: [[0.08838835, 0],
+            [0.08838835, 0],
+            [0, 0.125],
+            [0.08838835, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0]],
+        1: [[0, 0],
+            [0, 0]],
+        2: [[0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0]],
+        3: [[0.25, 0.],
+            [0.25, 0.],
+            [0., 0.],
+            [0.25, 0.],
+            [0., 0.],
+            [0.1767767, 0.],
+            [0., 0.]],
+        4: [[0., 0.],
+            [0., 0.],
+            [0.125, 0.],
+            [0., 0.],
+            [0., 0.],
+            [0., 0.],
+            [0., 0.]],
+        5: [[0., 0.],
+            [0., 0.],
+            [0., 0.],
+            [0., 0.],
+            [0., 0.],
+            [0., 0.25],
+            [0., 0.]]
     }
     mat_dict = {
-        'GaDaGaD': ('GaD', 0),
-        'DaGaDaG': ('GaD', 1),
-        'DlTlDlT': ('DlT', 0),
-        'TlDlTlD': ('DlT', 0),
-        'GeTeGeT': ('TeG', 0),
-        'TeGeTeG': ('TeG', 1),
-        'GaDlTeGaD': ('c', 0)
+        'GaDaGaD': (0, 0),
+        'DaGaDaG': (0, 1),
+        'DlTlDlT': (1, 0),
+        'TlDlTlD': (1, 1),
+        'GeTeGeT': (2, 0),
+        'TeGeTeG': (2, 1),
+        'GaDlTeGaD': (3, 0),
+        'DaGeTlDaG': (3, 1),
+        'GeTlDaGaD': (4, 0),
+        'DaGaDlTeG': (4, 1),
+        'GaDaGeTlD': (5, 0),
+        'DlTeGaDaG': (5, 1)
     }
     first = node_dict[metapath[0]]
     last = node_dict[metapath[-1]]
@@ -56,7 +75,7 @@ def get_matrices(metapath):
 
 @pytest.mark.parametrize('m_path', ('GaDaGaD', 'DaGaDaG', 'DlTlDlT',
                                     'TlDlTlD', 'GeTeGeT', 'TeGeTeG',
-                                    'GaDlTeGaD'))
+                                    'GaDlTeGaD', 'GeTlDaGaD', 'GaDaGeTlD'))
 def test_dwpc_baba(m_path):
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
         '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
@@ -71,4 +90,4 @@ def test_dwpc_baba(m_path):
 
     assert row_sol == row
     assert col_sol == col
-    assert pytest.approx(adj_sol, dwpc)
+    assert numpy.max(adj_sol - dwpc) == pytest.approx(0, abs=1e-8)
