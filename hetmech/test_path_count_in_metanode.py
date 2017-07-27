@@ -27,19 +27,19 @@ def get_adj(which):
     return select_adjacency[which]
 
 
-@pytest.mark.parametrize('node', [(0, [1, 2]),
-                                  (1, [0, 3]),
-                                  (2, [0, 3]),
-                                  (3, [1, 2, 4]),
-                                  (4, [3])])
-def test_node_to_children(node):
+@pytest.mark.parametrize('node,solution', [(0, [1, 2]),
+                                           (1, [0, 3]),
+                                           (2, [0, 3]),
+                                           (3, [1, 2, 4]),
+                                           (4, [3])])
+def test_node_to_children(node, solution):
     """Test the basic functionality of node_to_children to output
     child nodes and an updated history vector"""
     adj = get_adj(1)
 
     children = TraverseLongRepeat.node_to_children(
-        get_node(node[0]), adj)['children']
-    solution = [get_node(i) for i in node[1]]
+        get_node(node), adj)['children']
+    solution = [get_node(i) for i in solution]
     diff = [v - solution[i] for i, v in enumerate(children)]
     those_equal = [not i.any() for i in diff]
     assert all(those_equal)
