@@ -3,7 +3,7 @@ import numpy
 import pytest
 from scipy import sparse
 
-from .matrix import metaedge_to_adjacency_matrix, categorize, get_segments
+from .matrix import metaedge_to_adjacency_matrix
 
 
 def get_arrays(edge, dtype, threshold):
@@ -69,71 +69,3 @@ def test_metaedge_to_adjacency_matrix(test_edge, dtype, threshold):
     assert adj_mat.dtype == dtype
     assert adj_mat.shape == exp_adj.shape
     assert (adj_mat != exp_adj).sum() == 0
-
-
-@pytest.mark.parametrize('metapath,solution', [
-    ('GiG', 'short_repeat'),
-    ('GiGiGiG', 'long_repeat'),
-    ('G' + 10 * 'iG', 'long_repeat'),
-    ('GiGiGcGcG', 'long_repeat'),  # iicc
-    ('GiGcGcGiG', 'long_repeat'),  # icci
-    ('GcGiGcGaDrD', 'disjoint'),  # cicDD
-    ('GcGiGaDrDrD', 'disjoint'),  # ciDDD
-    ('CpDaG', 'no_repeats'),  # ABC
-    ('DaGiGaDaG', 'other'),  # ABBAB
-    ('DaGiGbC', 'disjoint'),  # ABBC
-    ('DaGiGaD', 'BAAB'),  # ABBA
-    ('GeAlDlAeG', 'BAAB'),  # ABCBA
-    ('CbGaDrDaGeA', 'BAAB'),  # ABCCBD
-    ('AlDlAlD', 'BABA'),  # ABAB
-    ('CrCbGbCbG', 'other'),  # BBABA
-    ('CbGiGbCrC', 'other'),
-    ('CbGaDaGeAlD', 'BABA'),  # ABCBDC
-    ('AlDaGiG', 'disjoint'),  # ABCC
-    ('AeGaDaGiG', 'disjoint'),  # ABCB
-    ('CbGaDpCbGaD', 0),  # ABCABC
-    ('DaGiGiGiGiGaD', None),  # ABBBBBA
-    ('CbGaDrDaGbC', 0),  # ABCCBA
-    ('DlAuGcGpBPpGaDlA', 0),  # ABCCDCAB
-    ('CrCbGiGaDrD', 'disjoint'),  # AABBCC
-    ('CbGbCbGbC', 'other')])  # ABABA
-def test_categorize(metapath, solution):
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
-        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
-        'test/data/hetionet-v1.0-metagraph.json',
-    )
-    metagraph = hetio.readwrite.read_metagraph(url)
-    metapath = metagraph.metapath_from_abbrev(metapath)
-    if not solution:
-        err_dict = {
-            0: "Only two overlapping repeats currently supported",
-            None: "Complex metapaths of length > 4 are not yet supported"}
-        with pytest.raises(NotImplementedError) as err:
-            categorize(metapath)
-        assert str(err.value) == err_dict[solution]
-    else:
-        assert categorize(metapath) == solution
-
-
-@pytest.mark.parametrize('metapath,solution', [
-    ('AeGiGaDaG', '[AeG, GiGaDaG]'),  # short_repeat
-    ('AeGiGeAlD', '[AeGiGeA, AlD]'),  # BAABC
-    ('DaGaDaG', '[DaGaDaG]'),  # BABA
-    ('DlAeGaDaG', '[DlAeGaDaG]'),  # BCABA
-    ('GaDlAeGaD', '[GaDlAeGaD]'),  # BACBA
-    ('GiGiG', '[GiGiG]'),  # short_repeat
-    ('GiGiGiG', '[GiGiGiG]'),  # long_repeat
-    ('CrCbGiGiGaDrDlA', '[CrC, CbG, GiGiG, GaD, DrD, DlA]'),
-    ('CrCrCbGiGeAlDrD', '[CrCrC, CbG, GiG, GeAlD, DrD]'),
-    ('SEcCrCrCbGiGeAlDrDpS', '[SEcC, CrCrC, CbG, GiG, GeAlD, DrD, DpS]'),
-    ('SEcCrCrCrC', '[SEcC, CrCrCrC]')
-])
-def test_get_segments(metapath, solution):
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
-        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
-        'test/data/hetionet-v1.0-metagraph.json',
-    )
-    metagraph = hetio.readwrite.read_metagraph(url)
-    metapath = metagraph.metapath_from_abbrev(metapath)
-    output = str(get_segments(metagraph, metapath))
-    assert output == solution
