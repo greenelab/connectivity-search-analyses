@@ -1,3 +1,5 @@
+import collections
+import copy
 import functools
 import operator
 
@@ -29,7 +31,7 @@ def dwpc_no_repeats(graph, metapath, damping=0.5):
     parts = list()
     for metaedge in metapath:
         rows, cols, adj = metaedge_to_adjacency_matrix(
-            graph, metaedge, dtype=numpy.float64, sparse_threshold=0)
+            graph, metaedge, dtype=numpy.float64)
         adj = degree_weight(adj, damping)
 
         if metaedge == metapath[0]:
@@ -79,7 +81,7 @@ def dwpc_short_repeat(graph, metapath, damping=0.5):
 
     for metaedge in metapath[:index_of_repeats[1]]:
         row, col, adj = metaedge_to_adjacency_matrix(
-            graph, metaedge, dtype=numpy.float64, sparse_threshold=0)
+            graph, metaedge, dtype=numpy.float64)
         adj = degree_weight(adj, damping)
         if dwpc_matrix is None:
             row_names = col_names = row
@@ -92,7 +94,7 @@ def dwpc_short_repeat(graph, metapath, damping=0.5):
     if len(index_of_repeats) == 3:
         for metaedge in metapath[index_of_repeats[1]:]:
             row, col, adj = metaedge_to_adjacency_matrix(
-                graph, metaedge, dtype=numpy.float64, sparse_threshold=0)
+                graph, metaedge, dtype=numpy.float64)
             adj = degree_weight(adj, damping)
             if dwpc_tail is None:
                 dwpc_tail = adj
@@ -289,7 +291,7 @@ def dwpc_long_repeat(graph, metapath, damping=0.5):
     metaedge = metaedges.pop().get_abbrev()
 
     row, col, adjacency_matrix = metaedge_to_adjacency_matrix(
-        graph, metaedge, dtype=numpy.float64, sparse_threshold=0)
+        graph, metaedge, dtype=numpy.float64)
     nnode = adjacency_matrix.shape[0]  # number of nodes
 
     # Weight the adjacency matrix
@@ -303,6 +305,81 @@ def dwpc_long_repeat(graph, metapath, damping=0.5):
     full_array = [source_to_destinations(index=i) for i in range(nnode)]
     full_array = numpy.array(full_array, dtype=numpy.float64)
     return row, col, full_array
+
+
+def node_to_children(graph, metapath, node, metapath_index, damping=0,
+                     history=None):
+    metaedge = metapath[metapath_index]
+    metanodes = list(metapath.get_nodes())
+    freq = collections.Counter(metanodes)
+    repeated_nodes = {i for i in freq.keys() if freq[i] > 1}
+
+    if history is None:
+        history = {
+            i.target: numpy.ones(
+                len(metaedge_to_adjacency_matrix(graph, i)[1]
+                    ), dtype=numpy.float64)
+            for i in metapath if i.target in repeated_nodes
+        }
+    history = history.copy()
+    if metaedge.source in history:
+        history[metaedge.source] -= numpy.array(node != 0, dtype=numpy.float64)
+
+    row, col, adj = metaedge_to_adjacency_matrix(graph, metaedge,
+                                                 dtype=numpy.float64)
+    adj = degree_weight(adj, damping)
+    vector = node @ adj
+
+    if metaedge.target in history:
+        vector *= history[metaedge.target]
+
+    children = [i for i in numpy.diag(vector) if i.any()]
+    return {'children': children, 'history': history,
+            'next_index': metapath_index + 1}
+
+
+def dwpc_general_case(graph, metapath, damping=0):
+    dwpc_step = functools.partial(node_to_children, graph=graph,
+                                  metapath=metapath, damping=damping)
+
+    start_nodes, col, adj = metaedge_to_adjacency_matrix(graph, metapath[0])
+    row, fin_nodes, adj = metaedge_to_adjacency_matrix(graph, metapath[-1])
+    number_start = len(start_nodes)
+    number_end = len(fin_nodes)
+
+    dwpc_matrix = []
+    if len(metapath) > 1:
+        for i in range(number_start):
+            search = numpy.zeros(number_start, dtype=numpy.float64)
+            search[i] = 1
+            step1 = [dwpc_step(node=search, metapath_index=0, history=None)]
+            k = 1
+            while k < len(metapath):
+                k += 1
+                step2 = []
+                for group in step1:
+                    for child in group['children']:
+                        hist = copy.deepcopy(group['history'])
+                        out = dwpc_step(node=child,
+                                        metapath_index=group['next_index'],
+                                        history=hist)
+                        if out['children']:
+                            step2.append(out)
+                    step1 = step2
+
+            final_children = [group for group in step2
+                              if group['children'] != []]
+
+            end_nodes = sum(
+                [child for group in final_children
+                 for child in group['children']])
+            if type(end_nodes) not in (list, numpy.ndarray):
+                end_nodes = numpy.zeros(number_end)
+            dwpc_matrix.append(end_nodes)
+    else:
+        dwpc_matrix = degree_weight(adj, damping=damping)
+    dwpc_matrix = numpy.array(dwpc_matrix, dtype=numpy.float64)
+    return start_nodes, fin_nodes, dwpc_matrix
 
 
 def get_segments(metagraph, metapath):
