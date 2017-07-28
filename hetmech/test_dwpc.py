@@ -36,6 +36,6 @@ def test_dwpc_baab(metapath, expected):
 
     expected = numpy.array(expected, dtype=numpy.float64)
 
-    assert pytest.approx(numpy.max(dwpc_matrix - expected) == 0)
+    assert abs(dwpc_matrix - expected).sum() == pytest.approx(0, abs=1e-7)
     assert exp_row == row
     assert exp_col == col

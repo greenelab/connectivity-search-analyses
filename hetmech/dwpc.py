@@ -1,6 +1,7 @@
 import functools
 import operator
 
+import hetio.hetnet
 import numpy
 
 from .matrix import metaedge_to_adjacency_matrix, normalize, copy_array
@@ -49,27 +50,38 @@ def dwpc_baab(graph, metapath, damping=0.5):
     pattern. For example, ABCCBA, ABCDDCBA, etc. all work with this
     function. Random non-repeat inserts are supported. The metapath
     must start and end with a repeated node, though.
+
+    Covers all variants of symmetrically repeated metanodes with
+    support for random non-repeat metanode inserts at any point.
+    Metapath must start and end with a repeated metanode.
+
+
+    Parameters
+    ----------
+    graph : hetio.hetnet.Graph
+    metapath : hetio.hetnet.MetaPath
+    damping : float
+
+    Examples
+    --------
+    Acceptable metapaths forms include the following:
+    B-A-A-B
+    B-C-A-A-B
+    B-C-A-D-A-E-B
+    B-C-D-E-A-F-A-B
     """
     metanodes = list(metapath.get_nodes())
     repeated_nodes = [v for i, v in enumerate(metanodes) if
                       v in metanodes[i + 1:]]
     # Find the indices of the innermost repeat (eg. BACAB -> 1,3)
-    first_inner = list(metanodes).index(repeated_nodes[-1])
-    second_inner = list(metanodes[first_inner + 1:]).index(
-        repeated_nodes[-1]) + first_inner + 1
-
+    first_inner, second_inner = [i for i, metanode in enumerate(metanodes) if
+                                 metanode == repeated_nodes[-1]]
     dwpc_inner = None
 
     # Traverse between and including innermost repeated metanodes
-    for metaedge in metapath[first_inner:second_inner]:
-        row, col, adj = metaedge_to_adjacency_matrix(graph, metaedge,
-                                                     numpy.float64)
-        adj = degree_weight(adj, damping)
-        if dwpc_inner is None:
-            dwpc_inner = adj
-        else:
-            dwpc_inner = dwpc_inner @ adj
-    dwpc_inner = remove_diag(dwpc_inner)
+    inner_metapath = graph.metagraph.get_metapath(
+        metapath[first_inner:second_inner])
+    dwpc_inner = dwpc_short_repeat(graph, inner_metapath, damping=damping)[2]
 
     def next_outer(first_ind, last_ind, inner_array):
         """
