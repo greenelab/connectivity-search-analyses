@@ -31,7 +31,7 @@ def dwpc_no_repeats(graph, metapath, damping=0.5):
     parts = list()
     for metaedge in metapath:
         rows, cols, adj = metaedge_to_adjacency_matrix(
-            graph, metaedge, dtype=numpy.float64)
+            graph, metaedge, dtype=numpy.float64, sparse_threshold=0)
         adj = degree_weight(adj, damping)
 
         if metaedge == metapath[0]:
@@ -81,7 +81,7 @@ def dwpc_short_repeat(graph, metapath, damping=0.5):
 
     for metaedge in metapath[:index_of_repeats[1]]:
         row, col, adj = metaedge_to_adjacency_matrix(
-            graph, metaedge, dtype=numpy.float64)
+            graph, metaedge, dtype=numpy.float64, sparse_threshold=0)
         adj = degree_weight(adj, damping)
         if dwpc_matrix is None:
             row_names = col_names = row
@@ -94,7 +94,7 @@ def dwpc_short_repeat(graph, metapath, damping=0.5):
     if len(index_of_repeats) == 3:
         for metaedge in metapath[index_of_repeats[1]:]:
             row, col, adj = metaedge_to_adjacency_matrix(
-                graph, metaedge, dtype=numpy.float64)
+                graph, metaedge, dtype=numpy.float64, sparse_threshold=0)
             adj = degree_weight(adj, damping)
             if dwpc_tail is None:
                 dwpc_tail = adj
