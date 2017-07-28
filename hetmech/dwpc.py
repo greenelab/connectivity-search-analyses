@@ -213,6 +213,7 @@ def categorize(metapath):
     Parameters
     ----------
     metapath : hetio.hetnet.MetaPath
+
     Returns
     -------
     classification : string
@@ -248,8 +249,9 @@ def categorize(metapath):
     # Handle multiple disjoint repeats, any number, ie. AA,BB,CC,DD,...
     if len(grouped) == len(repeated_nodes):
         # Identify if there is only one metanode
-        if len(set(metanodes)) == 1:
-            if len(metanodes) < 4:
+        if len(set(repeated_nodes)) == 1:
+            freq = collections.Counter(metanodes)
+            if max(freq.values()) < 4:
                 return 'short_repeat'
             else:
                 return 'long_repeat'
@@ -302,7 +304,6 @@ def get_segments(metagraph, metapath):
     'GbCpDaGaD' -> ['GbCpDaGaD']
     'CrCbGiGaDrD' -> ['CrCbG', 'GiGaD', 'DrD']
     """
-
     def add_head_tail(metapath, indices):
         # handle non-duplicated on the front
         if indices[0][0] != 0:
@@ -349,4 +350,30 @@ def get_segments(metagraph, metapath):
 
 def dwpc(graph, metapath, damping=0.5):
     """This function will call get_segments, then the appropriate function"""
-    raise NotImplementedError
+    category_to_function = {'no_repeats': dwpc_no_repeats,
+                            'short_repeat': dwpc_short_repeat,
+                            'long_repeat': dwpc_long_repeat,
+                            'BAAB': dwpc_baab,
+                            'BABA': dwpc_baba}
+
+    category = categorize(metapath)
+    if category in ('long_repeat', 'other', 'BABA'):
+        raise NotImplementedError
+
+    segments = get_segments(graph.metagraph, metapath)
+
+    row_names = None
+
+    dwpc_matrices = []
+    for subpath in segments:
+        print(subpath)
+        subcat = categorize(subpath)
+        row, col, mat = category_to_function[subcat](graph, subpath, damping)
+        dwpc_matrices.append(mat)
+        if row_names is None:
+            row_names = row
+
+    col_names = col
+    dwpc_matrix = functools.reduce(operator.matmul, dwpc_matrices)
+
+    return row_names, col_names, dwpc_matrix
