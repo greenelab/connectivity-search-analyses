@@ -1,7 +1,6 @@
 import functools
 import operator
 
-import hetio.hetnet
 import numpy
 
 from .matrix import metaedge_to_adjacency_matrix, normalize, copy_array
