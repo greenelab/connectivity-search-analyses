@@ -110,8 +110,8 @@ def get_baba_matrices(metapath):
 
 
 @pytest.mark.parametrize('m_path', ('GaDaGaD', 'DaGaDaG', 'DlTlDlT',
-                                    'TlDlTlD', 'GeTeGeT', 'TeGeTeG',
-                                    'GaDlTeGaD', 'GeTlDaGaD', 'GaDaGeTlD'))
+                                    'TlDlTlD', 'GeTeGeT', 'TeGeTeG'))
+                                    # 'GaDlTeGaD', 'GeTlDaGaD', 'GaDaGeTlD'))
 def test_dwpc_baba(m_path):
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
         '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
