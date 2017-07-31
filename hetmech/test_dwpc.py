@@ -90,6 +90,8 @@ def test_categorize(metapath, solution):
     ('AeGiGeAlD', '[AeG, GiG, GeA, AlD]'),  # BAABC
     ('AeGiGaDlA', '[AeG, GiG, GaDlA]'),
     ('DaGaDaG', '[DaG, GaD, DaG]'),  # BABA
+    ('CbGeAlDaGbC', '[CbG, GeAlDaG, GbC]'),
+    # ('SEcCpDaGeAeGaDtC', '[SEcC, CpD, DaG, GeAeG, GaD, DtC]'), # for BAAB PR
     ('DlAeGaDaG', '[DlAeG, GaD, DaG]'),  # BCABA
     ('GaDlAeGaD', '[GaD, DlAeG, GaD]'),  # BACBA
     ('GiGiG', '[GiGiG]'),  # short_repeat
