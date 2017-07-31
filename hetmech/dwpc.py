@@ -334,20 +334,13 @@ def get_segments(metagraph, metapath):
                 inds.append([v[-1], indices[i + 1][0]])
         indices = inds + [indices[-1]]
 
-    elif category == 'BAAB':
-        assert len(repeated_nodes) == 2
-        start_of_baab = min([metanodes.index(i) for i in repeated_nodes])
-        end_of_baab = len(metapath) - min(
-            [list(reversed(metanodes)).index(i) for i in repeated_nodes])
-        indices = [[start_of_baab, end_of_baab]]
-        indices = add_head_tail(metapath, indices)
-
-    elif category == 'BABA':
+    elif category in ('BAAB', 'BABA'):
         assert len(repeated_nodes) == 2
         indices_of_repeats = [i for i, v in enumerate(metanodes)
                               if v in repeated_nodes]
         indices_of_next = indices_of_repeats[1:] + [len(metanodes) + 1]
         indices = [i for i in zip(indices_of_repeats, indices_of_next)]
+        indices = add_head_tail(metapath, indices)
 
     segments = [metapath[i[0]:i[1]] for i in indices]
     segments = [i for i in segments if i]

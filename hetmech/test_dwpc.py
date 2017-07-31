@@ -87,7 +87,7 @@ def test_categorize(metapath, solution):
 
 @pytest.mark.parametrize('metapath,solution', [
     ('AeGiGaDaG', '[AeG, GiGaDaG]'),  # short_repeat
-    ('AeGiGeAlD', '[AeGiGeA, AlD]'),  # BAABC
+    ('AeGiGeAlD', '[AeG, GiG, GeA, AlD]'),  # BAABC
     ('DaGaDaG', '[DaG, GaD, DaG]'),  # BABA
     ('DlAeGaDaG', '[DlAeG, GaD, DaG]'),  # BCABA
     ('GaDlAeGaD', '[GaD, DlAeG, GaD]'),  # BACBA
