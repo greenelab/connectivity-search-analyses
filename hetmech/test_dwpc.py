@@ -51,7 +51,7 @@ def test_dwpc_baab(metapath, expected):
     ('GcGiGaDrDrD', 'disjoint'),  # ciDDD
     ('CpDaG', 'no_repeats'),  # ABC
     ('DaGiGaDaG', 'other'),  # ABBAB
-    ('DaGiGbC', 'disjoint'),  # ABBC
+    ('DaGiGbC', 'short_repeat'),  # ABBC
     ('DaGiGaD', 'BAAB'),  # ABBA
     ('GeAlDlAeG', 'BAAB'),  # ABCBA
     ('CbGaDrDaGeA', 'BAAB'),  # ABCCBD
@@ -59,8 +59,8 @@ def test_dwpc_baab(metapath, expected):
     ('CrCbGbCbG', 'other'),  # BBABA
     ('CbGiGbCrC', 'other'),
     ('CbGaDaGeAlD', 'BABA'),  # ABCBDC
-    ('AlDaGiG', 'disjoint'),  # ABCC
-    ('AeGaDaGiG', 'disjoint'),  # ABCB
+    ('AlDaGiG', 'short_repeat'),  # ABCC
+    ('AeGaDaGiG', 'short_repeat'),  # ABCB
     ('CbGaDpCbGaD', 0),  # ABCABC
     ('DaGiGiGiGiGaD', None),  # ABBBBBA
     ('CbGaDrDaGbC', 0),  # ABCCBA
