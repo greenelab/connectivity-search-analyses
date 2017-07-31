@@ -153,19 +153,21 @@ def dwpc_baba(graph, metapath, damping=0.5):
     assert len(set(metapath.get_nodes())) == 2
     assert metapath[0] == metapath[1].inverse
     assert metapath[1] == metapath[2].inverse
+    # UAXBYAZBV
+    seg = get_segments(graph.metagraph, metapath)
 
-    row_names, col, adj = metaedge_to_adjacency_matrix(graph, metapath[0])
-    row, col_names, mat = metaedge_to_adjacency_matrix(graph, metapath[-1])
+    row_names, col, ua = dwpc_no_repeats(graph, seg[0], damping=damping)
+    row, col, axb = dwpc_no_repeats(graph, seg[1], damping=damping)
+    row, col, bya = dwpc_no_repeats(graph, seg[2], damping=damping)
+    row, col, azb = dwpc_no_repeats(graph, seg[3], damping=damping)
+    row, col_names, bv = dwpc_no_repeats(graph, seg[4], damping=damping)
 
-    dwpc_matrix = degree_weight(adj, damping=damping)
+    correction_a = numpy.diag((axb@bya).diagonal())@azb
+    correction_b = axb@numpy.diag((bya@azb).diagonal())
+    correction_c = axb*byz.T*azb
 
-    correction_a = numpy.diag(
-        (dwpc_matrix@dwpc_matrix.T).diagonal())@dwpc_matrix
-    correction_b = dwpc_matrix@numpy.diag(
-        (dwpc_matrix.T@dwpc_matrix).diagonal())
-    correction_c = dwpc_matrix**3
-    dwpc_matrix = dwpc_matrix@dwpc_matrix.T@dwpc_matrix - correction_a - \
-        correction_b + correction_c
+    dwpc_matrix = ua@(axb@bya@abz - correction_a - correction_b
+                      + correction_c)@bv
 
     return row_names, col_names, dwpc_matrix
 
