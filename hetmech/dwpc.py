@@ -1,4 +1,7 @@
+import collections
 import functools
+import itertools
+import logging
 import operator
 
 import numpy
@@ -146,11 +149,23 @@ def dwpc_baab(graph, metapath, damping=0.5):
 def dwpc_baba(graph, metapath, damping=0.5):
     """
     Computes the degree-weighted path count for overlapping metanode
-    repeats of the form B-A-B-A. Note that this does NOT yet support
-    B-A-C-B-A, or any sort of metapath wherein there are metanodes
-    within the overlapping region. This is the biggest priority to add.
+    repeats of the form B-A-B-A. Supports random inserts.
+    Segment must start with B and end with A. AXBYAZB
     """
-    raise NotImplementedError("See PR #61")
+    seg = get_segments(graph.metagraph, metapath)
+
+    row_names, col, axb = dwpc_no_repeats(graph, seg[0], damping=damping)
+    row, col, bya = dwpc_no_repeats(graph, seg[1], damping=damping)
+    row, col_names, azb = dwpc_no_repeats(graph, seg[2], damping=damping)
+
+    correction_a = numpy.diag((axb@bya).diagonal())@azb
+    correction_b = axb@numpy.diag((bya@azb).diagonal())
+    correction_c = axb*bya.T*azb
+
+    dwpc_matrix = (axb@bya@azb - correction_a - correction_b
+                   + correction_c)
+
+    return row_names, col_names, dwpc_matrix
 
 
 def dwpc_short_repeat(graph, metapath, damping=0.5):
@@ -204,15 +219,182 @@ def dwpc_long_repeat(graph, metapath, damping=0.5):
     raise NotImplementedError("See PR #59")
 
 
+def categorize(metapath):
+    """
+    Returns the classification of a given metapath as one of
+    a set of metapath types which we approach differently.
+    Parameters
+    ----------
+    metapath : hetio.hetnet.MetaPath
+
+    Returns
+    -------
+    classification : string
+        One of ['no_repeats', 'disjoint', 'short_repeat',
+                'long_repeat', 'BAAB', 'BABA', 'other']
+    Examples
+    --------
+    GbCtDlA -> 'no_repeats'
+    GiGiG   -> 'short_repeat'
+    GiGiGcG -> 'long_repeat'
+    GiGcGiG -> 'long_repeat'
+    GiGbCrC -> 'disjoint'
+    GbCbGbC -> 'BABA'
+    GbCrCbG -> 'BAAB'
+    DaGiGbCrC -> 'disjoint'
+    GiGaDpCrC -> 'disjoint'
+    GiGbCrCpDrD -> 'disjoint'
+    GbCpDaGbCpD -> 'other'
+    GbCrCrCrCrCbG -> 'other'
+    """
+    metanodes = list(metapath.get_nodes())
+    freq = collections.Counter(metanodes)
+    repeated = {metanode for metanode, count in freq.items() if count > 1}
+
+    if not repeated:
+        return 'no_repeats'
+
+    repeats_only = [node for node in metanodes if node in repeated]
+
+
+    # Group neighbors if they are the same
+    grouped = [list(v) for k, v in itertools.groupby(repeats_only)]
+
+    # Handle multiple disjoint repeats, any number, ie. AA,BB,CC,DD,...
+    if len(grouped) == len(repeated):
+        # Identify if there is only one metanode
+        if len(repeated) == 1:
+            if max(freq.values()) < 4:
+                return 'short_repeat'
+            else:
+                return 'long_repeat'
+
+        return 'disjoint'
+
+    assert len(repeats_only) > 3
+
+    # Categorize the reformatted metapath
+    if len(repeats_only) == 4:
+        if repeats_only[0] == repeats_only[-1]:
+            assert repeats_only[1] == repeats_only[2]
+            return 'BAAB'
+        else:
+            assert repeats_only[0] == repeats_only[2] and \
+                   repeats_only[1] == repeats_only[3]
+            return 'BABA'
+    elif len(repeats_only) == 5 and max(map(len, grouped)) == 3:
+        if repeats_only[0] == repeats_only[-1]:
+            return 'BAAB'
+    else:
+        # Multi-repeats that aren't disjoint, eg. ABCBAC
+        if len(repeated) > 2:
+            logging.info(
+                f"{metapath}: Only two overlapping repeats currently supported"
+            )
+            return 'other'
+
+        if len(metanodes) > 4:
+            logging.info(
+                f"{metapath}: Complex metapaths of length > 4 are not yet "
+                f"supported")
+            return 'other'
+        assert False
+
+
 def get_segments(metagraph, metapath):
-    """Should categorize things into more than just the five categories
-    in PR # 60. We want to segment the metapath into long-repeats, short-
-    repeats, BABA, (which can not at the moment include other intermediates),
-    BAAB (which can have intermediates as long as the whole thing is
-    symmetrical), and other, non-segment-able regions."""
-    raise NotImplementedError("Will integrate PR #60")
+    """
+    Split a metapath into segments of recognized groups and non-repeated
+    nodes. Groups include BAAB, BABA, disjoint short- and long-repeats.
+    Returns an error for categorization 'other'.
+
+    Parameters
+    ----------
+    metagraph : hetio.hetnet.MetaGraph
+    metapath : hetio.hetnet.Metapath
+
+    Returns
+    -------
+    list
+        list of metapaths. If the metapath is not segmentable or is already
+        fully simplified (eg. GaDaGaD), then the list will have only one
+        element.
+
+    Examples
+    --------
+    'CbGaDaGaD' -> ['CbG', 'GaDaGaD']
+    'GbCpDaGaD' -> ['GbCpDaGaD']
+    'CrCbGiGaDrD' -> ['CrCbG', 'GiGaD', 'DrD']
+    """
+    def add_head_tail(metapath, indices):
+        # handle non-duplicated on the front
+        if indices[0][0] != 0:
+            indices = [[0, indices[0][0]]] + indices
+        # handle non-duplicated on the end
+        if indices[-1][-1] != len(metapath):
+            indices = indices + [[indices[-1][-1], len(metapath)]]
+        return indices
+
+    category = categorize(metapath)
+    metanodes = metapath.get_nodes()
+    freq = collections.Counter(metanodes)
+    repeated_nodes = {i for i in freq.keys() if freq[i] > 1}
+
+    if category == 'other':
+        raise NotImplementedError("Incompatible metapath")
+
+    elif category in ('disjoint', 'short_repeat', 'long_repeat'):
+        indices = sorted([[metanodes.index(i), len(metapath) - list(
+            reversed(metanodes)).index(i)] for i in repeated_nodes])
+        indices = add_head_tail(metapath, indices)
+        # handle middle cases with non-repeated nodes between disjoint regions
+        # Eg. [[0,2], [3,4]] -> [[0,2],[2,3],[3,4]]
+        inds = []
+        for i, v in enumerate(indices[:-1]):
+            inds.append(v)
+            if v[-1] != indices[i + 1][0]:
+                inds.append([v[-1], indices[i + 1][0]])
+        indices = inds + [indices[-1]]
+
+    elif category in ('BAAB', 'BABA'):
+        assert len(repeated_nodes) == 2
+        indices_of_repeats = [i for i, v in enumerate(metanodes)
+                              if v in repeated_nodes]
+        indices_of_next = indices_of_repeats[1:] + [len(metanodes) + 1]
+        indices = [i for i in zip(indices_of_repeats, indices_of_next)]
+        indices = add_head_tail(metapath, indices)
+
+    segments = [metapath[i[0]:i[1]] for i in indices]
+    segments = [i for i in segments if i]
+    segments = [metagraph.get_metapath(metaedges) for metaedges in segments]
+    return segments
 
 
 def dwpc(graph, metapath, damping=0.5):
     """This function will call get_segments, then the appropriate function"""
-    raise NotImplementedError
+    category_to_function = {'no_repeats': dwpc_no_repeats,
+                            'short_repeat': dwpc_short_repeat,
+                            'long_repeat': dwpc_long_repeat,
+                            'BAAB': dwpc_baab,
+                            'BABA': dwpc_baba}
+
+    category = categorize(metapath)
+    if category in ('long_repeat', 'other', 'BABA'):
+        raise NotImplementedError
+
+    segments = get_segments(graph.metagraph, metapath)
+
+    row_names = None
+
+    dwpc_matrices = []
+    for subpath in segments:
+        print(subpath)
+        subcat = categorize(subpath)
+        row, col, mat = category_to_function[subcat](graph, subpath, damping)
+        dwpc_matrices.append(mat)
+        if row_names is None:
+            row_names = row
+
+    col_names = col
+    dwpc_matrix = functools.reduce(operator.matmul, dwpc_matrices)
+
+    return row_names, col_names, dwpc_matrix
