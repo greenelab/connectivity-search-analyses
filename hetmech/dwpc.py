@@ -232,26 +232,25 @@ def categorize(metapath):
     DaGiGbCrC -> 'disjoint'
     GiGaDpCrC -> 'disjoint'
     GiGbCrCpDrD -> 'disjoint'
-    GbCpDaGbCpD -> NotImplementedError
-    GbCrCrCrCrCbG -> NotImplementedError
+    GbCpDaGbCpD -> 'other'
+    GbCrCrCrCrCbG -> 'other'
     """
     metanodes = list(metapath.get_nodes())
-    repeated_nodes = {v for i, v in enumerate(metanodes) if
-                      v in metanodes[i + 1:]}
     freq = collections.Counter(metanodes)
+    repeated = {metanode for metanode, count in freq.items() if count > 1}
 
-    if not repeated_nodes:
+    if not repeated:
         return 'no_repeats'
 
-    repeats_only = [node for node in metanodes if node in repeated_nodes]
+    repeats_only = [node for node in metanodes if node in repeated]
 
     # Group neighbors if they are the same
     grouped = [list(v) for k, v in itertools.groupby(repeats_only)]
 
     # Handle multiple disjoint repeats, any number, ie. AA,BB,CC,DD,...
-    if len(grouped) == len(repeated_nodes):
+    if len(grouped) == len(repeated):
         # Identify if there is only one metanode
-        if len(set(repeated_nodes)) == 1:
+        if len(repeated) == 1:
             if max(freq.values()) < 4:
                 return 'short_repeat'
             else:
@@ -259,23 +258,28 @@ def categorize(metapath):
 
         return 'disjoint'
 
+    assert len(repeats_only) > 3
+
     # Categorize the reformatted metapath
-    if len(repeats_only) in (3, 4):
+    if len(repeats_only) == 4:
         if repeats_only[0] == repeats_only[-1]:
+            assert repeats_only[1] == repeats_only[2]
             return 'BAAB'
         else:
+            assert repeats_only[0] == repeats_only[2] and \
+                   repeats_only[1] == repeats_only[3]
             return 'BABA'
-    elif len(repeats_only) == 5 and max([len(i) for i in grouped]) == 3:
+    elif len(repeats_only) == 5 and max(map(len, grouped)) == 3:
         if repeats_only[0] == repeats_only[-1]:
             return 'BAAB'
     else:
         # Multi-repeats that aren't disjoint, eg. ABCBAC
-        if len(repeated_nodes) > 2:
+        if len(repeated) > 2:
             logging.info(
                 f"{metapath}: Only two overlapping repeats currently supported"
             )
 
-        if len(metanodes) > 5:
+        if len(metanodes) > 4:
             logging.info(
                 f"{metapath}: Complex metapaths of length > 4 are not yet "
                 f"supported")
