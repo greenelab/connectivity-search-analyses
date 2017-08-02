@@ -159,12 +159,108 @@ def dwpc_short_repeat(graph, metapath, damping=0.5):
     return row_names, col_names, dwpc_matrix
 
 
-def dwpc_long_repeat(graph, metapath, damping=0.5):
-    """One metanode repeated 4 or more times. Considerably slower than
-    dwpc_short_repeat, so should only be used if necessary. This
-    function uses history vectors that split the computation into more
-    tasks."""
-    raise NotImplementedError("See PR #59")
+def node_to_children(graph, metapath, node, metapath_index, damping=0,
+                     history=None):
+    """
+    Returns a history adjusted list of child nodes.
+
+    Parameters
+    ----------
+    graph : hetio.hetnet.Graph
+    metapath : hetio.hetnet.MetaPath
+    node : numpy.ndarray
+    metapath_index : int
+    damping : float
+    history : numpy.ndarray
+
+    Returns
+    -------
+    dict
+        List of child nodes and a single numpy.ndarray of the newly
+        updated history vector.
+    """
+    metaedge = metapath[metapath_index]
+    metanodes = list(metapath.get_nodes())
+    freq = collections.Counter(metanodes)
+    repeated_nodes = {i for i in freq.keys() if freq[i] > 1}
+
+    if history is None:
+        history = {
+            i.target: numpy.ones(
+                len(metaedge_to_adjacency_matrix(graph, i)[1]
+                    ), dtype=numpy.float64)
+            for i in metapath if i.target in repeated_nodes
+        }
+    history = history.copy()
+    if metaedge.source in history:
+        history[metaedge.source] -= numpy.array(node != 0, dtype=numpy.float64)
+
+    row, col, adj = metaedge_to_adjacency_matrix(graph, metaedge,
+                                                 dtype=numpy.float64)
+    adj = degree_weight(adj, damping)
+    vector = node @ adj
+
+    if metaedge.target in history:
+        vector *= history[metaedge.target]
+
+    children = [i for i in numpy.diag(vector) if i.any()]
+    return {'children': children, 'history': history,
+            'next_index': metapath_index + 1}
+
+
+def dwpc_general_case(graph, metapath, damping=0):
+    """
+    A slow but general function to compute the degree-weighted
+    path count. Works by splitting the metapath at junctions
+    where one node is joined to multiple nodes over a metaedge.
+
+    Parameters
+    ----------
+    graph : hetio.hetnet.Graph
+    metapath : hetio.hetnet.MetaPath
+    damping : float
+    """
+    dwpc_step = functools.partial(node_to_children, graph=graph,
+                                  metapath=metapath, damping=damping)
+
+    start_nodes, col, adj = metaedge_to_adjacency_matrix(graph, metapath[0])
+    row, fin_nodes, adj = metaedge_to_adjacency_matrix(graph, metapath[-1])
+    number_start = len(start_nodes)
+    number_end = len(fin_nodes)
+
+    dwpc_matrix = []
+    if len(metapath) > 1:
+        for i in range(number_start):
+            search = numpy.zeros(number_start, dtype=numpy.float64)
+            search[i] = 1
+            step1 = [dwpc_step(node=search, metapath_index=0, history=None)]
+            k = 1
+            while k < len(metapath):
+                k += 1
+                step2 = []
+                for group in step1:
+                    for child in group['children']:
+                        hist = copy.deepcopy(group['history'])
+                        out = dwpc_step(node=child,
+                                        metapath_index=group['next_index'],
+                                        history=hist)
+                        if out['children']:
+                            step2.append(out)
+                    step1 = step2
+
+            final_children = [group for group in step2
+                              if group['children'] != []]
+
+            end_nodes = sum(
+                [child for group in final_children
+                 for child in group['children']])
+            if type(end_nodes) not in (list, numpy.ndarray):
+                end_nodes = numpy.zeros(number_end)
+            dwpc_matrix.append(end_nodes)
+    else:
+        dwpc_matrix = degree_weight(adj, damping=damping)
+    dwpc_matrix = numpy.array(dwpc_matrix, dtype=numpy.float64)
+    return start_nodes, fin_nodes, dwpc_matrix
 
 
 def categorize(metapath):
