@@ -1,4 +1,5 @@
 import collections
+import copy
 import functools
 import itertools
 import logging
@@ -328,6 +329,10 @@ def categorize(metapath):
     elif len(repeats_only) == 5 and max(map(len, grouped)) == 3:
         if repeats_only[0] == repeats_only[-1]:
             return 'BAAB'
+    elif repeats_only == list(reversed(repeats_only)) and \
+            not len(repeats_only) % 2:
+        return 'BAAB'
+
     else:
         # Multi-repeats that aren't disjoint, eg. ABCBAC
         if len(repeated) > 2:
@@ -399,7 +404,6 @@ def get_segments(metagraph, metapath):
         indices = inds + [indices[-1]]
 
     elif category in ('BAAB', 'BABA'):
-        assert len(repeated_nodes) == 2
         indices_of_repeats = [i for i, v in enumerate(metanodes)
                               if v in repeated_nodes]
         indices_of_next = indices_of_repeats[1:] + [len(metanodes) + 1]

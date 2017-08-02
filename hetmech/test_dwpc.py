@@ -2,7 +2,8 @@ import hetio.readwrite
 import numpy
 import pytest
 
-from .dwpc import dwpc_baab, dwpc_baba, categorize, get_segments
+from .dwpc import dwpc_baab, dwpc_baba, categorize, get_segments, \
+    dwpc_general_case
 
 
 @pytest.mark.parametrize('metapath,expected', [
@@ -209,9 +210,10 @@ def test_dwpc_general_case(length):
     ('AeGaDaGiG', 'short_repeat'),  # ABCB
     ('CbGaDpCbGaD', 'other'),  # ABCABC
     ('DaGiGiGiGiGaD', 'other'),  # ABBBBBA
-    ('CbGaDrDaGbC', 'other'),  # ABCCBA
+    ('CbGaDrDaGbC', 'BAAB'),  # ABCCBA
     ('DlAuGcGpBPpGaDlA', 'other'),  # ABCCDCAB
     ('CrCbGiGaDrD', 'disjoint'),  # AABBCC
+    ('SEcCpDaGeAeGaDtC', 'BAAB'),
     ('CbGbCbGbC', 'other')])  # ABABA
 def test_categorize(metapath, solution):
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
@@ -220,15 +222,7 @@ def test_categorize(metapath, solution):
     )
     metagraph = hetio.readwrite.read_metagraph(url)
     metapath = metagraph.metapath_from_abbrev(metapath)
-    if not solution:
-        err_dict = {
-            0: "Only two overlapping repeats currently supported",
-            None: "Complex metapaths of length > 4 are not yet supported"}
-        with pytest.raises(NotImplementedError) as err:
-            categorize(metapath)
-        assert str(err.value) == err_dict[solution]
-    else:
-        assert categorize(metapath) == solution
+    assert categorize(metapath) == solution
 
 
 @pytest.mark.parametrize('metapath,solution', [
