@@ -149,11 +149,23 @@ def dwpc_baab(graph, metapath, damping=0.5):
 def dwpc_baba(graph, metapath, damping=0.5):
     """
     Computes the degree-weighted path count for overlapping metanode
-    repeats of the form B-A-B-A. Note that this does NOT yet support
-    B-A-C-B-A, or any sort of metapath wherein there are metanodes
-    within the overlapping region. This is the biggest priority to add.
+    repeats of the form B-A-B-A. Supports random inserts.
+    Segment must start with B and end with A. AXBYAZB
     """
-    raise NotImplementedError("See PR #61")
+    seg = get_segments(graph.metagraph, metapath)
+
+    row_names, col, axb = dwpc_no_repeats(graph, seg[0], damping=damping)
+    row, col, bya = dwpc_no_repeats(graph, seg[1], damping=damping)
+    row, col_names, azb = dwpc_no_repeats(graph, seg[2], damping=damping)
+
+    correction_a = numpy.diag((axb@bya).diagonal())@azb
+    correction_b = axb@numpy.diag((bya@azb).diagonal())
+    correction_c = axb*bya.T*azb
+
+    dwpc_matrix = (axb@bya@azb - correction_a - correction_b
+                   + correction_c)
+
+    return row_names, col_names, dwpc_matrix
 
 
 def dwpc_short_repeat(graph, metapath, damping=0.5):
@@ -244,6 +256,7 @@ def categorize(metapath):
 
     repeats_only = [node for node in metanodes if node in repeated]
 
+
     # Group neighbors if they are the same
     grouped = [list(v) for k, v in itertools.groupby(repeats_only)]
 
@@ -257,6 +270,7 @@ def categorize(metapath):
                 return 'long_repeat'
 
         return 'disjoint'
+
     assert len(repeats_only) > 3
 
     # Categorize the reformatted metapath
@@ -311,7 +325,6 @@ def get_segments(metagraph, metapath):
     'GbCpDaGaD' -> ['GbCpDaGaD']
     'CrCbGiGaDrD' -> ['CrCbG', 'GiGaD', 'DrD']
     """
-
     def add_head_tail(metapath, indices):
         # handle non-duplicated on the front
         if indices[0][0] != 0:
