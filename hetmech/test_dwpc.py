@@ -58,6 +58,10 @@ def test_dwpc_baab(metapath, expected):
     ('AlDlAlD', 'BABA'),  # ABAB
     ('CrCbGbCbG', 'other'),  # BBABA
     ('CbGiGbCrC', 'other'),
+    ('CbGiGiGbC', 'BAAB'),
+    ('CbGbCbGbC', 'other'),
+    ('CrCbGiGbC', 'other'),
+    ('CrCbGbCbG', 'other'),
     ('CbGaDaGeAlD', 'BABA'),  # ABCBDC
     ('AlDaGiG', 'short_repeat'),  # ABCC
     ('AeGaDaGiG', 'short_repeat'),  # ABCB
