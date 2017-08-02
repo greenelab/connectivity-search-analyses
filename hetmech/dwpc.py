@@ -57,7 +57,6 @@ def dwpc_baab(graph, metapath, damping=0.5):
     support for random non-repeat metanode inserts at any point.
     Metapath must start and end with a repeated metanode.
 
-
     Parameters
     ----------
     graph : hetio.hetnet.Graph
@@ -267,6 +266,7 @@ def categorize(metapath):
     """
     Returns the classification of a given metapath as one of
     a set of metapath types which we approach differently.
+
     Parameters
     ----------
     metapath : hetio.hetnet.MetaPath
