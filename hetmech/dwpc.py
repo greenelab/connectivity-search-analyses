@@ -257,7 +257,6 @@ def categorize(metapath):
                 return 'long_repeat'
 
         return 'disjoint'
-
     assert len(repeats_only) > 3
 
     # Categorize the reformatted metapath
@@ -278,12 +277,14 @@ def categorize(metapath):
             logging.info(
                 f"{metapath}: Only two overlapping repeats currently supported"
             )
+            return 'other'
 
         if len(metanodes) > 4:
             logging.info(
                 f"{metapath}: Complex metapaths of length > 4 are not yet "
                 f"supported")
-        return 'other'
+            return 'other'
+        assert False
 
 
 def get_segments(metagraph, metapath):
