@@ -65,10 +65,10 @@ def test_dwpc_baab(metapath, expected):
     ('CbGaDaGeAlD', 'BABA'),  # ABCBDC
     ('AlDaGiG', 'short_repeat'),  # ABCC
     ('AeGaDaGiG', 'short_repeat'),  # ABCB
-    ('CbGaDpCbGaD', 0),  # ABCABC
-    ('DaGiGiGiGiGaD', None),  # ABBBBBA
-    ('CbGaDrDaGbC', 0),  # ABCCBA
-    ('DlAuGcGpBPpGaDlA', 0),  # ABCCDCAB
+    ('CbGaDpCbGaD', 'other'),  # ABCABC
+    ('DaGiGiGiGiGaD', 'other'),  # ABBBBBA
+    ('CbGaDrDaGbC', 'other'),  # ABCCBA
+    ('DlAuGcGpBPpGaDlA', 'other'),  # ABCCDCAB
     ('CrCbGiGaDrD', 'disjoint'),  # AABBCC
     ('CbGbCbGbC', 'other')])  # ABABA
 def test_categorize(metapath, solution):

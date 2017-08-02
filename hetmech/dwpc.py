@@ -1,6 +1,7 @@
 import collections
 import functools
 import itertools
+import logging
 import operator
 
 import numpy
@@ -264,21 +265,20 @@ def categorize(metapath):
             return 'BAAB'
         else:
             return 'BABA'
-    elif len(repeats_only) == 5:
-        if max([len(i) for i in grouped]) == 3:
-            if repeats_only[0] == repeats_only[-1]:
-                return 'BAAB'
-        else:
-            return 'other'
+    elif len(repeats_only) == 5 and max([len(i) for i in grouped]) == 3:
+        if repeats_only[0] == repeats_only[-1]:
+            return 'BAAB'
     else:
         # Multi-repeats that aren't disjoint, eg. ABCBAC
         if len(repeated_nodes) > 2:
-            raise NotImplementedError(
-                "Only two overlapping repeats currently supported")
+            logging.info(
+                f"{metapath}: Only two overlapping repeats currently supported"
+            )
 
         if len(metanodes) > 5:
-            raise NotImplementedError(
-                "Complex metapaths of length > 4 are not yet supported")
+            logging.info(
+                f"{metapath}: Complex metapaths of length > 4 are not yet "
+                f"supported")
         return 'other'
 
 
@@ -306,6 +306,7 @@ def get_segments(metagraph, metapath):
     'GbCpDaGaD' -> ['GbCpDaGaD']
     'CrCbGiGaDrD' -> ['CrCbG', 'GiGaD', 'DrD']
     """
+
     def add_head_tail(metapath, indices):
         # handle non-duplicated on the front
         if indices[0][0] != 0:
