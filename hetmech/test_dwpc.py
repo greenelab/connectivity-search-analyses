@@ -2,7 +2,7 @@ import hetio.readwrite
 import numpy
 import pytest
 
-from .dwpc import dwpc_baab, categorize, get_segments
+from .dwpc import dwpc_baab, dwpc_baba, categorize, get_segments
 
 
 @pytest.mark.parametrize('metapath,expected', [

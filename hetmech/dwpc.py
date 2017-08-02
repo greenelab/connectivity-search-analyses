@@ -416,7 +416,7 @@ def dwpc(graph, metapath, damping=0.5):
     """This function will call get_segments, then the appropriate function"""
     category_to_function = {'no_repeats': dwpc_no_repeats,
                             'short_repeat': dwpc_short_repeat,
-                            'long_repeat': dwpc_long_repeat,
+                            'long_repeat': dwpc_general_case,
                             'BAAB': dwpc_baab,
                             'BABA': dwpc_baba}
 
