@@ -128,6 +128,7 @@ def test_dwpc_baba(m_path):
     assert col_sol == col
     assert numpy.max(adj_sol - dwpc) == pytest.approx(0, abs=1e-8)
 
+
 @pytest.mark.parametrize('metapath,solution', [
     ('GiG', 'short_repeat'),
     ('GiGiGiG', 'long_repeat'),
@@ -182,7 +183,7 @@ def test_categorize(metapath, solution):
     ('AeGiGaDlA', '[AeG, GiG, GaDlA]'),
     ('DaGaDaG', '[DaG, GaD, DaG]'),  # BABA
     ('CbGeAlDaGbC', '[CbG, GeAlDaG, GbC]'),
-    # ('SEcCpDaGeAeGaDtC', '[SEcC, CpD, DaG, GeAeG, GaD, DtC]'), # for BAAB PR
+    ('SEcCpDaGeAeGaDtC', '[SEcC, CpD, DaG, GeAeG, GaD, DtC]'),
     ('DlAeGaDaG', '[DlAeG, GaD, DaG]'),  # BCABA
     ('GaDlAeGaD', '[GaD, DlAeG, GaD]'),  # BACBA
     ('GiGiG', '[GiGiG]'),  # short_repeat
@@ -201,4 +202,3 @@ def test_get_segments(metapath, solution):
     metapath = metagraph.metapath_from_abbrev(metapath)
     output = str(get_segments(metagraph, metapath))
     assert output == solution
-
