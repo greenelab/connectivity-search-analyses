@@ -237,6 +237,7 @@ def categorize(metapath):
     metanodes = list(metapath.get_nodes())
     repeated_nodes = {v for i, v in enumerate(metanodes) if
                       v in metanodes[i + 1:]}
+    freq = collections.Counter(metanodes)
 
     if not repeated_nodes:
         return 'no_repeats'
@@ -250,7 +251,6 @@ def categorize(metapath):
     if len(grouped) == len(repeated_nodes):
         # Identify if there is only one metanode
         if len(set(repeated_nodes)) == 1:
-            freq = collections.Counter(metanodes)
             if max(freq.values()) < 4:
                 return 'short_repeat'
             else:
@@ -258,16 +258,18 @@ def categorize(metapath):
 
         return 'disjoint'
 
-    # Group [A, BB, A] or [A, B, A, B] into one
-    if len(repeats_only) - len(grouped) <= 1:
-        grouped = [repeats_only]
-
     # Categorize the reformatted metapath
-    if len(grouped) == 1 and len(grouped[0]) == 4:
-        if grouped[0][0] == grouped[0][-1]:
+    if len(repeats_only) in (3, 4):
+        if repeats_only[0] == repeats_only[-1]:
             return 'BAAB'
         else:
             return 'BABA'
+    elif len(repeats_only) == 5:
+        if max([len(i) for i in grouped]) == 3:
+            if repeats_only[0] == repeats_only[-1]:
+                return 'BAAB'
+        else:
+            return 'other'
     else:
         # Multi-repeats that aren't disjoint, eg. ABCBAC
         if len(repeated_nodes) > 2:
