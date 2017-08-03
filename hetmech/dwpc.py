@@ -7,7 +7,7 @@ import operator
 
 import numpy
 
-from .matrix import metaedge_to_adjacency_matrix, normalize, copy_array
+from .matrix import copy_array, metaedge_to_adjacency_matrix, normalize
 
 
 def remove_diag(mat):
@@ -182,14 +182,14 @@ def node_to_children(graph, metapath, node, metapath_index, damping=0,
     metaedge = metapath[metapath_index]
     metanodes = list(metapath.get_nodes())
     freq = collections.Counter(metanodes)
-    repeated_nodes = {i for i in freq.keys() if freq[i] > 1}
+    repeated = {i for i in freq.keys() if freq[i] > 1}
 
     if history is None:
         history = {
             i.target: numpy.ones(
                 len(metaedge_to_adjacency_matrix(graph, i)[1]
                     ), dtype=numpy.float64)
-            for i in metapath if i.target in repeated_nodes
+            for i in metapath if i.target in repeated
         }
     history = history.copy()
     if metaedge.source in history:
@@ -329,8 +329,7 @@ def categorize(metapath):
     elif len(repeats_only) == 5 and max(map(len, grouped)) == 3:
         if repeats_only[0] == repeats_only[-1]:
             return 'BAAB'
-    elif repeats_only == list(reversed(repeats_only)) and \
-            not len(repeats_only) % 2:
+    elif repeats_only == list(reversed(repeats_only)):
         return 'BAAB'
 
     else:
@@ -369,30 +368,32 @@ def get_segments(metagraph, metapath):
 
     Examples
     --------
-    'CbGaDaGaD' -> ['CbG', 'GaDaGaD']
-    'GbCpDaGaD' -> ['GbCpDaGaD']
-    'CrCbGiGaDrD' -> ['CrCbG', 'GiGaD', 'DrD']
+    'CbGaDaGaD' -> ['CbG', 'GaD', 'GaG', 'GaD']
+    'GbCpDaGaD' -> ['GbCpD', 'DaG', 'GaD']
+    'CrCbGiGaDrD' -> ['CrC', 'CbG', 'GiG', 'GaD', 'DrD']
     """
     def add_head_tail(metapath, indices):
         # handle non-duplicated on the front
         if indices[0][0] != 0:
-            indices = [[0, indices[0][0]]] + indices
+            indices = [(0, indices[0][0])] + indices
         # handle non-duplicated on the end
         if indices[-1][-1] != len(metapath):
-            indices = indices + [[indices[-1][-1], len(metapath)]]
+            indices = indices + [(indices[-1][-1], len(metapath))]
         return indices
 
     category = categorize(metapath)
     metanodes = metapath.get_nodes()
     freq = collections.Counter(metanodes)
-    repeated_nodes = {i for i in freq.keys() if freq[i] > 1}
+    repeated = {i for i in freq.keys() if freq[i] > 1}
+    repeats_only = [node for node in metanodes if node in repeated]
+    grouped = [list(v) for k, v in itertools.groupby(repeats_only)]
 
     if category == 'other':
         raise NotImplementedError("Incompatible metapath")
 
     elif category in ('disjoint', 'short_repeat', 'long_repeat'):
         indices = sorted([[metanodes.index(i), len(metapath) - list(
-            reversed(metanodes)).index(i)] for i in repeated_nodes])
+            reversed(metanodes)).index(i)] for i in repeated])
         indices = add_head_tail(metapath, indices)
         # handle middle cases with non-repeated nodes between disjoint regions
         # Eg. [[0,2], [3,4]] -> [[0,2],[2,3],[3,4]]
@@ -404,12 +405,40 @@ def get_segments(metagraph, metapath):
         indices = inds + [indices[-1]]
 
     elif category in ('BAAB', 'BABA'):
-        indices_of_repeats = [i for i, v in enumerate(metanodes)
-                              if v in repeated_nodes]
-        indices_of_next = indices_of_repeats[1:] + [len(metanodes) + 1]
-        indices = [i for i in zip(indices_of_repeats, indices_of_next)]
-        indices = add_head_tail(metapath, indices)
+        # Those with longer repeats included
+        if max(map(len, grouped)) > 2:
+            indices = []
+            for rep in repeated:
+                # get indices of that metanode in the metapath
+                inds = [i for i, v in enumerate(metanodes) if v == rep]
+                # three or more repeats
+                if len(inds) > 2:
+                    for i, v in enumerate(inds[1:]):
+                        latest = [inds[0]]
+                        # only get first and last of
+                        if v-1 not in latest:
+                            latest.append(v)
+                    indices.append(tuple(latest))
+                elif len(inds) == 2:
+                    if inds[1] - inds[0] == 1:
+                        indices.append(inds)
+                    else:
+                        if not indices:
+                            indices.append((inds[0], inds[0]+1))
+                            indices.append((inds[1]-1, inds[1]))
+                        else:
+                            indices.append((inds[0], min(map(min, indices))))
+                            indices.append((max(map(max, indices)), inds[1]))
+            print(indices)
+            indices = sorted(indices)
 
+        else:
+            indices_of_repeats = [i for i, v in enumerate(metanodes)
+                                  if v in repeated]
+            indices_of_next = indices_of_repeats[1:] + [len(metanodes) + 1]
+            indices = [i for i in zip(indices_of_repeats, indices_of_next)]
+        indices = add_head_tail(metapath, indices)
+    print(indices)
     segments = [metapath[i[0]:i[1]] for i in indices]
     segments = [i for i in segments if i]
     segments = [metagraph.get_metapath(metaedges) for metaedges in segments]

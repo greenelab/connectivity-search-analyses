@@ -2,8 +2,8 @@ import hetio.readwrite
 import numpy
 import pytest
 
-from .dwpc import dwpc_baab, dwpc_baba, categorize, get_segments, \
-    dwpc_general_case
+from .dwpc import categorize, dwpc_baab, dwpc_baba, dwpc_general_case, \
+    get_segments
 
 
 @pytest.mark.parametrize('metapath,expected', [
@@ -239,7 +239,14 @@ def test_categorize(metapath, solution):
     ('CrCbGiGiGaDrDlA', '[CrC, CbG, GiGiG, GaD, DrD, DlA]'),
     ('CrCrCbGiGeAlDrD', '[CrCrC, CbG, GiG, GeAlD, DrD]'),
     ('SEcCrCrCbGiGeAlDrDpS', '[SEcC, CrCrC, CbG, GiG, GeAlD, DrD, DpS]'),
-    ('SEcCrCrCrC', '[SEcC, CrCrCrC]')
+    ('SEcCrCrCrC', '[SEcC, CrCrCrC]'),
+    ('GiGaDaG', '[GiGaDaG]'),
+    # ('CrCbGiGbC', '[CrC, CbG, GiG, GbC]'),  # BBAAB
+    ('GbCpDrDaG', '[GbCpD, DrD, DaG]'),
+    ('CbGiGiGbC', '[CbG, GiGiG, GbC]'),  # BAAAB
+    ('CbGiGiGiGiGbC', '[CbG, GiGiGiGiG, GbC]'),
+    # ('CbGaDaGiGiGbCrC', '[CbG, GaDaGiGiG, GbC, CrC]'),
+    ('CbGiGiGbCpD', '[CbG, GiGiG, GbC, CpD]')
 ])
 def test_get_segments(metapath, solution):
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
