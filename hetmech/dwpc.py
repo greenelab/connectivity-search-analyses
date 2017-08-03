@@ -387,8 +387,8 @@ def get_segments(metagraph, metapath):
     freq = collections.Counter(metanodes)
     repeated = {i for i in freq.keys() if freq[i] > 1}
 
-    # if category == 'other':
-    #     raise NotImplementedError("Incompatible metapath")
+    if category == 'other':
+        logging.info(f'{metapath}: Incompatible metapath classified "other"')
 
     if category in ('disjoint', 'short_repeat', 'long_repeat'):
         indices = sorted([[metanodes.index(i), len(metapath) - list(
@@ -438,26 +438,30 @@ def dwpc(graph, metapath, damping=0.5):
                             'short_repeat': dwpc_short_repeat,
                             'long_repeat': dwpc_general_case,
                             'BAAB': dwpc_baab,
-                            'BABA': dwpc_baba}
+                            'BABA': dwpc_baba,
+                            'complex': dwpc}
 
     category = categorize(metapath)
-    if category in ('long_repeat', 'other', 'BABA'):
+    if category in ('long_repeat', 'other', 'complex'):
         raise NotImplementedError
+        # segments = get_segments(graph.metagraph, metapath)
+        #
+        # row_names = None
+        #
+        # dwpc_matrices = []
+        # for subpath in segments:
+        #     print(subpath)
+        #     subcat = categorize(subpath)
+        #     row, col, mat = category_to_function[subcat](graph, subpath,
+        #                                                  damping)
+        #     dwpc_matrices.append(mat)
+        #     if row_names is None:
+        #         row_names = row
+        #
+        # col_names = col
+        # dwpc_matrix = functools.reduce(operator.matmul, dwpc_matrices)
 
-    segments = get_segments(graph.metagraph, metapath)
+    row, col, dwpc_matrix = category_to_function[category](graph, metapath,
+                                                           damping)
 
-    row_names = None
-
-    dwpc_matrices = []
-    for subpath in segments:
-        print(subpath)
-        subcat = categorize(subpath)
-        row, col, mat = category_to_function[subcat](graph, subpath, damping)
-        dwpc_matrices.append(mat)
-        if row_names is None:
-            row_names = row
-
-    col_names = col
-    dwpc_matrix = functools.reduce(operator.matmul, dwpc_matrices)
-
-    return row_names, col_names, dwpc_matrix
+    return row, col, dwpc_matrix

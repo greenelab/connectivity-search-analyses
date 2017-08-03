@@ -2,7 +2,7 @@ import hetio.readwrite
 import numpy
 import pytest
 
-from .dwpc import categorize, dwpc_baab, dwpc_baba, dwpc_general_case, \
+from .dwpc import categorize, dwpc, dwpc_baab, dwpc_baba, dwpc_general_case, \
     get_segments
 
 
@@ -247,6 +247,7 @@ def test_categorize(metapath, solution):
     ('CbGiGiGbC', '[CbG, GiGiG, GbC]'),
     ('CbGiGiGiGiGbC', '[CbG, GiGiGiGiG, GbC]'),  # OTHER
     ('CbGaDaGiGiGbCrC', '[CbG, GaDaGiGiG, GbC, CrC]'),  # OTHER
+    ('CbGiGiGiGbCbG', '[CbG, GiGiGiG, GbC, CbG]'),
     ('CbGiGiGbCpD', '[CbG, GiGiG, GbC, CpD]')
 ])
 def test_get_segments(metapath, solution):
@@ -257,5 +258,30 @@ def test_get_segments(metapath, solution):
     metagraph = hetio.readwrite.read_metagraph(url)
     metapath = metagraph.metapath_from_abbrev(metapath)
     output = str(get_segments(metagraph, metapath))
-    print(categorize(metapath))
     assert output == solution
+
+
+@pytest.mark.parametrize('metapath,expected', [
+    ('DaGiGaD', [[0., 0.47855339],
+                 [0.47855339, 0.]]),
+    ('TeGiGeT', [[0, 0],
+                 [0, 0]]),
+    ('DaGiGeTlD', [[0, 0],
+                   [0, 0]]),
+    ('DaGeTeGaD', [[0, 0],
+                   [0, 0]]),
+    ('TlDaGiGeT', [[0., 0.47855339],
+                   [0., 0.]])
+])
+def test_dwpc(metapath, expected):
+    # Check dwpc uses dwpc_baab.
+    expected = numpy.array(expected, dtype=numpy.float64)
+    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
+        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
+        'test/data/disease-gene-example-graph.json',
+    )
+    graph = hetio.readwrite.read_graph(url)
+    metapath = graph.metagraph.metapath_from_abbrev(metapath)
+    row, col, dwpc_matrix = dwpc(graph, metapath, damping=0.5)
+
+    assert (expected - dwpc_matrix).sum() == pytest.approx(0, abs=1e-7)
