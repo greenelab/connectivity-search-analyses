@@ -214,6 +214,7 @@ def test_dwpc_general_case(length):
     ('DlAuGcGpBPpGaDlA', 'other'),  # ABCCDCAB
     ('CrCbGiGaDrD', 'disjoint'),  # AABBCC
     ('SEcCpDaGeAeGaDtC', 'BAAB'),
+    ('CbGiGiGbC', 'BAAB'),
     ('CbGbCbGbC', 'other')])  # ABABA
 def test_categorize(metapath, solution):
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
@@ -241,11 +242,11 @@ def test_categorize(metapath, solution):
     ('SEcCrCrCbGiGeAlDrDpS', '[SEcC, CrCrC, CbG, GiG, GeAlD, DrD, DpS]'),
     ('SEcCrCrCrC', '[SEcC, CrCrCrC]'),
     ('GiGaDaG', '[GiGaDaG]'),
-    # ('CrCbGiGbC', '[CrC, CbG, GiG, GbC]'),  # BBAAB
+    ('CrCbGiGbC', '[CrC, CbG, GiG, GbC]'),  # OTHER
     ('GbCpDrDaG', '[GbCpD, DrD, DaG]'),
-    ('CbGiGiGbC', '[CbG, GiGiG, GbC]'),  # BAAAB
-    ('CbGiGiGiGiGbC', '[CbG, GiGiGiGiG, GbC]'),
-    # ('CbGaDaGiGiGbCrC', '[CbG, GaDaGiGiG, GbC, CrC]'),
+    ('CbGiGiGbC', '[CbG, GiGiG, GbC]'),
+    ('CbGiGiGiGiGbC', '[CbG, GiGiGiGiG, GbC]'),  # OTHER
+    ('CbGaDaGiGiGbCrC', '[CbG, GaDaGiGiG, GbC, CrC]'),  # OTHER
     ('CbGiGiGbCpD', '[CbG, GiGiG, GbC, CpD]')
 ])
 def test_get_segments(metapath, solution):
@@ -256,4 +257,5 @@ def test_get_segments(metapath, solution):
     metagraph = hetio.readwrite.read_metagraph(url)
     metapath = metagraph.metapath_from_abbrev(metapath)
     output = str(get_segments(metagraph, metapath))
+    print(categorize(metapath))
     assert output == solution

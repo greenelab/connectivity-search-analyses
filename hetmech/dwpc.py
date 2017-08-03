@@ -329,7 +329,8 @@ def categorize(metapath):
     elif len(repeats_only) == 5 and max(map(len, grouped)) == 3:
         if repeats_only[0] == repeats_only[-1]:
             return 'BAAB'
-    elif repeats_only == list(reversed(repeats_only)):
+    elif repeats_only == list(reversed(repeats_only)) and \
+            not len(repeats_only) % 2:
         return 'BAAB'
 
     else:
@@ -385,13 +386,11 @@ def get_segments(metagraph, metapath):
     metanodes = metapath.get_nodes()
     freq = collections.Counter(metanodes)
     repeated = {i for i in freq.keys() if freq[i] > 1}
-    repeats_only = [node for node in metanodes if node in repeated]
-    grouped = [list(v) for k, v in itertools.groupby(repeats_only)]
 
-    if category == 'other':
-        raise NotImplementedError("Incompatible metapath")
+    # if category == 'other':
+    #     raise NotImplementedError("Incompatible metapath")
 
-    elif category in ('disjoint', 'short_repeat', 'long_repeat'):
+    if category in ('disjoint', 'short_repeat', 'long_repeat'):
         indices = sorted([[metanodes.index(i), len(metapath) - list(
             reversed(metanodes)).index(i)] for i in repeated])
         indices = add_head_tail(metapath, indices)
@@ -404,41 +403,29 @@ def get_segments(metagraph, metapath):
                 inds.append([v[-1], indices[i + 1][0]])
         indices = inds + [indices[-1]]
 
-    elif category in ('BAAB', 'BABA'):
-        # Those with longer repeats included
-        if max(map(len, grouped)) > 2:
-            indices = []
-            for rep in repeated:
-                # get indices of that metanode in the metapath
-                inds = [i for i, v in enumerate(metanodes) if v == rep]
-                # three or more repeats
-                if len(inds) > 2:
-                    for i, v in enumerate(inds[1:]):
-                        latest = [inds[0]]
-                        # only get first and last of
-                        if v-1 not in latest:
-                            latest.append(v)
-                    indices.append(tuple(latest))
-                elif len(inds) == 2:
-                    if inds[1] - inds[0] == 1:
-                        indices.append(inds)
-                    else:
-                        if not indices:
-                            indices.append((inds[0], inds[0]+1))
-                            indices.append((inds[1]-1, inds[1]))
-                        else:
-                            indices.append((inds[0], min(map(min, indices))))
-                            indices.append((max(map(max, indices)), inds[1]))
-            print(indices)
-            indices = sorted(indices)
-
-        else:
-            indices_of_repeats = [i for i, v in enumerate(metanodes)
-                                  if v in repeated]
-            indices_of_next = indices_of_repeats[1:] + [len(metanodes) + 1]
-            indices = [i for i in zip(indices_of_repeats, indices_of_next)]
+    elif category in ('BAAB', 'BABA', 'other'):
+        nodes = set(metanodes)
+        repeat_indices = (
+            [[i for i, v in enumerate(metanodes)
+              if v == metanode] for metanode in nodes])
+        repeat_indices = [i for i in repeat_indices if len(i) > 1]
+        simple_repeats = [i for group in repeat_indices for i in group]
+        inds = []
+        for i in repeat_indices:
+            if len(i) == 2:
+                inds += i
+            if len(i) > 2:
+                inds.append(i[0])
+                inds.append(i[-1])
+                for j in i[1:-1]:
+                    if (j - 1 in simple_repeats and j + 1 in simple_repeats) \
+                            and not (j - 1 in i and j + 1 in i):
+                        inds.append(j)
+        inds = sorted(inds)
+        seconds = inds[1:] + [inds[-1]]
+        indices = list(zip(inds, seconds))
+        indices = [i for i in indices if len(set(i)) == 2]
         indices = add_head_tail(metapath, indices)
-    print(indices)
     segments = [metapath[i[0]:i[1]] for i in indices]
     segments = [i for i in segments if i]
     segments = [metagraph.get_metapath(metaedges) for metaedges in segments]
