@@ -3,7 +3,7 @@ import numpy
 import pytest
 from scipy import sparse
 
-from .degree_weight import dwwc, dwpc_duplicated_metanode
+from .degree_weight import dwpc_duplicated_metanode, dwwc
 
 
 def test_disease_gene_example_dwwc():

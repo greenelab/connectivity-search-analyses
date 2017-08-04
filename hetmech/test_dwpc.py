@@ -3,7 +3,81 @@ import numpy
 import pytest
 
 from .dwpc import categorize, dwpc, dwpc_baab, dwpc_baba, dwpc_general_case, \
-    get_segments
+    dwpc_no_repeats, dwpc_short_repeat, get_segments
+
+
+def get_nodes(metapath):
+    node_dict = {
+        'G': ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1'],
+        'D': ["Crohn's Disease", 'Multiple Sclerosis'],
+        'T': ['Leukocyte', 'Lung']
+    }
+    exp_row = node_dict[metapath[0]]
+    exp_col = node_dict[metapath[-1]]
+    return exp_row, exp_col
+
+
+@pytest.mark.parametrize('metapath,expected,path_type', [
+    ('DaGeT', [[0.5, 0.5],
+               [0, 0]], 0),
+    ('DlTeG', [[0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0.70710678, 0, 0, 0, 0]], 0),
+    ('GeTlD', [[0, 0],
+               [0, 0],
+               [0, 0.70710678],
+               [0, 0],
+               [0, 0],
+               [0, 0],
+               [0, 0]], 0),
+    ('GaDlT', [[0.5, 0],
+               [0.5, 0],
+               [0, 0],
+               [0.5, 0],
+               [0, 0],
+               [0.35355339, 0],
+               [0, 0]], 0),
+    ('TeGaD', [[0.5, 0],
+               [0.5, 0]], 0),
+    ('TlDaG', [[0.5, 0.5, 0, 0.5, 0, 0.35355339, 0],
+               [0, 0, 0, 0, 0, 0, 0]], 0),
+    ('GiG', [[0., 0., 0.35355339, 0., 0.70710678, 0., 0.],
+             [0., 0., 0.5, 0., 0., 0., 0.],
+             [0.35355339, 0.5, 0., 0.5, 0., 0., 0.5],
+             [0., 0., 0.5, 0., 0., 0., 0.],
+             [0.70710678, 0., 0., 0., 0., 0., 0.],
+             [0., 0., 0., 0., 0., 0., 0.],
+             [0., 0., 0.5, 0., 0., 0., 0.]], 1),
+    ('GaDaG', [[0., 0.25, 0., 0.25, 0., 0.1767767, 0.],
+               [0.25, 0., 0., 0.25, 0., 0.1767767, 0.],
+               [0., 0., 0., 0., 0., 0.35355339, 0.],
+               [0.25, 0.25, 0., 0., 0., 0.1767767, 0.],
+               [0., 0., 0., 0., 0., 0., 0.],
+               [0.1767767, 0.1767767, 0.35355339, 0.1767767, 0., 0., 0.],
+               [0., 0., 0., 0., 0., 0., 0.]], 1),
+    ('GiGiG', [[0, 0.1767767, 0, 0.1767767, 0, 0, 0.1767767],
+               [0.1767767, 0, 0, 0.25, 0, 0, 0.25],
+               [0, 0, 0, 0, 0.25, 0, 0],
+               [0.1767767, 0.25, 0, 0, 0, 0, 0.25],
+               [0, 0, 0.25, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0.1767767, 0.25, 0, 0.25, 0, 0, 0]], 1)
+])
+def test_no_and_short_repeat(metapath, expected, path_type):
+    exp_row, exp_col = get_nodes(metapath)
+    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
+        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
+        'test/data/disease-gene-example-graph.json',
+    )
+    graph = hetio.readwrite.read_graph(url)
+    metapath = graph.metagraph.metapath_from_abbrev(metapath)
+    func_dict = {0: dwpc_no_repeats, 1: dwpc_short_repeat}
+
+    row, col, dwpc_matrix = func_dict[path_type](graph, metapath, damping=0.5)
+
+    expected = numpy.array(expected, dtype=numpy.float64)
+    assert (dwpc_matrix - expected).sum() == pytest.approx(0, abs=1e-7)
+    assert row == exp_row
+    assert col == exp_col
 
 
 @pytest.mark.parametrize('metapath,expected', [
@@ -19,13 +93,7 @@ from .dwpc import categorize, dwpc, dwpc_baab, dwpc_baba, dwpc_general_case, \
                    [0., 0.]])
 ])
 def test_dwpc_baab(metapath, expected):
-    node_dict = {
-        'G': ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1'],
-        'D': ["Crohn's Disease", 'Multiple Sclerosis'],
-        'T': ['Leukocyte', 'Lung']
-    }
-    exp_row = node_dict[metapath[0]]
-    exp_col = node_dict[metapath[-1]]
+    exp_row, exp_col = get_nodes(metapath)
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
         '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
         'test/data/disease-gene-example-graph.json',
