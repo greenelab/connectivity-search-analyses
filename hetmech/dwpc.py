@@ -332,6 +332,15 @@ def categorize(metapath):
     elif repeats_only == list(reversed(repeats_only)) and \
             not len(repeats_only) % 2:
         return 'BAAB'
+    elif len(repeated) == 3:
+        if repeats_only[0] == repeats_only[-1]:
+            return 'repeat_around'
+        # AABCCB
+        elif len(repeats_only) - len(grouped) == 2:
+            return 'other'
+        # most complicated len 6
+        else:
+            return 'other'
 
     else:
         # Multi-repeats that aren't disjoint, eg. ABCBAC
@@ -387,10 +396,16 @@ def get_segments(metagraph, metapath):
     freq = collections.Counter(metanodes)
     repeated = {i for i in freq.keys() if freq[i] > 1}
 
-    if category == 'other':
+    if category == 'no_repeats':
+        return [metapath]
+
+    if category == 'other' and len(repeated) == 3:
+        pass
+
+    elif category == 'other':
         logging.info(f'{metapath}: Incompatible metapath classified "other"')
 
-    if category in ('disjoint', 'short_repeat', 'long_repeat'):
+    elif category in ('disjoint', 'short_repeat', 'long_repeat'):
         indices = sorted([[metanodes.index(i), len(metapath) - list(
             reversed(metanodes)).index(i)] for i in repeated])
         indices = add_head_tail(metapath, indices)
@@ -442,26 +457,18 @@ def dwpc(graph, metapath, damping=0.5):
                             'complex': dwpc}
 
     category = categorize(metapath)
-    if category in ('long_repeat', 'other', 'complex'):
-        raise NotImplementedError
-        # segments = get_segments(graph.metagraph, metapath)
-        #
-        # row_names = None
-        #
-        # dwpc_matrices = []
-        # for subpath in segments:
-        #     print(subpath)
-        #     subcat = categorize(subpath)
-        #     row, col, mat = category_to_function[subcat](graph, subpath,
-        #                                                  damping)
-        #     dwpc_matrices.append(mat)
-        #     if row_names is None:
-        #         row_names = row
-        #
-        # col_names = col
-        # dwpc_matrix = functools.reduce(operator.matmul, dwpc_matrices)
+    segs = get_segments(graph.metagraph, metapath)
 
-    row, col, dwpc_matrix = category_to_function[category](graph, metapath,
-                                                           damping)
+    if category == 'disjoint':
+        dwpc_matrices = [category_to_function[categorize(i)](
+            graph, i, damping=damping)[2] for i in segs]
+        row = metaedge_to_adjacency_matrix(graph, segs[0][0],
+                                           dtype=numpy.float64)[0]
+        col = metaedge_to_adjacency_matrix(graph, segs[-1][-1],
+                                           dtype=numpy.float64)[1]
+        dwpc_matrix = functools.reduce(operator.matmul, dwpc_matrices)
+    else:
+        row, col, dwpc_matrix = category_to_function[category](graph, metapath,
+                                                               damping)
 
     return row, col, dwpc_matrix
