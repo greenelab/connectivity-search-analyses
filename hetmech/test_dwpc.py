@@ -316,7 +316,12 @@ def test_categorize(metapath, solution):
     ('CbGiGiGiGiGbC', '[CbG, GiGiGiGiG, GbC]'),  # OTHER
     ('CbGaDaGiGiGbCrC', '[CbG, GaDaGiGiG, GbC, CrC]'),  # OTHER
     ('CbGiGiGiGbCbG', '[CbG, GiGiGiG, GbC, CbG]'),
-    ('CbGiGiGbCpD', '[CbG, GiGiG, GbC, CpD]')
+    ('CbGiGiGbCpD', '[CbG, GiGiG, GbC, CpD]'),
+    ('CbGaDaGaDpC', '[CbG, GaDaGaD, DpC]'),
+    ('GaDaGaD', '[GaD, DaG, GaD]'),
+    ('CrCbGaDrDaG', '[CrC, CbG, GaDrDaG]'),
+    ('CrCbGaDaGaD', '[CrC, CbG, GaDaGaD]'),
+    ('DlAeGiGaDlA', '[DlA, AeGiGaD, DlA]')
 ])
 def test_get_segments(metapath, solution):
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
@@ -390,45 +395,55 @@ def test_get_segments(metapath, solution):
                  [0, 0.125, 0, 0.125, 0, 0, 0.125],
                  [0, 0, 0, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0.125, 0, 0]]),
-    ('GaDaGaD', [[0.08838835, 0],
+    ('GaDaGaD', [[0.08838835, 0],  # BABA
                  [0.08838835, 0],
                  [0, 0.125],
                  [0.08838835, 0],
                  [0, 0],
                  [0, 0],
                  [0, 0]]),
-    ('DlTlDlT', [[0, 0],
+    ('DlTlDlT', [[0, 0],  # BABA
                  [0, 0]]),
-    ('TlDlTlD', [[0, 0],
+    ('TlDlTlD', [[0, 0],  # BABA
                  [0, 0]]),
-    ('GeTeGeT', [[0, 0],
+    ('GeTeGeT', [[0, 0],  # BABA
                  [0, 0],
                  [0, 0],
                  [0, 0],
                  [0, 0],
                  [0, 0],
                  [0, 0]]),
-    ('GaDlTeGaD', [[0.25, 0.],
+    ('GaDlTeGaD', [[0.25, 0.],  # BA C BA
                    [0.25, 0.],
                    [0., 0.],
                    [0.25, 0.],
                    [0., 0.],
                    [0.1767767, 0.],
                    [0., 0.]]),
-    ('GeTlDaGaD', [[0., 0.],
+    ('GeTlDaGaD', [[0., 0.],  # B C ABA
                    [0., 0.],
                    [0.125, 0.],
                    [0., 0.],
                    [0., 0.],
                    [0., 0.],
                    [0., 0.]]),
-    ('GaDaGeTlD', [[0., 0.],
+    ('GaDaGeTlD', [[0., 0.],  # BAB C A
                    [0., 0.],
                    [0., 0.],
                    [0., 0.],
                    [0., 0.],
                    [0., 0.25],
-                   [0., 0.]])
+                   [0., 0.]]),
+    ('TlDaGaDaGeT', [[0, 0.0883883476],  # C BABA C
+                     [0, 0]]),
+    ('TlDaGiGaDlT', [[0, 0],  # C BAAB C
+                     [0, 0]]),
+    ('TeGiGaDlTlD', [[0, 0],
+                     [0, 0]]),
+    ('TeGiGaD', [[0., 0.47855339],
+                 [0., 0.47855339]]),
+    ('TeGaDaG', [[0., 0., 0., 0., 0., 0.25, 0.],
+                 [0., 0., 0., 0., 0., 0.25, 0.]])
 ])
 def test_dwpc(metapath, expected):
     # Check dwpc uses dwpc_baab.

@@ -101,11 +101,9 @@ def dwpc_baba(graph, metapath, damping=0.5):
     Segment must start with B and end with A. AXBYAZB
     """
     seg = get_segments(graph.metagraph, metapath)
-
-    row_names, col, axb = dwpc_no_repeats(graph, seg[0], damping=damping)
-    row, col, bya = dwpc_no_repeats(graph, seg[1], damping=damping)
-    row, col_names, azb = dwpc_no_repeats(graph, seg[2], damping=damping)
-
+    row_names, col, axb = dwpc(graph, seg[0], damping=damping)
+    row, col, bya = dwpc(graph, seg[1], damping=damping)
+    row, col_names, azb = dwpc(graph, seg[2], damping=damping)
     correction_a = numpy.diag((axb@bya).diagonal())@azb
     correction_b = axb@numpy.diag((bya@azb).diagonal())
     correction_c = axb*bya.T*azb
@@ -332,12 +330,17 @@ def categorize(metapath):
     elif repeats_only == list(reversed(repeats_only)) and \
             not len(repeats_only) % 2:
         return 'BAAB'
-    elif len(repeated) == 3:
+    # 6 node paths with 3x2 repeats
+    elif len(repeated) == 3 and len(metapath) == 5:
         if repeats_only[0] == repeats_only[-1]:
             return 'repeat_around'
-        # AABCCB
-        elif len(repeats_only) - len(grouped) == 2:
-            return 'other'
+        # AABCCB or AABCBC
+        elif len(grouped[0]) == 2 or len(grouped[-1]) == 2:
+            return 'disjoint_groups'
+        # ABA CC B
+        elif len(repeats_only) - len(grouped) == 1:
+            return 'interior_complete_group'
+
         # most complicated len 6
         else:
             return 'other'
@@ -399,11 +402,15 @@ def get_segments(metagraph, metapath):
     if category == 'no_repeats':
         return [metapath]
 
-    if category == 'other' and len(repeated) == 3:
-        pass
+    elif category == 'repeat_around':
+        indices = [[0, 1], [1, 4], [4, 5]]
 
-    elif category == 'other':
-        logging.info(f'{metapath}: Incompatible metapath classified "other"')
+    elif category == 'disjoint_groups':
+        # CCBABA or CCBAAB or BABACC or BAABCC -> [CC, BABA], etc.
+        metanodes = list(metapath.get_nodes())
+        grouped = [list(v) for k, v in itertools.groupby(metanodes)]
+        indices = [[0, 1], [1, 2], [2, 5]] if len(grouped[0]) == 2 else [
+            [0, 3], [3, 4], [4, 5]]
 
     elif category in ('disjoint', 'short_repeat', 'long_repeat'):
         indices = sorted([[metanodes.index(i), len(metapath) - list(
@@ -418,7 +425,7 @@ def get_segments(metagraph, metapath):
                 inds.append([v[-1], indices[i + 1][0]])
         indices = inds + [indices[-1]]
 
-    elif category in ('BAAB', 'BABA', 'other'):
+    elif category in ('BAAB', 'BABA', 'other', 'interior_complete_group'):
         nodes = set(metanodes)
         repeat_indices = (
             [[i for i, v in enumerate(metanodes)
@@ -441,9 +448,26 @@ def get_segments(metagraph, metapath):
         indices = list(zip(inds, seconds))
         indices = [i for i in indices if len(set(i)) == 2]
         indices = add_head_tail(metapath, indices)
+
     segments = [metapath[i[0]:i[1]] for i in indices]
     segments = [i for i in segments if i]
     segments = [metagraph.get_metapath(metaedges) for metaedges in segments]
+    # eg: B CC ABA
+    # Fix the BABA case so that interior non-overlap repeats work. See eg.
+    if category == 'interior_complete_group':
+        segs = []
+        for i, v in enumerate(segments[:-1]):
+            if segments[i+1].source() == segments[i+1].target():
+                edges = v.edges + segments[i+1].edges + segments[i+2].edges
+                segs.append(metagraph.get_metapath(edges))
+            elif v.source() == v.target():
+                pass
+            elif segments[i-1].source() == segments[i-1].target():
+                pass
+            else:
+                segs.append(v)
+        segs.append(segments[-1])
+        segments = segs
     return segments
 
 
@@ -454,11 +478,11 @@ def dwpc(graph, metapath, damping=0.5):
                             'long_repeat': dwpc_general_case,
                             'BAAB': dwpc_baab,
                             'BABA': dwpc_baba,
-                            'complex': dwpc}
+                            'complex': dwpc,
+                            'interior_complete_group': dwpc_baba}
 
     category = categorize(metapath)
     segs = get_segments(graph.metagraph, metapath)
-
     if category == 'disjoint':
         dwpc_matrices = [category_to_function[categorize(i)](
             graph, i, damping=damping)[2] for i in segs]
@@ -467,6 +491,23 @@ def dwpc(graph, metapath, damping=0.5):
         col = metaedge_to_adjacency_matrix(graph, segs[-1][-1],
                                            dtype=numpy.float64)[1]
         dwpc_matrix = functools.reduce(operator.matmul, dwpc_matrices)
+    elif category == 'repeat_around':
+        mid = dwpc(graph, segs[1], damping=damping)[2]
+        row, c, adj0 = dwpc_no_repeats(graph, segs[0], damping=damping)
+        r, col, adj1 = dwpc_no_repeats(graph, segs[-1], damping=damping)
+        dwpc_matrix = remove_diag(adj0@mid@adj1)
+    elif category == 'short_repeat' and len(segs) != 1:
+        dwpc_matrix = None
+        for i in segs:
+            if len(i) == 1:
+                row_names, col, mat = dwpc_no_repeats(graph, i, damping)
+            else:
+                row_names, col, mat = dwpc_short_repeat(graph, i, damping)
+            if dwpc_matrix is None:
+                row = row_names
+                dwpc_matrix = mat
+            else:
+                dwpc_matrix = dwpc_matrix @ mat
     else:
         row, col, dwpc_matrix = category_to_function[category](graph, metapath,
                                                                damping)
