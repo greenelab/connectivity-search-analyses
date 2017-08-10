@@ -274,7 +274,8 @@ def categorize(metapath):
     -------
     classification : string
         One of ['no_repeats', 'disjoint', 'short_repeat',
-                'long_repeat', 'BAAB', 'BABA', 'other']
+                'long_repeat', 'BAAB', 'BABA', 'repeat_around',
+                 'interior_complete_group', 'disjoint_groups', 'other']
     Examples
     --------
     GbCtDlA -> 'no_repeats'
