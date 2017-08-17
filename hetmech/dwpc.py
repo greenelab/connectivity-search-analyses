@@ -123,8 +123,9 @@ def dwpc_baba(graph, metapath, damping=0.5, sparse_threshold=0):
     Segment must start with B and end with A. AXBYAZB
     """
     seg = get_segments(graph.metagraph, metapath)
+    seg_axb = None
     for i, s in enumerate(seg[:-2]):
-        if s.source() == seg[i+2].source():
+        if s.source() == seg[i+2].source() and not seg_axb:
             seg_axb = s
             seg_bya = seg[i+1]
             seg_azb = seg[i+2]
@@ -139,7 +140,9 @@ def dwpc_baba(graph, metapath, damping=0.5, sparse_threshold=0):
                                   sparse_threshold=sparse_threshold)
 
     correction_a = numpy.diag((axb@bya).diagonal())@azb
-    correction_b = axb@numpy.diag((bya@azb).diagonal())
+    correction_b = axb@numpy.diag((bya@azb).diagonal()) if \
+        not sparse.issparse(bya) else \
+        axb@sparse.dia_matrix((bya@azb).diagonal())
     correction_c = axb*bya.T*azb if not sparse.issparse(bya) else \
         (axb.multiply(bya.T)).multiply(azb)
 
