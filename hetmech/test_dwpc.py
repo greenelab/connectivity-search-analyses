@@ -90,7 +90,9 @@ def test_no_and_short_repeat(metapath, expected, path_type):
     ('DaGeTeGaD', [[0, 0],
                    [0, 0]]),
     ('TlDaGiGeT', [[0., 0.47855339],
-                   [0., 0.]])
+                   [0., 0.]]),
+    ('DaGiGaDlT', [[0.47855339, 0],
+                   [0, 0]])
 ])
 def test_dwpc_baab(metapath, expected):
     exp_row, exp_col = get_nodes(metapath)
@@ -101,7 +103,8 @@ def test_dwpc_baab(metapath, expected):
     graph = hetio.readwrite.read_graph(url)
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
 
-    row, col, dwpc_matrix = dwpc_baab(graph, metapath, damping=0.5)
+    row, col, dwpc_matrix = dwpc_baab(graph, metapath, damping=0.5,
+                                      sparse_threshold=1)
 
     expected = numpy.array(expected, dtype=numpy.float64)
 
@@ -153,6 +156,13 @@ def get_baba_matrices(metapath):
             [0., 0.],
             [0., 0.],
             [0., 0.25],
+            [0., 0.]],
+        6: [[0., 0.],
+            [0., 0.],
+            [0.125, 0.],
+            [0., 0.],
+            [0., 0.],
+            [0., 0.],
             [0., 0.]]
     }
     mat_dict = {
@@ -167,7 +177,8 @@ def get_baba_matrices(metapath):
         'GeTlDaGaD': (4, 0),
         'DaGaDlTeG': (4, 1),
         'GaDaGeTlD': (5, 0),
-        'DlTeGaDaG': (5, 1)
+        'DlTeGaDaG': (5, 1),
+        'TlDaGaDaG': (6, 1)
     }
     first = node_dict[metapath[0]]
     last = node_dict[metapath[-1]]
@@ -180,7 +191,8 @@ def get_baba_matrices(metapath):
 
 @pytest.mark.parametrize('m_path', ('GaDaGaD', 'DaGaDaG', 'DlTlDlT',
                                     'TlDlTlD', 'GeTeGeT', 'TeGeTeG',
-                                    'GaDlTeGaD', 'GeTlDaGaD', 'GaDaGeTlD'))
+                                    'GaDlTeGaD', 'GeTlDaGaD', 'GaDaGeTlD',
+                                    'TlDaGaDaG'))
 def test_dwpc_baba(m_path):
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
         '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
@@ -191,11 +203,12 @@ def test_dwpc_baba(m_path):
     metapath = metagraph.metapath_from_abbrev(m_path)
 
     row_sol, col_sol, adj_sol = get_baba_matrices(m_path)
-    row, col, dwpc = dwpc_baba(graph, metapath, damping=0.5)
+    row, col, dwpc = dwpc_baba(graph, metapath, damping=0.5,
+                               sparse_threshold=0)
 
     assert row_sol == row
     assert col_sol == col
-    assert numpy.max(adj_sol - dwpc) == pytest.approx(0, abs=1e-8)
+    assert (adj_sol - dwpc).sum() == pytest.approx(0, abs=1e-8)
 
 
 def get_general_solutions(length):
@@ -454,6 +467,6 @@ def test_dwpc(metapath, expected):
     )
     graph = hetio.readwrite.read_graph(url)
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
-    row, col, dwpc_matrix = dwpc(graph, metapath, damping=0.5)
+    row, col, dwpc_matrix, t = dwpc(graph, metapath, damping=0.5)
 
     assert (expected - dwpc_matrix).sum() == pytest.approx(0, abs=1e-7)
