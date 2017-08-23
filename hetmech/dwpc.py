@@ -18,7 +18,7 @@ def remove_diag(mat):
     if mattype == numpy.ndarray:
         mattype = numpy.array
     assert mat.shape[0] == mat.shape[1]  # must be square
-    return mattype(mat - numpy.diag(mat.diagonal()), dtype=numpy.float64)
+    return mat - mattype(numpy.diag(mat.diagonal()), dtype=numpy.float64)
 
 
 def degree_weight(matrix, damping, copy=True):
@@ -84,7 +84,7 @@ def dwpc_baab(graph, metapath, damping=0.5, sparse_threshold=0):
         if s.source() == s.target():
             mid_seg = s
             mid_ind = i
-    row, col, dwpc_mid = dwpc_no_repeats(
+    row, col, dwpc_mid, t = dwpc(
         graph, mid_seg, damping=damping, sparse_threshold=sparse_threshold)
     dwpc_mid = remove_diag(dwpc_mid)
 
@@ -520,7 +520,7 @@ def get_segments(metagraph, metapath):
 
 def dwpc(graph, metapath, damping=0.5, sparse_threshold=0):
     """This function will call get_segments, then the appropriate function"""
-    st = time.time()
+    start_time = time.time()
     category_to_function = {'no_repeats': dwpc_no_repeats,
                             'short_repeat': dwpc_short_repeat,
                             'long_repeat': dwpc_general_case,
@@ -530,23 +530,34 @@ def dwpc(graph, metapath, damping=0.5, sparse_threshold=0):
                             'interior_complete_group': dwpc_baba}
 
     category = categorize(metapath)
-    segs = get_segments(graph.metagraph, metapath)
+    segmented = get_segments(graph.metagraph, metapath)
     if category == 'disjoint':
-        dwpc_matrices = [category_to_function[categorize(i)](
-            graph, i, damping=damping)[2] for i in segs]
-        row = metaedge_to_adjacency_matrix(graph, segs[0][0],
-                                           dtype=numpy.float64)[0]
-        col = metaedge_to_adjacency_matrix(graph, segs[-1][-1],
-                                           dtype=numpy.float64)[1]
-        dwpc_matrix = functools.reduce(operator.matmul, dwpc_matrices)
-    elif category == 'repeat_around':
-        mid = dwpc(graph, segs[1], damping=damping)[2]
-        row, c, adj0 = dwpc_no_repeats(graph, segs[0], damping=damping)
-        r, col, adj1 = dwpc_no_repeats(graph, segs[-1], damping=damping)
-        dwpc_matrix = remove_diag(adj0@mid@adj1)
-    elif category == 'short_repeat' and len(segs) != 1:
+        row = None
+        col = None
         dwpc_matrix = None
-        for i in segs:
+        for segment in segmented:
+            r, c, seg_matrix = category_to_function[categorize(segment)](
+                graph, segment, damping=damping,
+                sparse_threshold=sparse_threshold)
+            if row is None:
+                row = r
+            if segment is segmented[-1]:
+                col = c
+
+            if dwpc_matrix is None:
+                dwpc_matrix = seg_matrix
+            else:
+                dwpc_matrix = dwpc_matrix @ seg_matrix
+
+    elif category == 'repeat_around':
+        mid = dwpc(graph, segmented[1], damping=damping)[2]
+        row, c, adj0 = dwpc_no_repeats(graph, segmented[0], damping=damping)
+        r, col, adj1 = dwpc_no_repeats(graph, segmented[-1], damping=damping)
+        dwpc_matrix = remove_diag(adj0@mid@adj1)
+
+    elif category == 'short_repeat' and len(segmented) != 1:
+        dwpc_matrix = None
+        for i in segmented:
             if categorize(i) == 'short_repeat':
                 row_names, col, mat = dwpc_short_repeat(
                     graph, i, damping, sparse_threshold=sparse_threshold)
@@ -558,10 +569,12 @@ def dwpc(graph, metapath, damping=0.5, sparse_threshold=0):
                 dwpc_matrix = mat
             else:
                 dwpc_matrix = dwpc_matrix @ mat
-    elif category == 'long_repeat':
+
+    elif category in ('long_repeat', 'other'):
         row, col, dwpc_matrix = dwpc_general_case(graph, metapath, damping)
+
     else:
         row, col, dwpc_matrix = category_to_function[category](
             graph, metapath, damping, sparse_threshold=sparse_threshold)
-    tottime = time.time() - st
-    return row, col, dwpc_matrix, tottime
+    total_time = time.time() - start_time
+    return row, col, dwpc_matrix, total_time

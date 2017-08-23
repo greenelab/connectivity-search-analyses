@@ -75,7 +75,7 @@ def test_no_and_short_repeat(metapath, expected, path_type):
     row, col, dwpc_matrix = func_dict[path_type](graph, metapath, damping=0.5)
 
     expected = numpy.array(expected, dtype=numpy.float64)
-    assert (dwpc_matrix - expected).sum() == pytest.approx(0, abs=1e-7)
+    assert abs(dwpc_matrix - expected).max() == pytest.approx(0, abs=1e-7)
     assert row == exp_row
     assert col == exp_col
 
@@ -108,7 +108,7 @@ def test_dwpc_baab(metapath, expected):
 
     expected = numpy.array(expected, dtype=numpy.float64)
 
-    assert abs(dwpc_matrix - expected).sum() == pytest.approx(0, abs=1e-7)
+    assert abs(dwpc_matrix - expected).max() == pytest.approx(0, abs=1e-7)
     assert exp_row == row
     assert exp_col == col
 
@@ -208,7 +208,7 @@ def test_dwpc_baba(m_path):
 
     assert row_sol == row
     assert col_sol == col
-    assert (adj_sol - dwpc).sum() == pytest.approx(0, abs=1e-8)
+    assert abs(adj_sol - dwpc).max() == pytest.approx(0, abs=1e-8)
 
 
 def get_general_solutions(length):
@@ -260,7 +260,7 @@ def test_dwpc_general_case(length):
     exp_row, exp_col, exp_dwpc = get_general_solutions(length)
 
     # Test matrix, row, and column label output
-    assert abs(dwpc_mat - exp_dwpc).sum() == pytest.approx(0, abs=1e-7)
+    assert abs(dwpc_mat - exp_dwpc).max() == pytest.approx(0, abs=1e-7)
     assert rows == exp_row
     assert cols == exp_col
 
@@ -348,6 +348,10 @@ def test_get_segments(metapath, solution):
 
 
 @pytest.mark.parametrize('metapath,expected', [
+    ('DaGiGiG', [[0., 0., 0., 0., 0.1767767, 0., 0.],
+                 [0.1767767, 0.21338835, 0., 0.21338835, 0., 0., 0.33838835]]),
+    ('DaGiGiGaD', [[0, 0],
+                   [0, 0]]),
     ('DaGiGaD', [[0., 0.47855339],
                  [0.47855339, 0.]]),
     ('TeGiGeT', [[0, 0],
@@ -469,4 +473,4 @@ def test_dwpc(metapath, expected):
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
     row, col, dwpc_matrix, t = dwpc(graph, metapath, damping=0.5)
 
-    assert (expected - dwpc_matrix).sum() == pytest.approx(0, abs=1e-7)
+    assert abs(expected - dwpc_matrix).max() == pytest.approx(0, abs=1e-7)
