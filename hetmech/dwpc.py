@@ -34,14 +34,15 @@ def degree_weight(matrix, damping, copy=True):
 
 def dwpc_no_repeats(graph, metapath, damping=0.5, sparse_threshold=0):
     assert len(set(metapath.edges)) == len(metapath)
-    parts = list()
+    parts = []
+    row_names = None
     for metaedge in metapath:
         rows, cols, adj = metaedge_to_adjacency_matrix(
             graph, metaedge, dtype=numpy.float64,
             sparse_threshold=sparse_threshold)
         adj = degree_weight(adj, damping)
 
-        if metaedge == metapath[0]:
+        if row_names is None:
             row_names = rows
         if metaedge == metapath[-1]:
             col_names = cols
@@ -67,6 +68,9 @@ def dwpc_baab(graph, metapath, damping=0.5, sparse_threshold=0):
     graph : hetio.hetnet.Graph
     metapath : hetio.hetnet.MetaPath
     damping : float
+    sparse_threshold : float (0 <= sparse_threshold <= 1)
+        sets the density threshold above which a sparse matrix will be
+        converted to a dense automatically.
 
     Examples
     --------
@@ -91,7 +95,7 @@ def dwpc_baab(graph, metapath, damping=0.5, sparse_threshold=0):
     # Get two indices for the segments ahead of and behind the middle region
     head_ind = mid_ind
     tail_ind = mid_ind
-    while (head_ind > 0 or tail_ind < len(seg)):
+    while head_ind > 0 or tail_ind < len(seg):
         head_ind -= 1
         tail_ind += 1
         head = seg[head_ind] if head_ind >= 0 else None
@@ -131,9 +135,9 @@ def dwpc_baba(graph, metapath, damping=0.5, sparse_threshold=0):
             seg_azb = seg[i+2]
             seg_cda = seg[0] if i == 1 else None
             seg_bed = seg[-1] if seg[-1] != seg_azb else None
+    # Collect segment DWPC and corrections
     row_names, col, axb, t = dwpc(graph, seg_axb, damping=damping,
                                   sparse_threshold=sparse_threshold)
-
     row, col, bya, t = dwpc(graph, seg_bya, damping=damping,
                             sparse_threshold=sparse_threshold)
     row, col_names, azb, t = dwpc(graph, seg_azb, damping=damping,
@@ -145,9 +149,10 @@ def dwpc_baba(graph, metapath, damping=0.5, sparse_threshold=0):
         axb@sparse.csc_matrix(numpy.diag((bya@azb).diagonal()))
     correction_c = axb*bya.T*azb if not sparse.issparse(bya) else \
         (axb.multiply(bya.T)).multiply(azb)
-
+    # Apply the corrections
     dwpc_matrix = (axb@bya@azb - correction_a - correction_b
                    + correction_c)
+    # Account for possible head and tail segments outside the BABA group
     if seg_cda is not None:
         row_names, col, cda, t = dwpc(graph, seg_cda, damping=damping,
                                       sparse_threshold=sparse_threshold)
@@ -186,7 +191,7 @@ def dwpc_short_repeat(graph, metapath, damping=0.5, sparse_threshold=0):
             dwpc_matrix = dwpc_matrix @ adj
 
     dwpc_matrix = remove_diag(dwpc_matrix)
-
+    # Extra correction for random metanodes in the repeat segment
     if len(index_of_repeats) == 3:
         for metaedge in metapath[index_of_repeats[1]:]:
             row, col, adj = metaedge_to_adjacency_matrix(
@@ -519,7 +524,26 @@ def get_segments(metagraph, metapath):
 
 
 def dwpc(graph, metapath, damping=0.5, sparse_threshold=0):
-    """This function will call get_segments, then the appropriate function"""
+    """
+    A unified function to compute the degree-weighted path count.
+    This function will call get_segments, then the appropriate
+    specialized (or generalized) DWPC function.
+
+    Parameters
+    ----------
+    graph : hetio.hetnet.Graph
+    metapath : hetio.hetnet.MetaPath
+    damping : float
+    sparse_threshold : float (0 <= sparse_threshold <= 1)
+        sets the density threshold above which a sparse matrix will be
+        converted to a dense automatically.
+
+    Returns
+    -------
+    numpy.ndarray, numpy.ndarray,
+    numpy.ndarray or scipy.sparse.csc_matrix, float
+        row labels, column labels, the DWPC matrix, and the computation time
+    """
     start_time = time.time()
     category_to_function = {'no_repeats': dwpc_no_repeats,
                             'short_repeat': dwpc_short_repeat,
