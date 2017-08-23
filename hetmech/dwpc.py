@@ -142,7 +142,7 @@ def dwpc_baba(graph, metapath, damping=0.5, sparse_threshold=0):
     correction_a = numpy.diag((axb@bya).diagonal())@azb
     correction_b = axb@numpy.diag((bya@azb).diagonal()) if \
         not sparse.issparse(bya) else \
-        axb@sparse.dia_matrix((bya@azb).diagonal())
+        axb@sparse.csc_matrix(numpy.diag((bya@azb).diagonal()))
     correction_c = axb*bya.T*azb if not sparse.issparse(bya) else \
         (axb.multiply(bya.T)).multiply(azb)
 
