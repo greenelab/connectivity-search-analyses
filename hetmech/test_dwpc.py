@@ -2,8 +2,82 @@ import hetio.readwrite
 import numpy
 import pytest
 
-from .dwpc import categorize, dwpc_baab, dwpc_baba, dwpc_general_case, \
-    get_segments
+from .dwpc import categorize, dwpc, dwpc_baab, dwpc_baba, dwpc_general_case, \
+    dwpc_no_repeats, dwpc_short_repeat, get_segments
+
+
+def get_nodes(metapath):
+    node_dict = {
+        'G': ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1'],
+        'D': ["Crohn's Disease", 'Multiple Sclerosis'],
+        'T': ['Leukocyte', 'Lung']
+    }
+    exp_row = node_dict[metapath[0]]
+    exp_col = node_dict[metapath[-1]]
+    return exp_row, exp_col
+
+
+@pytest.mark.parametrize('metapath,expected,path_type', [
+    ('DaGeT', [[0.5, 0.5],
+               [0, 0]], 0),
+    ('DlTeG', [[0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0.70710678, 0, 0, 0, 0]], 0),
+    ('GeTlD', [[0, 0],
+               [0, 0],
+               [0, 0.70710678],
+               [0, 0],
+               [0, 0],
+               [0, 0],
+               [0, 0]], 0),
+    ('GaDlT', [[0.5, 0],
+               [0.5, 0],
+               [0, 0],
+               [0.5, 0],
+               [0, 0],
+               [0.35355339, 0],
+               [0, 0]], 0),
+    ('TeGaD', [[0.5, 0],
+               [0.5, 0]], 0),
+    ('TlDaG', [[0.5, 0.5, 0, 0.5, 0, 0.35355339, 0],
+               [0, 0, 0, 0, 0, 0, 0]], 0),
+    ('GiG', [[0., 0., 0.35355339, 0., 0.70710678, 0., 0.],
+             [0., 0., 0.5, 0., 0., 0., 0.],
+             [0.35355339, 0.5, 0., 0.5, 0., 0., 0.5],
+             [0., 0., 0.5, 0., 0., 0., 0.],
+             [0.70710678, 0., 0., 0., 0., 0., 0.],
+             [0., 0., 0., 0., 0., 0., 0.],
+             [0., 0., 0.5, 0., 0., 0., 0.]], 1),
+    ('GaDaG', [[0., 0.25, 0., 0.25, 0., 0.1767767, 0.],
+               [0.25, 0., 0., 0.25, 0., 0.1767767, 0.],
+               [0., 0., 0., 0., 0., 0.35355339, 0.],
+               [0.25, 0.25, 0., 0., 0., 0.1767767, 0.],
+               [0., 0., 0., 0., 0., 0., 0.],
+               [0.1767767, 0.1767767, 0.35355339, 0.1767767, 0., 0., 0.],
+               [0., 0., 0., 0., 0., 0., 0.]], 1),
+    ('GiGiG', [[0, 0.1767767, 0, 0.1767767, 0, 0, 0.1767767],
+               [0.1767767, 0, 0, 0.25, 0, 0, 0.25],
+               [0, 0, 0, 0, 0.25, 0, 0],
+               [0.1767767, 0.25, 0, 0, 0, 0, 0.25],
+               [0, 0, 0.25, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0.1767767, 0.25, 0, 0.25, 0, 0, 0]], 1)
+])
+def test_no_and_short_repeat(metapath, expected, path_type):
+    exp_row, exp_col = get_nodes(metapath)
+    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
+        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
+        'test/data/disease-gene-example-graph.json',
+    )
+    graph = hetio.readwrite.read_graph(url)
+    metapath = graph.metagraph.metapath_from_abbrev(metapath)
+    func_dict = {0: dwpc_no_repeats, 1: dwpc_short_repeat}
+
+    row, col, dwpc_matrix = func_dict[path_type](graph, metapath, damping=0.5)
+
+    expected = numpy.array(expected, dtype=numpy.float64)
+    assert (dwpc_matrix - expected).sum() == pytest.approx(0, abs=1e-7)
+    assert row == exp_row
+    assert col == exp_col
 
 
 @pytest.mark.parametrize('metapath,expected', [
@@ -16,16 +90,12 @@ from .dwpc import categorize, dwpc_baab, dwpc_baba, dwpc_general_case, \
     ('DaGeTeGaD', [[0, 0],
                    [0, 0]]),
     ('TlDaGiGeT', [[0., 0.47855339],
-                   [0., 0.]])
+                   [0., 0.]]),
+    ('DaGiGaDlT', [[0.47855339, 0],
+                   [0, 0]])
 ])
 def test_dwpc_baab(metapath, expected):
-    node_dict = {
-        'G': ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1'],
-        'D': ["Crohn's Disease", 'Multiple Sclerosis'],
-        'T': ['Leukocyte', 'Lung']
-    }
-    exp_row = node_dict[metapath[0]]
-    exp_col = node_dict[metapath[-1]]
+    exp_row, exp_col = get_nodes(metapath)
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
         '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
         'test/data/disease-gene-example-graph.json',
@@ -33,7 +103,8 @@ def test_dwpc_baab(metapath, expected):
     graph = hetio.readwrite.read_graph(url)
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
 
-    row, col, dwpc_matrix = dwpc_baab(graph, metapath, damping=0.5)
+    row, col, dwpc_matrix = dwpc_baab(graph, metapath, damping=0.5,
+                                      sparse_threshold=1)
 
     expected = numpy.array(expected, dtype=numpy.float64)
 
@@ -85,6 +156,13 @@ def get_baba_matrices(metapath):
             [0., 0.],
             [0., 0.],
             [0., 0.25],
+            [0., 0.]],
+        6: [[0., 0.],
+            [0., 0.],
+            [0.125, 0.],
+            [0., 0.],
+            [0., 0.],
+            [0., 0.],
             [0., 0.]]
     }
     mat_dict = {
@@ -99,7 +177,8 @@ def get_baba_matrices(metapath):
         'GeTlDaGaD': (4, 0),
         'DaGaDlTeG': (4, 1),
         'GaDaGeTlD': (5, 0),
-        'DlTeGaDaG': (5, 1)
+        'DlTeGaDaG': (5, 1),
+        'TlDaGaDaG': (6, 1)
     }
     first = node_dict[metapath[0]]
     last = node_dict[metapath[-1]]
@@ -112,7 +191,8 @@ def get_baba_matrices(metapath):
 
 @pytest.mark.parametrize('m_path', ('GaDaGaD', 'DaGaDaG', 'DlTlDlT',
                                     'TlDlTlD', 'GeTeGeT', 'TeGeTeG',
-                                    'GaDlTeGaD', 'GeTlDaGaD', 'GaDaGeTlD'))
+                                    'GaDlTeGaD', 'GeTlDaGaD', 'GaDaGeTlD',
+                                    'TlDaGaDaG'))
 def test_dwpc_baba(m_path):
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
         '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
@@ -123,11 +203,12 @@ def test_dwpc_baba(m_path):
     metapath = metagraph.metapath_from_abbrev(m_path)
 
     row_sol, col_sol, adj_sol = get_baba_matrices(m_path)
-    row, col, dwpc = dwpc_baba(graph, metapath, damping=0.5)
+    row, col, dwpc = dwpc_baba(graph, metapath, damping=0.5,
+                               sparse_threshold=0)
 
     assert row_sol == row
     assert col_sol == col
-    assert numpy.max(adj_sol - dwpc) == pytest.approx(0, abs=1e-8)
+    assert (adj_sol - dwpc).sum() == pytest.approx(0, abs=1e-8)
 
 
 def get_general_solutions(length):
@@ -173,7 +254,7 @@ def test_dwpc_general_case(length):
     )
     graph = hetio.readwrite.read_graph(url)
     metagraph = graph.metagraph
-    m_path = 'GiG' + length*'iG'
+    m_path = 'GiG' + length * 'iG'
     metapath = metagraph.metapath_from_abbrev(m_path)
     rows, cols, dwpc_mat = dwpc_general_case(graph, metapath, damping=0.5)
     exp_row, exp_col, exp_dwpc = get_general_solutions(length)
@@ -247,7 +328,13 @@ def test_categorize(metapath, solution):
     ('CbGiGiGbC', '[CbG, GiGiG, GbC]'),
     ('CbGiGiGiGiGbC', '[CbG, GiGiGiGiG, GbC]'),  # OTHER
     ('CbGaDaGiGiGbCrC', '[CbG, GaDaGiGiG, GbC, CrC]'),  # OTHER
-    ('CbGiGiGbCpD', '[CbG, GiGiG, GbC, CpD]')
+    ('CbGiGiGiGbCbG', '[CbG, GiGiGiG, GbC, CbG]'),
+    ('CbGiGiGbCpD', '[CbG, GiGiG, GbC, CpD]'),
+    ('CbGaDaGaDpC', '[CbG, GaDaGaD, DpC]'),
+    ('GaDaGaD', '[GaD, DaG, GaD]'),
+    ('CrCbGaDrDaG', '[CrC, CbG, GaDrDaG]'),
+    ('CrCbGaDaGaD', '[CrC, CbG, GaDaGaD]'),
+    ('DlAeGiGaDlA', '[DlA, AeGiGaD, DlA]')
 ])
 def test_get_segments(metapath, solution):
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
@@ -257,5 +344,129 @@ def test_get_segments(metapath, solution):
     metagraph = hetio.readwrite.read_metagraph(url)
     metapath = metagraph.metapath_from_abbrev(metapath)
     output = str(get_segments(metagraph, metapath))
-    print(categorize(metapath))
     assert output == solution
+
+
+@pytest.mark.parametrize('metapath,expected', [
+    ('DaGiGaD', [[0., 0.47855339],
+                 [0.47855339, 0.]]),
+    ('TeGiGeT', [[0, 0],
+                 [0, 0]]),
+    ('DaGiGeTlD', [[0, 0],
+                   [0, 0]]),
+    ('DaGeTeGaD', [[0, 0],
+                   [0, 0]]),
+    ('TlDaGiGeT', [[0., 0.47855339],
+                   [0., 0.]]),
+    ('DaGeT', [[0.5, 0.5],
+               [0, 0]]),
+    ('DlTeG', [[0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0.70710678, 0, 0, 0, 0]]),
+    ('GeTlD', [[0, 0],
+               [0, 0],
+               [0, 0.70710678],
+               [0, 0],
+               [0, 0],
+               [0, 0],
+               [0, 0]]),
+    ('GaDlT', [[0.5, 0],
+               [0.5, 0],
+               [0, 0],
+               [0.5, 0],
+               [0, 0],
+               [0.35355339, 0],
+               [0, 0]]),
+    ('TeGaD', [[0.5, 0],
+               [0.5, 0]]),
+    ('TlDaG', [[0.5, 0.5, 0, 0.5, 0, 0.35355339, 0],
+               [0, 0, 0, 0, 0, 0, 0]]),
+    ('GiG', [[0., 0., 0.35355339, 0., 0.70710678, 0., 0.],
+             [0., 0., 0.5, 0., 0., 0., 0.],
+             [0.35355339, 0.5, 0., 0.5, 0., 0., 0.5],
+             [0., 0., 0.5, 0., 0., 0., 0.],
+             [0.70710678, 0., 0., 0., 0., 0., 0.],
+             [0., 0., 0., 0., 0., 0., 0.],
+             [0., 0., 0.5, 0., 0., 0., 0.]]),
+    ('GaDaG', [[0., 0.25, 0., 0.25, 0., 0.1767767, 0.],
+               [0.25, 0., 0., 0.25, 0., 0.1767767, 0.],
+               [0., 0., 0., 0., 0., 0.35355339, 0.],
+               [0.25, 0.25, 0., 0., 0., 0.1767767, 0.],
+               [0., 0., 0., 0., 0., 0., 0.],
+               [0.1767767, 0.1767767, 0.35355339, 0.1767767, 0., 0., 0.],
+               [0., 0., 0., 0., 0., 0., 0.]]),
+    ('GiGiG', [[0, 0.1767767, 0, 0.1767767, 0, 0, 0.1767767],
+               [0.1767767, 0, 0, 0.25, 0, 0, 0.25],
+               [0, 0, 0, 0, 0.25, 0, 0],
+               [0.1767767, 0.25, 0, 0, 0, 0, 0.25],
+               [0, 0, 0.25, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0.1767767, 0.25, 0, 0.25, 0, 0, 0]]),
+    ('GiGiGiG', [[0, 0, 0, 0, 0, 0, 0],
+                 [0, 0, 0, 0, 0.125, 0, 0],
+                 [0, 0, 0, 0, 0, 0, 0],
+                 [0, 0, 0, 0, 0.125, 0, 0],
+                 [0, 0.125, 0, 0.125, 0, 0, 0.125],
+                 [0, 0, 0, 0, 0, 0, 0],
+                 [0, 0, 0, 0, 0.125, 0, 0]]),
+    ('GaDaGaD', [[0.08838835, 0],  # BABA
+                 [0.08838835, 0],
+                 [0, 0.125],
+                 [0.08838835, 0],
+                 [0, 0],
+                 [0, 0],
+                 [0, 0]]),
+    ('DlTlDlT', [[0, 0],  # BABA
+                 [0, 0]]),
+    ('TlDlTlD', [[0, 0],  # BABA
+                 [0, 0]]),
+    ('GeTeGeT', [[0, 0],  # BABA
+                 [0, 0],
+                 [0, 0],
+                 [0, 0],
+                 [0, 0],
+                 [0, 0],
+                 [0, 0]]),
+    ('GaDlTeGaD', [[0.25, 0.],  # BA C BA
+                   [0.25, 0.],
+                   [0., 0.],
+                   [0.25, 0.],
+                   [0., 0.],
+                   [0.1767767, 0.],
+                   [0., 0.]]),
+    ('GeTlDaGaD', [[0., 0.],  # B C ABA
+                   [0., 0.],
+                   [0.125, 0.],
+                   [0., 0.],
+                   [0., 0.],
+                   [0., 0.],
+                   [0., 0.]]),
+    ('GaDaGeTlD', [[0., 0.],  # BAB C A
+                   [0., 0.],
+                   [0., 0.],
+                   [0., 0.],
+                   [0., 0.],
+                   [0., 0.25],
+                   [0., 0.]]),
+    ('TlDaGaDaGeT', [[0, 0.0883883476],  # C BABA C
+                     [0, 0]]),
+    ('TlDaGiGaDlT', [[0, 0],  # C BAAB C
+                     [0, 0]]),
+    ('TeGiGaDlTlD', [[0, 0],
+                     [0, 0]]),
+    ('TeGiGaD', [[0., 0.47855339],
+                 [0., 0.47855339]]),
+    ('TeGaDaG', [[0., 0., 0., 0., 0., 0.25, 0.],
+                 [0., 0., 0., 0., 0., 0.25, 0.]])
+])
+def test_dwpc(metapath, expected):
+    # Check dwpc uses dwpc_baab.
+    expected = numpy.array(expected, dtype=numpy.float64)
+    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
+        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
+        'test/data/disease-gene-example-graph.json',
+    )
+    graph = hetio.readwrite.read_graph(url)
+    metapath = graph.metagraph.metapath_from_abbrev(metapath)
+    row, col, dwpc_matrix, t = dwpc(graph, metapath, damping=0.5)
+
+    assert (expected - dwpc_matrix).sum() == pytest.approx(0, abs=1e-7)
