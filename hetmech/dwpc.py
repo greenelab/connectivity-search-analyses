@@ -211,7 +211,7 @@ def dwpc_short_repeat(graph, metapath, damping=0.5, sparse_threshold=0):
 def node_to_children(graph, metapath, node, metapath_index, damping=0,
                      history=None):
     """
-    Returns a history adjusted list of child nodes.
+    Returns a history adjusted list of child nodes. Used in dwpc_general_case.
 
     Parameters
     ----------
@@ -506,7 +506,6 @@ def get_segments(metagraph, metapath):
     segments = [i for i in segments if i]
     segments = [metagraph.get_metapath(metaedges) for metaedges in segments]
     # eg: B CC ABA
-    # Fix the BABA case so that interior non-overlap repeats work. See eg.
     if category == 'interior_complete_group':
         segs = []
         for i, v in enumerate(segments[:-1]):
