@@ -82,33 +82,33 @@ def dwpc_baab(graph, metapath, damping=0.5, sparse_threshold=0):
     C-B-A-A-B-D-E
     """
     # Segment the metapath
-    seg = get_segments(graph.metagraph, metapath)
+    segments = get_segments(graph.metagraph, metapath)
     # Start with the middle group (A-A or A-...-A in BAAB)
-    for i, s in enumerate(seg):
+    for i, s in enumerate(segments):
         if s.source() == s.target():
             mid_seg = s
             mid_ind = i
-    row, col, dwpc_mid, t = dwpc(
+    row, col, dwpc_mid, seconds = dwpc(
         graph, mid_seg, damping=damping, sparse_threshold=sparse_threshold)
     dwpc_mid = remove_diag(dwpc_mid)
 
     # Get two indices for the segments ahead of and behind the middle region
     head_ind = mid_ind
     tail_ind = mid_ind
-    while head_ind > 0 or tail_ind < len(seg):
+    while head_ind > 0 or tail_ind < len(segments):
         head_ind -= 1
         tail_ind += 1
-        head = seg[head_ind] if head_ind >= 0 else None
-        tail = seg[tail_ind] if tail_ind < len(seg) else None
+        head = segments[head_ind] if head_ind >= 0 else None
+        tail = segments[tail_ind] if tail_ind < len(segments) else None
         # Multiply on the head
         if head is not None:
-            row, c, dwpc_head, t = dwpc(
+            row, c, dwpc_head, seconds = dwpc(
                 graph, head, damping=damping,
                 sparse_threshold=sparse_threshold)
             dwpc_mid = dwpc_head @ dwpc_mid
         # Multiply on the tail
         if tail is not None:
-            r, col, dwpc_tail, t = dwpc(
+            r, col, dwpc_tail, seconds = dwpc(
                 graph, tail, damping=damping,
                 sparse_threshold=sparse_threshold)
             dwpc_mid = dwpc_mid @ dwpc_tail
@@ -126,40 +126,40 @@ def dwpc_baba(graph, metapath, damping=0.5, sparse_threshold=0):
     repeats of the form B-A-B-A. Supports random inserts.
     Segment must start with B and end with A. AXBYAZB
     """
-    seg = get_segments(graph.metagraph, metapath)
+    segments = get_segments(graph.metagraph, metapath)
     seg_axb = None
-    for i, s in enumerate(seg[:-2]):
-        if s.source() == seg[i+2].source() and not seg_axb:
+    for i, s in enumerate(segments[:-2]):
+        if s.source() == segments[i + 2].source() and not seg_axb:
             seg_axb = s
-            seg_bya = seg[i+1]
-            seg_azb = seg[i+2]
-            seg_cda = seg[0] if i == 1 else None
-            seg_bed = seg[-1] if seg[-1] != seg_azb else None
+            seg_bya = segments[i + 1]
+            seg_azb = segments[i + 2]
+            seg_cda = segments[0] if i == 1 else None
+            seg_bed = segments[-1] if segments[-1] != seg_azb else None
     # Collect segment DWPC and corrections
-    row_names, col, axb, t = dwpc(graph, seg_axb, damping=damping,
+    row_names, col, axb, seconds = dwpc(graph, seg_axb, damping=damping,
+                                        sparse_threshold=sparse_threshold)
+    row, col, bya, seconds = dwpc(graph, seg_bya, damping=damping,
                                   sparse_threshold=sparse_threshold)
-    row, col, bya, t = dwpc(graph, seg_bya, damping=damping,
-                            sparse_threshold=sparse_threshold)
-    row, col_names, azb, t = dwpc(graph, seg_azb, damping=damping,
-                                  sparse_threshold=sparse_threshold)
+    row, col_names, azb, seconds = dwpc(graph, seg_azb, damping=damping,
+                                        sparse_threshold=sparse_threshold)
 
-    correction_a = numpy.diag((axb@bya).diagonal())@azb
-    correction_b = axb@numpy.diag((bya@azb).diagonal()) if \
+    correction_a = numpy.diag((axb @ bya).diagonal()) @ azb
+    correction_b = axb @ numpy.diag((bya @ azb).diagonal()) if \
         not sparse.issparse(bya) else \
-        axb@sparse.csc_matrix(numpy.diag((bya@azb).diagonal()))
-    correction_c = axb*bya.T*azb if not sparse.issparse(bya) else \
+        axb @ sparse.csc_matrix(numpy.diag((bya @ azb).diagonal()))
+    correction_c = axb * bya.T * azb if not sparse.issparse(bya) else \
         (axb.multiply(bya.T)).multiply(azb)
     # Apply the corrections
-    dwpc_matrix = (axb@bya@azb - correction_a - correction_b
+    dwpc_matrix = (axb @ bya @ azb - correction_a - correction_b
                    + correction_c)
     # Account for possible head and tail segments outside the BABA group
     if seg_cda is not None:
-        row_names, col, cda, t = dwpc(graph, seg_cda, damping=damping,
-                                      sparse_threshold=sparse_threshold)
+        row_names, col, cda, seconds = dwpc(graph, seg_cda, damping=damping,
+                                            sparse_threshold=sparse_threshold)
         dwpc_matrix = cda @ dwpc_matrix
     if seg_bed is not None:
-        row, col_names, bed, t = dwpc(graph, seg_bed, damping=damping,
-                                      sparse_threshold=sparse_threshold)
+        row, col_names, bed, seconds = dwpc(graph, seg_bed, damping=damping,
+                                            sparse_threshold=sparse_threshold)
         dwpc_matrix = dwpc_matrix @ bed
     return row_names, col_names, dwpc_matrix
 
@@ -437,6 +437,7 @@ def get_segments(metagraph, metapath):
     'GbCpDaGaD' -> ['GbCpD', 'DaG', 'GaD']
     'CrCbGiGaDrD' -> ['CrC', 'CbG', 'GiG', 'GaD', 'DrD']
     """
+
     def add_head_tail(metapath, indices):
         # handle non-duplicated on the front
         if indices[0][0] != 0:
@@ -509,12 +510,12 @@ def get_segments(metagraph, metapath):
     if category == 'interior_complete_group':
         segs = []
         for i, v in enumerate(segments[:-1]):
-            if segments[i+1].source() == segments[i+1].target():
-                edges = v.edges + segments[i+1].edges + segments[i+2].edges
+            if segments[i + 1].source() == segments[i + 1].target():
+                edges = v.edges + segments[i + 1].edges + segments[i + 2].edges
                 segs.append(metagraph.get_metapath(edges))
             elif v.source() == v.target():
                 pass
-            elif segments[i-1].source() == segments[i-1].target():
+            elif segments[i - 1].source() == segments[i - 1].target():
                 pass
             else:
                 segs.append(v)
@@ -544,7 +545,7 @@ def dwpc(graph, metapath, damping=0.5, sparse_threshold=0):
     numpy.ndarray or scipy.sparse.csc_matrix, float
         row labels, column labels, the DWPC matrix, and the computation time
     """
-    start_time = time.time()
+    start_time = time.perf_counter()
     category_to_function = {'no_repeats': dwpc_no_repeats,
                             'short_repeat': dwpc_short_repeat,
                             'long_repeat': dwpc_general_case,
@@ -554,18 +555,18 @@ def dwpc(graph, metapath, damping=0.5, sparse_threshold=0):
                             'interior_complete_group': dwpc_baba}
 
     category = categorize(metapath)
-    segmented = get_segments(graph.metagraph, metapath)
+    segments = get_segments(graph.metagraph, metapath)
     if category == 'disjoint':
         row = None
         col = None
         dwpc_matrix = None
-        for segment in segmented:
+        for segment in segments:
             r, c, seg_matrix = category_to_function[categorize(segment)](
                 graph, segment, damping=damping,
                 sparse_threshold=sparse_threshold)
             if row is None:
                 row = r
-            if segment is segmented[-1]:
+            if segment is segments[-1]:
                 col = c
 
             if dwpc_matrix is None:
@@ -574,14 +575,14 @@ def dwpc(graph, metapath, damping=0.5, sparse_threshold=0):
                 dwpc_matrix = dwpc_matrix @ seg_matrix
 
     elif category == 'repeat_around':
-        mid = dwpc(graph, segmented[1], damping=damping)[2]
-        row, c, adj0 = dwpc_no_repeats(graph, segmented[0], damping=damping)
-        r, col, adj1 = dwpc_no_repeats(graph, segmented[-1], damping=damping)
-        dwpc_matrix = remove_diag(adj0@mid@adj1)
+        mid = dwpc(graph, segments[1], damping=damping)[2]
+        row, c, adj0 = dwpc_no_repeats(graph, segments[0], damping=damping)
+        r, col, adj1 = dwpc_no_repeats(graph, segments[-1], damping=damping)
+        dwpc_matrix = remove_diag(adj0 @ mid @ adj1)
 
-    elif category == 'short_repeat' and len(segmented) != 1:
+    elif category == 'short_repeat' and len(segments) != 1:
         dwpc_matrix = None
-        for i in segmented:
+        for i in segments:
             if categorize(i) == 'short_repeat':
                 row_names, col, mat = dwpc_short_repeat(
                     graph, i, damping, sparse_threshold=sparse_threshold)
@@ -600,5 +601,5 @@ def dwpc(graph, metapath, damping=0.5, sparse_threshold=0):
     else:
         row, col, dwpc_matrix = category_to_function[category](
             graph, metapath, damping, sparse_threshold=sparse_threshold)
-    total_time = time.time() - start_time
+    total_time = time.perf_counter() - start_time
     return row, col, dwpc_matrix, total_time
