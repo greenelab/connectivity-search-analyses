@@ -1,5 +1,4 @@
 import hetio.readwrite
-import hetio.readwrite
 import numpy
 import pytest
 from scipy import sparse
