@@ -4,7 +4,7 @@ import pytest
 from scipy import sparse
 
 from .degree_weight import _dwpc_baab, _dwpc_baba, _dwpc_general_case, \
-    _dwpc_no_repeats, _dwpc_short_repeat, categorize, dwpc, dwwc, get_segments
+    _dwpc_short_repeat, categorize, dwpc, dwwc, get_segments
 
 
 def test_disease_gene_example_dwwc():
@@ -104,7 +104,7 @@ def test_no_and_short_repeat(metapath, expected, path_type):
     )
     graph = hetio.readwrite.read_graph(url)
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
-    func_dict = {0: _dwpc_no_repeats, 1: _dwpc_short_repeat}
+    func_dict = {0: dwwc, 1: _dwpc_short_repeat}
 
     row, col, dwpc_matrix = func_dict[path_type](graph, metapath, damping=0.5)
 
@@ -457,6 +457,7 @@ def test_get_segments(metapath, solution):
     assert output == solution
 
 
+@pytest.mark.parametrize('sparsity', [0, 1])
 @pytest.mark.parametrize('metapath,expected', [
     ('DaGiGiG', [[0., 0., 0., 0., 0.1767767, 0., 0.],
                  [0.1767767, 0.21338835, 0., 0.21338835, 0., 0., 0.33838835]]),
@@ -566,7 +567,7 @@ def test_get_segments(metapath, solution):
     ('TeGaDaG', [[0., 0., 0., 0., 0., 0.25, 0.],
                  [0., 0., 0., 0., 0., 0.25, 0.]])
 ])
-def test_dwpc(metapath, expected):
+def test_dwpc(metapath, expected, sparsity):
     if expected is not None:
         expected = numpy.array(expected, dtype=numpy.float64)
 
@@ -578,7 +579,12 @@ def test_dwpc(metapath, expected):
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
     if expected is None:
         with pytest.raises(Exception):
-            dwpc(graph, metapath, damping=0.5)
+            dwpc(graph, metapath, damping=0.5, sparse_threshold=sparsity)
     else:
-        row, col, dwpc_matrix, t = dwpc(graph, metapath, damping=0.5)
+        row, col, dwpc_matrix, t = dwpc(graph, metapath, damping=0.5,
+                                        sparse_threshold=sparsity)
         assert abs(expected - dwpc_matrix).max() == pytest.approx(0, abs=1e-7)
+        if sparsity == 1:
+            assert sparse.issparse(dwpc_matrix)
+        else:
+            assert not sparse.issparse(dwpc_matrix)
