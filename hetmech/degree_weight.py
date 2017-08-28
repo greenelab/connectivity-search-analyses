@@ -232,6 +232,10 @@ def get_segments(metagraph, metapath):
     """
 
     def add_head_tail(metapath, indices):
+        """Makes sure that all metanodes are included in segments.
+        Ensures that the first segment goes all the way back to the
+        first metanode. Similarly, makes sure that the last segment
+        includes all metanodes up to the last one."""
         # handle non-duplicated on the front
         if indices[0][0] != 0:
             indices = [(0, indices[0][0])] + indices
