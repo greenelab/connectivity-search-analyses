@@ -511,7 +511,7 @@ def _dwpc_short_repeat(graph, metapath, damping=0.5, sparse_threshold=0):
         if segment.source() == segment.target():
             repeat_segment = segment
         else:
-            if head_segment is None:
+            if i == 0:
                 head_segment = segment
             else:
                 tail_segment = segment
