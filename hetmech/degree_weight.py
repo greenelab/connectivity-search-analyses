@@ -366,9 +366,9 @@ def _dwpc_disjoint(graph, metapath, damping=0.5, sparse_threshold=0):
 
 
 def _dwpc_repeat_around(graph, metapath, damping=0.5, sparse_threshold=0):
-    """DWPC for situations in which we have a surrounding repeat like 
-    B----B, where the middle group is a more complicated group. The 
-    purpose of this function is just as an order-of-operations 
+    """DWPC for situations in which we have a surrounding repeat like
+    B----B, where the middle group is a more complicated group. The
+    purpose of this function is just as an order-of-operations
     simplification"""
     segments = get_segments(graph.metagraph, metapath)
     mid = dwpc(graph, segments[1], damping=damping,
