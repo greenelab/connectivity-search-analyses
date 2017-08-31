@@ -507,6 +507,7 @@ def _dwpc_short_repeat(graph, metapath, damping=0.5, sparse_threshold=0):
     # Account for different head and tail possibilities.
     head_segment = None
     tail_segment = None
+    # Label the segments as head, tail, and repeat
     for i, segment in enumerate(segments):
         if segment.source() == segment.target():
             repeat_segment = segment
