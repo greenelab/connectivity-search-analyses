@@ -1,10 +1,7 @@
-from .degree_weight import dwpc, _degree_weight, remove_diag, get_segments, \
-    dwwc
-from .matrix import metaedge_to_adjacency_matrix
 import hetio.readwrite
 import pytest
-import numpy
-from scipy import sparse
+
+from .degree_weight import dwpc
 
 commit = '59c448fd912555f84b9822b4f49b431b696aea15'
 
