@@ -4,6 +4,7 @@ import pytest
 from .degree_weight import dwpc
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize('error_compound,error_disease,metapath,cypher', [
     ('DB00860', 'DOID:3083', 'CpDrDdGdD', 0.012299),
     ('DB00860', 'DOID:3083', 'CpDrDuGuD', 0.006209),
