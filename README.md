@@ -7,10 +7,6 @@ The method is designed to operate on hetnets (networks with multiple node or rel
 
 This project is still under development. Use with caution.
 
-To use hetmech as a package:
-
-`pip install --editable .`
-
 ## Environment
 
 This repository uses [conda](http://conda.pydata.org/docs/) to manage its environment as specified in [`environment.yml`](environment.yml).
@@ -21,6 +17,10 @@ conda env create --file=environment.yml
 ```
 
 Then use `source activate hetmech` and `source deactivate` to activate or deactivate the environment.
+
+For local development, run the following with the hetmech environment activated:
+
+`pip install --editable .`
 
 ## Acknowledgements
 
