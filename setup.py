@@ -10,5 +10,6 @@ setup(name='hetmech',
           'hetio>=0.2.8',
           'numpy',
           'scipy',
-          'xarray']
+          'xarray',
+          ]
       )
