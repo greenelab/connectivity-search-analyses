@@ -3,9 +3,13 @@
 [![Build Status](https://travis-ci.org/greenelab/hetmech.svg?branch=master)](https://travis-ci.org/greenelab/hetmech)
 
 Hetmech aims to identify the relevant network connections between a set of query nodes.
-The method is designed to operate on hetnets (networks with multiple node or relationship types). 
+The method is designed to operate on hetnets (networks with multiple node or relationship types).
 
 This project is still under development. Use with caution.
+
+To use hetmech as a package:
+
+`pip install --editable .`
 
 ## Environment
 
