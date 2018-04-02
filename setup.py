@@ -9,5 +9,6 @@ setup(name='hetmech',
       url='https://github.com/greenelab/hetmech',
       license='BSD 3-Clause License',
       packages=['hetmech'],
-      install_requires=['hetio']
+      install_requires=['hetio==0.2.8', 'numpy=1.13.1', 'scipy=0.19.1',
+                        'xarray=0.9.6']
       )
