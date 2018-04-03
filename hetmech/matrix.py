@@ -25,7 +25,7 @@ def normalize(matrix, vector, axis, damping_exponent):
     vector[numpy.isinf(vector)] = 0
     vector = scipy.sparse.diags(vector)
     if axis == 'rows':
-        # equivalent to `vector @ matrix` but returns scipy.sparse.csc not scipy.sparse.csr
+        # equivalent to `vector @ matrix` but returns scipy.sparse.csc not scipy.sparse.csr  # noqa: E501
         matrix = (matrix.transpose() @ vector).transpose()
     else:
         matrix = matrix @ vector
