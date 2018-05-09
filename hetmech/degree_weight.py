@@ -381,7 +381,7 @@ def _dwpc_repeat_around(graph, metapath, damping=0.5, dense_threshold=0,
     simplification"""
     segments = get_segments(graph.metagraph, metapath)
     mid = dwpc(graph, segments[1], damping=damping,
-               dense_threshold=dense_threshold)[2]
+               dense_threshold=dense_threshold, dtype=dtype)[2]
     row_names, cols, adj0, t = dwpc(graph, segments[0], damping=damping,
                                     dense_threshold=dense_threshold,
                                     dtype=dtype)
