@@ -101,7 +101,7 @@ def dwwc(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
     for metaedge in metapath:
         rows, cols, adj_mat = metaedge_to_adjacency_matrix(
             graph, metaedge, dense_threshold=dense_threshold, dtype=dtype)
-        adj_mat = _degree_weight(adj_mat, damping)
+        adj_mat = _degree_weight(adj_mat, damping, dtype=dtype)
         if dwwc_matrix is None:
             row_names = rows
             dwwc_matrix = adj_mat
@@ -337,11 +337,11 @@ def remove_diag(mat, dtype=numpy.float64):
         return mat - numpy.diag(mat.diagonal())
 
 
-def _degree_weight(matrix, damping, copy=True):
+def _degree_weight(matrix, damping, copy=True, dtype=numpy.float64):
     """Normalize an adjacency matrix by the in and out degree."""
-    matrix = copy_array(matrix, copy)
-    row_sums = numpy.array(matrix.sum(axis=1)).flatten()
-    column_sums = numpy.array(matrix.sum(axis=0)).flatten()
+    matrix = copy_array(matrix, copy, dtype=dtype)
+    row_sums = numpy.array(matrix.sum(axis=1), dtype=dtype).flatten()
+    column_sums = numpy.array(matrix.sum(axis=0), dtype=dtype).flatten()
     matrix = normalize(matrix, row_sums, 'rows', damping)
     matrix = normalize(matrix, column_sums, 'columns', damping)
 
@@ -551,7 +551,7 @@ def _dwpc_short_repeat(graph, metapath, damping=0.5, dense_threshold=0,
         rows, cols, adj = metaedge_to_adjacency_matrix(
             graph, metaedge, dtype=dtype,
             dense_threshold=dense_threshold)
-        adj = _degree_weight(adj, damping)
+        adj = _degree_weight(adj, damping, dtype=dtype)
         if dwpc_matrix is None:
             row_names = rows
             dwpc_matrix = adj
@@ -566,7 +566,7 @@ def _dwpc_short_repeat(graph, metapath, damping=0.5, dense_threshold=0,
             rows, cols, adj = metaedge_to_adjacency_matrix(
                 graph, metaedge, dtype=dtype,
                 dense_threshold=dense_threshold)
-            adj = _degree_weight(adj, damping)
+            adj = _degree_weight(adj, damping, dtype=dtype)
             if dwpc_tail is None:
                 dwpc_tail = adj
             else:
@@ -628,7 +628,7 @@ def _node_to_children(graph, metapath, node, metapath_index, damping=0,
 
     rows, cols, adj = metaedge_to_adjacency_matrix(graph, metaedge,
                                                    dtype=dtype)
-    adj = _degree_weight(adj, damping)
+    adj = _degree_weight(adj, damping, dtype=dtype)
     vector = node @ adj
 
     if metaedge.target in history:
@@ -690,6 +690,6 @@ def _dwpc_general_case(graph, metapath, damping=0, dtype=numpy.float64):
                 end_nodes = numpy.zeros(number_end)
             dwpc_matrix.append(end_nodes)
     else:
-        dwpc_matrix = _degree_weight(adj, damping=damping)
+        dwpc_matrix = _degree_weight(adj, damping=damping, dtype=dtype)
     dwpc_matrix = numpy.array(dwpc_matrix, dtype=dtype)
     return start_nodes, fin_nodes, dwpc_matrix
