@@ -49,6 +49,9 @@ def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False,
         on metapaths which are categorized 'other' and 'long_repeat'.
         If False, an exception is raised when such a metapath is given,
         and the general function will not be called.
+    dtype : dtype object
+        numpy.float32 or numpy.float64. At present, numpy.float16 fails when
+        using sparse matrices, due to a bug in scipy.sparse
 
     Returns
     -------
@@ -95,6 +98,7 @@ def dwwc(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
     dense_threshold : float (0 <= dense_threshold <= 1)
         sets the density threshold at which a sparse matrix will be
         converted to a dense automatically.
+    dtype : dtype object
     """
     dwwc_matrix = None
     row_names = None
@@ -412,6 +416,7 @@ def _dwpc_baab(graph, metapath, damping=0.5, dense_threshold=0,
     dense_threshold : float (0 <= dense_threshold <= 1)
         sets the density threshold above which a sparse matrix will be
         converted to a dense automatically.
+    dtype : dtype object
 
     Examples
     --------
@@ -603,6 +608,7 @@ def _node_to_children(graph, metapath, node, metapath_index, damping=0,
     metapath_index : int
     damping : float
     history : numpy.ndarray
+    dtype : dtype object
 
     Returns
     -------
@@ -650,6 +656,7 @@ def _dwpc_general_case(graph, metapath, damping=0, dtype=numpy.float64):
     graph : hetio.hetnet.Graph
     metapath : hetio.hetnet.MetaPath
     damping : float
+    dtype : dtype object
     """
     dwpc_step = functools.partial(_node_to_children, graph=graph,
                                   metapath=metapath, damping=damping,
