@@ -22,17 +22,23 @@ def hetmat_from_graph(graph, path):
 
 class HetMat:
 
+    nodes_formats = {
+        'tsv',
+        'feather',
+        'pickle',
+        'json',
+    }
+
     def __init__(self, directory, initialize=False):
         """
         Initialize a HetMat with its MetaGraph.
         """
         self.directory = pathlib.Path(directory)
-        self.metagraph_path = directory.joinpath('metagraph.json')
-        self.nodes_directory = directory.joinpath('nodes')
-        self.edges_directory = directory.joinpath('edges')
+        self.metagraph_path = self.directory.joinpath('metagraph.json')
+        self.nodes_directory = self.directory.joinpath('nodes')
+        self.edges_directory = self.directory.joinpath('edges')
         if initialize:
             self.initialize()
-        return self
 
     def initialize(self):
         """
@@ -42,12 +48,11 @@ class HetMat:
         # Create directories
         directories = [
             self.directory,
-            self.metagraph_path,
             self.nodes_directory,
             self.edges_directory,
         ]
         for directory in directories:
-            if not directory.isdir():
+            if not directory.is_dir():
                 directory.mkdir()
 
     @property
@@ -68,3 +73,11 @@ class HetMat:
         Set the metagraph property by writing the metagraph to disk.
         """
         hetio.readwrite.write_metagraph(metagraph, self.metagraph_path)
+
+    def get_nodes_path(self, metanode, file_format='tsv'):
+        """
+        Potential file_formats are TSV, feather, JSON, and pickle.
+        """
+        self.nodes_directory.joinpath(f'{metanode}.{file_format}')
+        
+
