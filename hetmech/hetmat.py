@@ -14,9 +14,9 @@ def hetmat_from_graph(graph, path):
     hetmat = HetMat(path, initialize=True)
     hetmat.metagraph = graph.metagraph
     metagraph = hetmat.metagraph
-    metaedges = list(metagraph.get_edges(exclude_inverts=True))
-    for metaedge in metaedges:
-        matrix = hetio.matrix.metaedge_to_adjacency_matrix(metaedge)
+    # metaedges = list(metagraph.get_edges(exclude_inverts=True))
+    # for metaedge in metaedges:
+    #     matrix = hetio.matrix.metaedge_to_adjacency_matrix(metaedge)
     return hetmat
 
 
@@ -27,6 +27,12 @@ class HetMat:
         'feather',
         'pickle',
         'json',
+    }
+
+    edges_formats = {
+        'npy',
+        'sparse.npz',
+        'tsv',
     }
 
     def __init__(self, directory, initialize=False):
@@ -78,6 +84,16 @@ class HetMat:
         """
         Potential file_formats are TSV, feather, JSON, and pickle.
         """
-        self.nodes_directory.joinpath(f'{metanode}.{file_format}')
-        
+        return self.nodes_directory.joinpath(f'{metanode}.{file_format}')
 
+    def get_edges_path(self, metaedge, file_format='npy'):
+        """
+        Get path to edges file
+        """
+        if isinstance(metaedge, hetio.hetnet.MetaEdge):
+            metaedge = metaedge.get_abbrev()
+        else:
+            # Ensure that metaedge is a valid abbreviation
+            _metaedge, = self.metagraph.metapath_from_abbrev(metaedge)
+            assert _metaedge.get_abbrev() == metaedge
+        return self.nodes_directory.joinpath(f'{metaedge}.{file_format}')
