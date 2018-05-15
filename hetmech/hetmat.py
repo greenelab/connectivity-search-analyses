@@ -1,6 +1,9 @@
 import functools
 import pathlib
 
+import pandas
+import scipy.sparse
+
 import hetio.hetnet
 import hetio.readwrite
 import hetio.matrix
@@ -13,10 +16,25 @@ def hetmat_from_graph(graph, path):
     assert isinstance(graph, hetio.hetnet.Graph)
     hetmat = HetMat(path, initialize=True)
     hetmat.metagraph = graph.metagraph
-    metagraph = hetmat.metagraph
-    # metaedges = list(metagraph.get_edges(exclude_inverts=True))
-    # for metaedge in metaedges:
-    #     matrix = hetio.matrix.metaedge_to_adjacency_matrix(metaedge)
+
+    # Save metanodes
+    metanodes = list(graph.metagraph.get_nodes())
+    for metanode in metanodes:
+        path = hetmat.get_nodes_path(metanode)
+        rows = list()
+        node_to_position = hetio.matrix.get_node_to_position(graph, metanode)
+        for node, position in node_to_position.items():
+            rows.append((position, node.identifier, node.name))
+        node_df = pandas.DataFrame(rows, columns=['position', 'identifier', 'name'])
+        path = hetmat.get_nodes_path(metanode)
+        node_df.to_csv(path, index=False, sep='\t')
+
+    # Save metaedges
+    metaedges = list(graph.metagraph.get_edges(exclude_inverts=True))
+    for metaedge in metaedges:
+        rows, cols, matrix = hetio.matrix.metaedge_to_adjacency_matrix(graph, metaedge, dense_threshold=1)
+        path = hetmat.get_edges_path(metaedge, file_format='sparse.npz')
+        scipy.sparse.save_npz(str(path), matrix, compressed=True)
     return hetmat
 
 
@@ -96,4 +114,4 @@ class HetMat:
             # Ensure that metaedge is a valid abbreviation
             _metaedge, = self.metagraph.metapath_from_abbrev(metaedge)
             assert _metaedge.get_abbrev() == metaedge
-        return self.nodes_directory.joinpath(f'{metaedge}.{file_format}')
+        return self.edges_directory.joinpath(f'{metaedge}.{file_format}')
