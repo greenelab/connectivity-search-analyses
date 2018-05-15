@@ -2,6 +2,7 @@ import functools
 import pathlib
 
 import pandas
+import numpy
 import scipy.sparse
 
 import hetio.hetnet
@@ -36,6 +37,39 @@ def hetmat_from_graph(graph, path):
         path = hetmat.get_edges_path(metaedge, file_format='sparse.npz')
         scipy.sparse.save_npz(str(path), matrix, compressed=True)
     return hetmat
+
+
+def read_matrix(path, file_format='infer'):
+    path = str(path)
+    if file_format == 'infer':
+        if path.endswith('.sparse.npz'):
+            file_format = 'sparse.npz'
+        if path.endswith('.npy'):
+            file_format = 'npy'
+    if file_format == 'infer':
+        raise ValueError('Could not infer file_format for {path}')
+    if file_format == 'sparse.npz':
+        # https://docs.scipy.org/doc/scipy-1.0.0/reference/generated/scipy.sparse.load_npz.html
+        return scipy.sparse.load_npz(path)
+    if file_format == 'npy':
+        # https://docs.scipy.org/doc/numpy-1.14.0/reference/generated/numpy.load.html
+        return numpy.load(path)
+    raise ValueError(f'file_format={file_format} is not supported.')
+
+
+def find_read_matrix(path, file_formats=['sparse.npz', 'npy']):
+    """
+    Read a matrix at the given path (without and extenstion)
+    """
+    path = pathlib.Path(path)
+    for file_format in file_formats:
+        path = path.with_suffix(f'.{file_format}')
+        if not path.is_file():
+            continue
+        return read_matrix(path, file_format=file_format)
+    raise FileNotFoundError(
+        f'No matrix files found at {path} with any of these extensions: ' +
+        ', '.join(file_formats))
 
 
 class HetMat:
@@ -114,4 +148,30 @@ class HetMat:
             # Ensure that metaedge is a valid abbreviation
             _metaedge, = self.metagraph.metapath_from_abbrev(metaedge)
             assert _metaedge.get_abbrev() == metaedge
-        return self.edges_directory.joinpath(f'{metaedge}.{file_format}')
+        path = self.edges_directory.joinpath(f'{metaedge}')
+        if file_format is not None:
+            path = path.with_suffix(f'.{file_format}')
+        return path
+
+    @functools.lru_cache()
+    def get_node_identifiers(metanode):
+        path = get_nodes_path(metanode, file_format='tsv')
+        node_df = pandas.read_table(path)
+        return list(node_df['identifier'])
+
+    def metaedge_to_adjacency_matrix(
+            self, metaedge,
+            dtype=None, dense_threshold=None,
+            file_formats=['sparse.npz', 'npy']):
+        """
+        file_formats sets the precedence of which file to read in
+        """
+        path = self.get_edges_path(metaedge, file_format=None)
+        matrix = find_read_matrix(path, file_formats=file_formats)
+        if dense_threshold is not None:
+            matrix = hetio.matrix.sparsify_or_densify(matrix, dense_threshold=dense_threshold)
+        if dtype is not None:
+            matrix = matrix.astype(dtype)
+        # row_ids = get_node_identifiers()
+        # col_ids = get_node_identifiers()
+        return [], [], matrix
