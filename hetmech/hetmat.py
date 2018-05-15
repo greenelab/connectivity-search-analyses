@@ -136,26 +136,25 @@ class HetMat:
         """
         Potential file_formats are TSV, feather, JSON, and pickle.
         """
+        metanode = self.metagraph.get_metanode(metanode)
         return self.nodes_directory.joinpath(f'{metanode}.{file_format}')
 
     def get_edges_path(self, metaedge, file_format='npy'):
         """
         Get path to edges file
         """
-        if isinstance(metaedge, hetio.hetnet.MetaEdge):
-            metaedge = metaedge.get_abbrev()
-        else:
-            # Ensure that metaedge is a valid abbreviation
-            _metaedge, = self.metagraph.metapath_from_abbrev(metaedge)
-            assert _metaedge.get_abbrev() == metaedge
-        path = self.edges_directory.joinpath(f'{metaedge}')
+        metaedge_abbrev = self.metagraph.get_metaedge(metaedge).get_abbrev()
+        path = self.edges_directory.joinpath(f'{metaedge_abbrev}')
         if file_format is not None:
             path = path.with_suffix(f'.{file_format}')
         return path
 
     @functools.lru_cache()
-    def get_node_identifiers(metanode):
-        path = get_nodes_path(metanode, file_format='tsv')
+    def get_node_identifiers(self, metanode):
+        """
+        Returns a list of node identifiers for a metapath
+        """
+        path = self.get_nodes_path(metanode, file_format='tsv')
         node_df = pandas.read_table(path)
         return list(node_df['identifier'])
 
@@ -166,12 +165,13 @@ class HetMat:
         """
         file_formats sets the precedence of which file to read in
         """
+        metaedge = self.metagraph.get_metaedge(metaedge)
         path = self.get_edges_path(metaedge, file_format=None)
         matrix = find_read_matrix(path, file_formats=file_formats)
         if dense_threshold is not None:
             matrix = hetio.matrix.sparsify_or_densify(matrix, dense_threshold=dense_threshold)
         if dtype is not None:
             matrix = matrix.astype(dtype)
-        # row_ids = get_node_identifiers()
-        # col_ids = get_node_identifiers()
-        return [], [], matrix
+        row_ids = self.get_node_identifiers(metaedge.source)
+        col_ids = self.get_node_identifiers(metaedge.target)
+        return row_ids, col_ids, matrix
