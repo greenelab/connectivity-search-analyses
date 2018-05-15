@@ -166,8 +166,15 @@ class HetMat:
         file_formats sets the precedence of which file to read in
         """
         metaedge = self.metagraph.get_metaedge(metaedge)
+        # Attempt to read the edge matrix in the specified orientation
         path = self.get_edges_path(metaedge, file_format=None)
-        matrix = find_read_matrix(path, file_formats=file_formats)
+        try:
+            matrix = find_read_matrix(path, file_formats=file_formats)
+        except FileNotFoundError:
+            # Read the edge matrix in the inverse orientation, then transpose
+            path = self.get_edges_path(metaedge.inverse, file_format=None)
+            matrix = find_read_matrix(path, file_formats=file_formats)
+            matrix = matrix.transpose()
         if dense_threshold is not None:
             matrix = hetio.matrix.sparsify_or_densify(matrix, dense_threshold=dense_threshold)
         if dtype is not None:

@@ -25,7 +25,9 @@ def test_disease_gene_example_converstion_to_hetmet(tmpdir):
     assert hetio_adj[1] == hetmat_adj[1]  # column identifiers
     assert numpy.array_equal(hetio_adj[2], hetmat_adj[2])  # adj matrices
 
-    # Test DaG adjacency matrix (hetmat only stores DaG)
-    hetio_adj = hetmech.matrix.metaedge_to_adjacency_matrix(graph, 'GaD', dense_threshold=0)
-    # Not implemented
-    # hetmat_adj = hetmech.matrix.metaedge_to_adjacency_matrix(hetmat, 'GaD', dense_threshold=0)
+    # Test DaG adjacency matrix (hetmat only stores GaD and must transpose)
+    hetio_adj = hetmech.matrix.metaedge_to_adjacency_matrix(graph, 'DaG', dense_threshold=0)
+    hetmat_adj = hetmech.matrix.metaedge_to_adjacency_matrix(hetmat, 'DaG', dense_threshold=0)
+    assert hetio_adj[0] == hetmat_adj[0]  # row identifiers
+    assert hetio_adj[1] == hetmat_adj[1]  # column identifiers
+    assert numpy.array_equal(hetio_adj[2], hetmat_adj[2])  # adj matrices
