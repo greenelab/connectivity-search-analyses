@@ -59,7 +59,7 @@ def read_matrix(path, file_format='infer'):
 
 def find_read_matrix(path, file_formats=['sparse.npz', 'npy']):
     """
-    Read a matrix at the given path (without and extenstion)
+    Read a matrix at the given path (without an extenstion)
     """
     path = pathlib.Path(path)
     for file_format in file_formats:
@@ -74,17 +74,19 @@ def find_read_matrix(path, file_formats=['sparse.npz', 'npy']):
 
 class HetMat:
 
+    # Supported formats for nodes files
     nodes_formats = {
         'tsv',
-        'feather',
-        'pickle',
-        'json',
+        # 'feather',
+        # 'pickle',
+        # 'json',
     }
 
+    # Supported formats for edges files
     edges_formats = {
         'npy',
         'sparse.npz',
-        'tsv',
+        # 'tsv',
     }
 
     def __init__(self, directory, initialize=False):
@@ -134,14 +136,19 @@ class HetMat:
 
     def get_nodes_path(self, metanode, file_format='tsv'):
         """
-        Potential file_formats are TSV, feather, JSON, and pickle.
+        Get the path for the nodes file for the specified metanode. Setting
+        file_format=None returns the path without any exension suffix.
         """
         metanode = self.metagraph.get_metanode(metanode)
-        return self.nodes_directory.joinpath(f'{metanode}.{file_format}')
+        path = self.nodes_directory.joinpath(f'{metanode}')
+        if file_format is not None:
+            path = path.with_suffix(f'.{file_format}')
+        return path
 
     def get_edges_path(self, metaedge, file_format='npy'):
         """
-        Get path to edges file
+        Get the path for the edges file for the specified metaedge. Setting
+        file_format=None returns the path without any exension suffix.
         """
         metaedge_abbrev = self.metagraph.get_metaedge(metaedge).get_abbrev()
         path = self.edges_directory.joinpath(f'{metaedge_abbrev}')
