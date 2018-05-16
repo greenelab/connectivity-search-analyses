@@ -22,6 +22,7 @@ For local development, run the following with the hetmech environment activated:
 
 `pip install --editable .`
 
-## Acknowledgements
+## Acknowledgments
 
+This work is funded in part by [Pfizer](https://www.pfizer.com/) through a grant to Casey Greene.
 This work is funded in part by the Gordon and Betty Moore Foundation’s Data-Driven Discovery Initiative through Grants [GBMF4552](https://www.moore.org/grant-detail?grantId=GBMF4552) to Casey Greene and [GBMF4560](https://www.moore.org/grant-detail?grantId=GBMF4560) to Blair Sullivan.
