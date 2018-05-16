@@ -1,0 +1,138 @@
+position	identifier	name
+0	DOID:0050156	idiopathic pulmonary fibrosis
+1	DOID:0050425	restless legs syndrome
+2	DOID:0050741	alcohol dependence
+3	DOID:0050742	nicotine dependence
+4	DOID:0060073	lymphatic system cancer
+5	DOID:0060119	pharynx cancer
+6	DOID:10021	duodenum cancer
+7	DOID:10153	ileum cancer
+8	DOID:1024	leprosy
+9	DOID:10283	prostate cancer
+10	DOID:10534	stomach cancer
+11	DOID:10608	celiac disease
+12	DOID:10652	Alzheimer's disease
+13	DOID:10763	hypertension
+14	DOID:10811	nasal cavity cancer
+15	DOID:10871	age related macular degeneration
+16	DOID:1094	attention deficit hyperactivity disorder
+17	DOID:10941	intracranial aneurysm
+18	DOID:10976	membranous glomerulonephritis
+19	DOID:11054	urinary bladder cancer
+20	DOID:11119	Gilles de la Tourette syndrome
+21	DOID:1115	sarcoma
+22	DOID:11239	appendix cancer
+23	DOID:11476	osteoporosis
+24	DOID:11555	Fuchs' endothelial dystrophy
+25	DOID:11612	polycystic ovary syndrome
+26	DOID:11615	penile cancer
+27	DOID:11714	gestational diabetes
+28	DOID:11819	ureter cancer
+29	DOID:119	vaginal cancer
+30	DOID:1192	peripheral nervous system neoplasm
+31	DOID:11920	tracheal cancer
+32	DOID:11934	head and neck cancer
+33	DOID:11949	Creutzfeldt-Jakob disease
+34	DOID:12185	otosclerosis
+35	DOID:12236	primary biliary cirrhosis
+36	DOID:12306	vitiligo
+37	DOID:12361	Graves' disease
+38	DOID:12365	malaria
+39	DOID:1245	vulva cancer
+40	DOID:12849	autistic disorder
+41	DOID:12930	dilated cardiomyopathy
+42	DOID:12995	conduct disorder
+43	DOID:1312	focal segmental glomerulosclerosis
+44	DOID:13189	gout
+45	DOID:1319	brain cancer
+46	DOID:13223	uterine fibroid
+47	DOID:1324	lung cancer
+48	DOID:13241	Behcet's disease
+49	DOID:13378	Kawasaki disease
+50	DOID:13499	jejunal cancer
+51	DOID:14004	thoracic aortic aneurysm
+52	DOID:14221	metabolic syndrome X
+53	DOID:14227	azoospermia
+54	DOID:14268	sclerosing cholangitis
+55	DOID:14330	Parkinson's disease
+56	DOID:1459	hypothyroidism
+57	DOID:1595	endogenous depression
+58	DOID:1612	breast cancer
+59	DOID:1686	glaucoma
+60	DOID:1725	peritoneum cancer
+61	DOID:175	vascular cancer
+62	DOID:1781	thyroid cancer
+63	DOID:1790	malignant mesothelioma
+64	DOID:1793	pancreatic cancer
+65	DOID:1826	epilepsy syndrome
+66	DOID:184	bone cancer
+67	DOID:1909	melanoma
+68	DOID:1936	atherosclerosis
+69	DOID:1964	fallopian tube cancer
+70	DOID:1993	rectum cancer
+71	DOID:2043	hepatitis B
+72	DOID:216	dental caries
+73	DOID:2174	ocular cancer
+74	DOID:219	colon cancer
+75	DOID:2355	anemia
+76	DOID:2377	multiple sclerosis
+77	DOID:2394	ovarian cancer
+78	DOID:2531	hematologic cancer
+79	DOID:2596	larynx cancer
+80	DOID:263	kidney cancer
+81	DOID:2841	asthma
+82	DOID:2986	IgA glomerulonephritis
+83	DOID:2994	germ cell cancer
+84	DOID:2998	testicular cancer
+85	DOID:3070	malignant glioma
+86	DOID:3083	chronic obstructive pulmonary disease
+87	DOID:3121	gallbladder cancer
+88	DOID:3277	thymus cancer
+89	DOID:3310	atopic dermatitis
+90	DOID:3312	bipolar disorder
+91	DOID:332	amyotrophic lateral sclerosis
+92	DOID:3393	coronary artery disease
+93	DOID:3565	meningioma
+94	DOID:3571	liver cancer
+95	DOID:363	uterine cancer
+96	DOID:3953	adrenal gland cancer
+97	DOID:4045	muscle cancer
+98	DOID:4159	skin cancer
+99	DOID:418	systemic scleroderma
+100	DOID:4362	cervical cancer
+101	DOID:4481	allergic rhinitis
+102	DOID:4606	bile duct cancer
+103	DOID:4989	pancreatitis
+104	DOID:5041	esophageal cancer
+105	DOID:5099	middle ear cancer
+106	DOID:5408	Paget's disease of bone
+107	DOID:5419	schizophrenia
+108	DOID:5559	mediastinal cancer
+109	DOID:5612	spinal cancer
+110	DOID:585	nephrolithiasis
+111	DOID:5875	retroperitoneal cancer
+112	DOID:594	panic disorder
+113	DOID:635	acquired immunodeficiency syndrome
+114	DOID:6364	migraine
+115	DOID:7147	ankylosing spondylitis
+116	DOID:7148	rheumatoid arthritis
+117	DOID:7693	abdominal aortic aneurysm
+118	DOID:784	chronic kidney failure
+119	DOID:824	periodontitis
+120	DOID:8398	osteoarthritis
+121	DOID:8577	ulcerative colitis
+122	DOID:8778	Crohn's disease
+123	DOID:8850	salivary gland cancer
+124	DOID:8893	psoriasis
+125	DOID:8986	narcolepsy
+126	DOID:90	degenerative disc disease
+127	DOID:9008	psoriatic arthritis
+128	DOID:9074	systemic lupus erythematosus
+129	DOID:9206	Barrett's esophagus
+130	DOID:9296	cleft lip
+131	DOID:9352	type 2 diabetes mellitus
+132	DOID:9744	type 1 diabetes mellitus
+133	DOID:9835	refractive error
+134	DOID:986	alopecia areata
+135	DOID:9917	pleural cancer
+136	DOID:9970	obesity
