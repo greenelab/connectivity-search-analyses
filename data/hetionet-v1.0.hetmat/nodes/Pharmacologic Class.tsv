@@ -1,0 +1,346 @@
+position	identifier	name
+0	N0000000069	Calcium Channel Antagonists
+1	N0000000070	Angiotensin 2 Receptor Antagonists
+2	N0000000083	Leukotriene Receptor Antagonists
+3	N0000000100	Estrogen Receptor Agonists
+4	N0000000102	Norepinephrine Uptake Inhibitors
+5	N0000000104	Cholinergic Muscarinic Agonists
+6	N0000000106	Prostaglandin Receptor Agonists
+7	N0000000109	Serotonin Uptake Inhibitors
+8	N0000000111	Folic Acid Metabolism Inhibitors
+9	N0000000114	Dopamine Uptake Inhibitors
+10	N0000000115	Progestational Hormone Receptor Antagonists
+11	N0000000116	GABA B Agonists
+12	N0000000122	Adrenergic Agonists
+13	N0000000125	Cholinergic Muscarinic Antagonists
+14	N0000000144	Iron Chelating Activity
+15	N0000000146	Androgen Receptor Agonists
+16	N0000000150	Protein Synthesis Inhibitors
+17	N0000000151	Histamine H2 Receptor Antagonists
+18	N0000000154	Opioid Antagonists
+19	N0000000160	Cyclooxygenase Inhibitors
+20	N0000000166	alpha Glucosidase Inhibitors
+21	N0000000168	Selective Estrogen Receptor Modulators
+22	N0000000174	Opioid Agonists
+23	N0000000176	Topoisomerase Inhibitors
+24	N0000000183	Acetyl Aldehyde Dehydrogenase Inhibitors
+25	N0000000190	Histamine H1 Receptor Antagonists
+26	N0000000191	Dihydrofolate Reductase Inhibitors
+27	N0000000194	Somatostatin Receptor Agonists
+28	N0000000196	GABA A Agonists
+29	N0000000202	beta Lactamase Inhibitors
+30	N0000000206	Xanthine Oxidase Inhibitors
+31	N0000000207	Histamine Receptor Antagonists
+32	N0000000209	Adrenergic alpha-Agonists
+33	N0000000233	Nucleic Acid Synthesis Inhibitors
+34	N0000000235	Carbonic Anhydrase Inhibitors
+35	N0000000236	Alkylating Activity
+36	N0000000239	P-Glycoprotein Interactions
+37	N0000000243	Androgen Receptor Antagonists
+38	N0000000246	HIV Protease Inhibitors
+39	N0000000250	Melatonin Receptor Agonists
+40	N0000005760	Aminosalicylic Acids
+41	N0000005934	Progesterone
+42	N0000006014	Pyrethrins
+43	N0000006165	Triiodothyronine
+44	N0000006269	Vitamin A
+45	N0000006276	Vitamin B 12
+46	N0000006277	Vitamin D
+47	N0000006290	Vitamin K
+48	N0000006320	Vasopressins
+49	N0000006337	Ergocalciferols
+50	N0000006496	Nicotine
+51	N0000006688	Carnitine
+52	N0000006801	Bile Acids and Salts
+53	N0000006806	Amino Acids
+54	N0000006996	Cholecalciferol
+55	N0000006999	Urea
+56	N0000007151	Folic Acid
+57	N0000007196	Iodine
+58	N0000007246	Estradiol
+59	N0000007522	Allylamine
+60	N0000007529	Macrolides
+61	N0000007530	Anthracyclines
+62	N0000007542	Benzodiazepines
+63	N0000007544	Phenothiazines
+64	N0000007556	Dihydropyridines
+65	N0000007566	Benzylamines
+66	N0000007568	Oxazolidinones
+67	N0000007570	Pyridines
+68	N0000007606	Quinolones
+69	N0000007618	Ergolines
+70	N0000007620	Ergot Alkaloids
+71	N0000007621	Ergotamines
+72	N0000007632	Thyroxine
+73	N0000007641	Nicotinic Acids
+74	N0000007647	Nitrates
+75	N0000007658	Nitrofurans
+76	N0000007659	Nitrogen Mustard Compounds
+77	N0000007663	Nitroimidazoles
+78	N0000007672	Polyenes
+79	N0000007681	Amides
+80	N0000007683	Organometallic Compounds
+81	N0000007698	Biguanides
+82	N0000007700	Retinoids
+83	N0000007706	Prostaglandins
+84	N0000007707	Diphosphonates
+85	N0000007710	Prostaglandins E, Synthetic
+86	N0000007715	Catecholamines
+87	N0000007770	Deoxyuridine
+88	N0000007780	Vinca Alkaloids
+89	N0000007822	Polymyxins
+90	N0000007853	Aminoglycosides
+91	N0000007883	Amphetamines
+92	N0000007888	Bismuth
+93	N0000007889	Glycopeptides
+94	N0000007893	Glycosaminoglycans
+95	N0000007909	Psoralens
+96	N0000007911	Rifamycins
+97	N0000007948	Tetracyclines
+98	N0000007961	Heparin, Low-Molecular-Weight
+99	N0000007983	Hydroxy Acids
+100	N0000008010	Cannabinoids
+101	N0000008016	Barbiturates
+102	N0000008048	Sulfonamides
+103	N0000008053	Sulfones
+104	N0000008054	Sulfonylurea Compounds
+105	N0000008065	Purines
+106	N0000008118	Xanthines
+107	N0000008157	Cardiac Glycosides
+108	N0000008217	Azoles
+109	N0000008241	Androstanes
+110	N0000008330	Cardiac Rhythm Alteration
+111	N0000008478	Decreased Cell Wall Integrity
+112	N0000008479	Decreased Cell Wall Synthesis & Repair
+113	N0000008486	Decreased Central Nervous System Disorganized Electrical Activity
+114	N0000008553	Decreased Cholesterol Absorption
+115	N0000008556	Decreased Coagulation Factor Activity
+116	N0000008577	Decreased DNA Replication
+117	N0000008638	Decreased GnRH Secretion
+118	N0000008663	Decreased Immunologically Active Molecule Activity
+119	N0000008683	Decreased Leukotriene Production
+120	N0000008732	Decreased Mitosis
+121	N0000008779	Decreased Parasympathetic Acetylcholine Activity
+122	N0000008832	Decreased Platelet Aggregation
+123	N0000008836	Decreased Prostaglandin Production
+124	N0000008841	Decreased Protein Synthesis
+125	N0000008853	Decreased RNA Replication
+126	N0000008859	Decreased Renal K+ Excretion
+127	N0000008867	Decreased Respiratory Secretion Viscosity
+128	N0000008953	Decreased Striated Muscle Contraction
+129	N0000009010	Decreased Tracheobronchial Stretch Receptor Activity
+130	N0000009022	Digestive/GI System Activity Alteration
+131	N0000009034	Emesis Suppression
+132	N0000009048	GI Motility Alteration
+133	N0000009059	Genitourinary Arterial Vasodilation
+134	N0000009065	Hematologic Activity Alteration
+135	N0000009079	Increased Acetylcholine Activity
+136	N0000009176	Increased Cellular Death
+137	N0000009267	Increased Cytokine Activity
+138	N0000009269	Increased Cytokine Production
+139	N0000009282	Increased Dopamine Activity
+140	N0000009371	Increased Large Intestinal Motility
+141	N0000009393	Increased Medullary Respiratory Drive
+142	N0000009456	Increased Norepinephrine Activity
+143	N0000009526	Increased Prostaglandin Activity
+144	N0000009724	Inhibition Gastric Acid Secretion
+145	N0000009801	Photosensitizing Activity
+146	N0000009871	Stimulation Large Intestine Fluid/Electrolyte Secretion
+147	N0000009905	Vascular Sclerosing Activity
+148	N0000009909	Vasodilation
+149	N0000009911	Venous Vasodilation
+150	N0000009916	Lipase Inhibitors
+151	N0000009917	Adrenergic alpha1-Agonists
+152	N0000009918	Adrenergic alpha2-Agonists
+153	N0000009922	Adrenergic beta2-Agonists
+154	N0000009923	Adrenergic beta1-Antagonists
+155	N0000009924	Adrenergic beta2-Antagonists
+156	N0000009945	Antidiuretic Hormone Antagonists
+157	N0000009947	Nucleoside Reverse Transcriptase Inhibitors
+158	N0000009948	Non-Nucleoside Reverse Transcriptase Inhibitors
+159	N0000009963	Thrombin Inhibitors
+160	N0000009982	Decreased Sebaceous Gland Activity
+161	N0000010217	Photoabsorption
+162	N0000010258	X-Ray Contrast Activity
+163	N0000010259	Ultrasound Contrast Activity
+164	N0000010262	Neurokinin 1 Antagonists
+165	N0000010288	Osmotic Activity
+166	N0000011161	Cephalosporins
+167	N0000011272	Thiazolidinediones
+168	N0000011280	Prostaglandins I
+169	N0000011281	Penicillins
+170	N0000011294	Carbapenems
+171	N0000011301	Progesterone Congeners
+172	N0000011310	Aldosterone Antagonists
+173	N0000011311	Monobactams
+174	N0000011402	Estradiol Congeners
+175	N0000011414	Ketolides
+176	N0000011418	Streptogramins
+177	N0000020000	Receptor Tyrosine Kinase Inhibitors
+178	N0000020015	NMDA Receptor Antagonists
+179	N0000020019	Glucosylceramide Synthase Inhibitors
+180	N0000020024	Sclerosing Activity
+181	N0000020026	Phosphodiesterase 5 Inhibitors
+182	N0000020060	DNA Polymerase Inhibitors
+183	N0000020074	Phosphate Chelating Activity
+184	N0000020081	Increased Calcium-sensing Receptor Sensitivity
+185	N0000166469	Thiazides
+186	N0000166489	Quaternary Ammonium Compounds
+187	N0000166743	Esters
+188	N0000167094	Benzothiazoles
+189	N0000167510	Estrogens, Conjugated (USP)
+190	N0000170118	PPAR alpha
+191	N0000170119	PPAR gamma
+192	N0000171131	Allergens
+193	N0000171207	Porphyrinogens
+194	N0000175073	Platinum-containing Compounds
+195	N0000175075	Proteasome Inhibitors
+196	N0000175076	Protein Kinase Inhibitors
+197	N0000175080	Aromatase Inhibitors
+198	N0000175084	Gonadotropin Releasing Hormone Receptor Antagonists
+199	N0000175085	Microtubule Inhibition
+200	N0000175086	Phosphodiesterase 3 Inhibitors
+201	N0000175087	Urease Inhibitors
+202	N0000175089	Calcium Chelating Activity
+203	N0000175359	Increased Diuresis
+204	N0000175361	Catecholamine Synthesis Inhibitors
+205	N0000175365	Bile-acid Binding Activity
+206	N0000175366	Increased Diuresis at Loop of Henle
+207	N0000175370	Cholinergic Antagonists
+208	N0000175372	Appetite Suppression
+209	N0000175374	Peroxisome Proliferator-activated Receptor Activity
+210	N0000175375	Peroxisome Proliferator-activated Receptor alpha Agonists
+211	N0000175379	Arteriolar Vasodilation
+212	N0000175433	pleuromutilin
+213	N0000175436	Neuraminidase Inhibitors
+214	N0000175442	Lincosamides
+215	N0000175445	Chemokine Co-receptor 5 Antagonists
+216	N0000175448	Potassium Channel Antagonists
+217	N0000175450	Corticosteroid Hormone Receptor Agonists
+218	N0000175456	Chloride Channel Activators
+219	N0000175459	Nucleoside Analog
+220	N0000175460	Non-Nucleoside Analog
+221	N0000175469	Pyrophosphate Analog
+222	N0000175472	Metal Chelating Activity
+223	N0000175479	Amphenicols
+224	N0000175508	Lipopeptides
+225	N0000175512	Methylated Sulfonamides
+226	N0000175513	Dipeptidase Inhibitors
+227	N0000175516	RNA Synthetase Inhibitors
+228	N0000175533	Dyes
+229	N0000175542	M2 Protein Inhibitors
+230	N0000175547	Reduction Activity
+231	N0000175549	Cystine Disulfide Reduction
+232	N0000175550	Decreased Immunologic Activity
+233	N0000175624	mTOR Inhibitors
+234	N0000175628	Decreased Histamine Release
+235	N0000175629	Increased Histamine Release
+236	N0000175632	Decreased Fibrinolysis
+237	N0000175635	Factor Xa Inhibitors
+238	N0000175644	Decreased Autonomic Ganglionic Activity
+239	N0000175650	Decreased Sympathetic Activity
+240	N0000175651	Increased Sympathetic Activity
+241	N0000175654	Gonadotropin Releasing Hormone Receptor Agonists
+242	N0000175684	Full Opioid Agonists
+243	N0000175685	Partial Opioid Agonists
+244	N0000175686	Competitive Opioid Antagonists
+245	N0000175702	Partial Cholinergic Nicotinic Agonists
+246	N0000175721	Nonsteroidal Anti-inflammatory Compounds
+247	N0000175728	Central Nervous System Depression
+248	N0000175729	Central Nervous System Stimulation
+249	N0000175730	Centrally-mediated Muscle Relaxation
+250	N0000175732	Neuromuscular Nondepolarizing Blockade
+251	N0000175733	Neuromuscular Depolarizing Blockade
+252	N0000175735	Decreased Striated Muscle Tone
+253	N0000175755	DOPA Decarboxylase Inhibitors
+254	N0000175761	Monoamine Oxidase-B Inhibitors
+255	N0000175763	Serotonin 1b Receptor Agonists
+256	N0000175764	Serotonin 1d Receptor Agonists
+257	N0000175788	Adenosine Receptor Agonists
+258	N0000175799	Dopamine D2 Antagonists
+259	N0000175808	Hydroxyphenylpyruvate Dioxygenase Inhibitors
+260	N0000175817	Serotonin 3 Receptor Antagonists
+261	N0000175830	Inhibit Ovum Fertilization
+262	N0000175833	Acidifying Activity
+263	N0000175850	Melanin Synthesis Inhibitors
+264	N0000175851	Depigmenting Activity
+265	N0000175862	Magnetic Resonance Contrast Activity
+266	N0000175912	Dipeptidyl Peptidase 4 Inhibitors
+267	N0000175914	Increased Coagulation Factor VIII Activity
+268	N0000175915	Increased Coagulation Factor VIII Concentration
+269	N0000175917	Thyroid Hormone Synthesis Inhibitors
+270	N0000175921	Adrenal Steroid Synthesis Inhibitors
+271	N0000175955	5-Lipoxygenase Inhibitors
+272	N0000175960	Increased Glutathione Concentration
+273	N0000175962	Lead Chelating Activity
+274	N0000175964	Vitamin K Inhibitors
+275	N0000175965	Increased Prothrombin Activity
+276	N0000175967	Thrombopoietin Receptor Interactions
+277	N0000175968	Thrombopoietin Receptor Agonists
+278	N0000175969	Increased Megakaryocyte Maturation
+279	N0000175970	Increased Platelet Production
+280	N0000175972	Decreased Platelet Production
+281	N0000175975	General Anesthesia
+282	N0000175976	Local Anesthesia
+283	N0000175982	Reversed Anticoagulation Activity
+284	N0000178324	Increased Hematopoietic Stem Cell Mobilization
+285	N0000178477	Decreased Blood Pressure
+286	N0000178478	Increased Blood Pressure
+287	N0000180999	Angiotensin 2 Type 1 Receptor Antagonists
+288	N0000181815	Sphingosine 1-Phosphate Receptor Modulators
+289	N0000181819	Uncompetitive NMDA Receptor Antagonists
+290	N0000182137	Cytochrome P450 2D6 Inhibitors
+291	N0000182138	Cytochrome P450 1A2 Inhibitors
+292	N0000182139	Cytochrome P450 2B6 Inhibitors
+293	N0000182140	Cytochrome P450 2C19 Inhibitors
+294	N0000182141	Cytochrome P450 3A4 Inhibitors
+295	N0000182143	P2Y12 Receptor Antagonists
+296	N0000182147	Sigma-1 Receptor Agonists
+297	N0000182638	HCV NS3/4A Protease Inhibitors
+298	N0000182728	Potassium Channel Openers
+299	N0000182960	Phosphodiesterase 4 Inhibitors
+300	N0000184143	Carbamoyl Phosphate Synthetase 1 Activators
+301	N0000184145	Chloride Channel Activation Potentiators
+302	N0000184148	Smoothened Receptor Antagonists
+303	N0000184306	Cell-mediated Immunity
+304	N0000185007	Adrenergic beta3-Agonists
+305	N0000185499	Guanylate Cyclase Activators
+306	N0000185503	P-Glycoprotein Inhibitors
+307	N0000185504	Cytochrome P450 2C9 Inhibitors
+308	N0000185506	Cytochrome P450 3A4 Inducers
+309	N0000185507	Cytochrome P450 2C9 Inducers
+310	N0000185607	Cytochrome P450 2C19 Inducers
+311	N0000186774	Diarylquinolines
+312	N0000186778	Microsomal Triglyceride Transfer Protein Inhibitors
+313	N0000187058	Sodium-Glucose Transporter 2 Inhibitors
+314	N0000187061	Organic Cation Transporter 2 Inhibitors
+315	N0000187062	Cytochrome P450 2C8 Inhibitors
+316	N0000187063	Cytochrome P450 2C8 Inducers
+317	N0000187064	Cytochrome P450 2B6 Inducers
+318	N0000190107	Organic Anion Transporting Polypeptide 1B1 Inhibitors
+319	N0000190108	Organic Anion Transporting Polypeptide 1B3 Inhibitors
+320	N0000190109	Organic Anion Transporting Polypeptide 2B1 Inhibitors
+321	N0000190110	Organic Anion Transporter 1 Inhibitors
+322	N0000190111	Organic Anion Transporter 3 Inhibitors
+323	N0000190113	Breast Cancer Resistance Protein Inhibitors
+324	N0000190114	Cytochrome P450 3A Inhibitors
+325	N0000190115	Cytochrome P450 3A5 Inhibitors
+326	N0000190118	Cytochrome P450 3A Inducers
+327	N0000190482	Phenylalanine Hydroxylase Activators
+328	N0000190855	Vesicular Monoamine Transporter 2 Inhibitors
+329	N0000191258	RNA Replicase Inhibitors
+330	N0000191264	P-Glycoprotein Inducers
+331	N0000191265	Organic Cation Transporter 1 Inhibitors
+332	N0000191266	Cytochrome P450 1A2 Inducers
+333	N0000191267	Cytochrome P450 2D6 Inducers
+334	N0000191269	UDP Glucuronosyltransferases Inhibitors
+335	N0000191272	UGT1A1 Inhibitors
+336	N0000191273	UGT2B7 Inhibitors
+337	N0000191274	UGT2B15 Inhibitors
+338	N0000191275	UGT1A3 Inhibitors
+339	N0000191276	UGT1A4 Inhibitors
+340	N0000191277	UGT1A6 Inhibitors
+341	N0000191278	UGT1A9 Inhibitors
+342	N0000191280	Lipoglycopeptides
+343	N0000191423	Multidrug and Toxin Extrusion Transporter 1 Inhibitors
+344	N0000191624	Cytochrome P450 1A Inducers

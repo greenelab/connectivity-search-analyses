@@ -1,0 +1,1823 @@
+position	identifier	name
+0	PC7_10399	a4b7 Integrin signaling
+1	PC7_10400	a6b1 and a6b4 Integrin signaling
+2	PC7_10442	activated TAK1 mediates p38 MAPK activation
+3	PC7_10508	alpha-linolenic (omega3) and linoleic (omega6) acid metabolism
+4	PC7_10557	amb2 Integrin signaling
+5	PC7_1063	AKT phosphorylates targets in the cytosol
+6	PC7_1064	AKT phosphorylates targets in the nucleus
+7	PC7_1065	AKT-mediated inactivation of FOXO1A
+8	PC7_11018	beta-catenin independent WNT signaling
+9	PC7_11020	betaKlotho-mediated ligand binding
+10	PC7_1103	ALK1 pathway
+11	PC7_11039	binding of TCF/LEF:CTNNB1 to target gene promoters
+12	PC7_1104	ALK1 signaling events
+13	PC7_1105	ALK2 signaling events
+14	PC7_11143	cGMP effects
+15	PC7_1118	AMER1 mutants destabilize the destruction complex
+16	PC7_1119	AMPK inhibits chREBP transcriptional activation activity
+17	PC7_1123	AP-1 transcription factor network
+18	PC7_11234	cell division
+19	PC7_1127	APC-Cdc20 mediated degradation of Nek2A
+20	PC7_1128	APC/C-mediated degradation of cell cycle proteins
+21	PC7_1129	APC/C:Cdc20 mediated degradation of Cyclin B
+22	PC7_1130	APC/C:Cdc20 mediated degradation of Securin
+23	PC7_1131	APC/C:Cdc20 mediated degradation of mitotic proteins
+24	PC7_1132	APC/C:Cdh1 mediated degradation of Cdc20 and other APC/C:Cdh1 targeted proteins in late mitosis/early G1
+25	PC7_1135	APOBEC3G mediated resistance to HIV-1 infection
+26	PC7_11357	deactivation of the beta-catenin transactivating complex
+27	PC7_11384	degradation of AXIN
+28	PC7_11385	degradation of DVL
+29	PC7_11463	disassembly of the destruction complex and recruitment of AXIN to the membrane
+30	PC7_11470	eNOS activation
+31	PC7_11610	formation of the beta-catenin:TCF transactivating complex
+32	PC7_1163	ARMS-mediated activation
+33	PC7_1178	ATF-2 transcription factor network
+34	PC7_1181	ATF4 activates genes
+35	PC7_1189	ATF6-alpha activates chaperone genes
+36	PC7_1190	ATF6-alpha activates chaperones
+37	PC7_1200	ATM mediated phosphorylation of repair proteins
+38	PC7_1203	ATM pathway
+39	PC7_12069	mRNA Capping
+40	PC7_12070	mRNA Editing
+41	PC7_12073	mRNA Splicing
+42	PC7_12075	mRNA decay by 3' to 5' exoribonuclease
+43	PC7_12076	mRNA decay by 5' to 3' exoribonuclease
+44	PC7_12078	mTOR signaling pathway
+45	PC7_12079	mTOR signalling
+46	PC7_12080	mTORC1-mediated signalling
+47	PC7_1210	ATP sensitive Potassium channels
+48	PC7_1213	ATR signaling pathway
+49	PC7_1214	AUF1 (hnRNP D0) destabilizes mRNA
+50	PC7_12149	mitochondrial fatty acid beta-oxidation of saturated fatty acids
+51	PC7_12150	mitochondrial fatty acid beta-oxidation of unsaturated fatty acids
+52	PC7_12187	negative regulation of TCF-dependent signaling by DVL-interacting proteins
+53	PC7_12188	negative regulation of TCF-dependent signaling by WNT ligand antagonists
+54	PC7_1219	Abacavir metabolism
+55	PC7_1220	Abacavir transmembrane transport
+56	PC7_1221	Abacavir transport and metabolism
+57	PC7_1223	Abnormal metabolism in phenylketonuria
+58	PC7_1224	Abortive elongation of HIV-1 transcript in the absence of Tat
+59	PC7_12264	p130Cas linkage to MAPK signaling for integrins
+60	PC7_12266	p38 MAPK signaling pathway
+61	PC7_12267	p38 signaling mediated by MAPKAP kinases
+62	PC7_12268	p38MAPK events
+63	PC7_12271	p53 pathway
+64	PC7_12274	p53-Dependent G1 DNA Damage Response
+65	PC7_12279	p73 transcription factor network
+66	PC7_12280	p75 NTR receptor-mediated signalling
+67	PC7_12281	p75(NTR)-mediated signaling
+68	PC7_12282	p75NTR negatively regulates cell cycle via SC1
+69	PC7_12283	p75NTR recruits signalling complexes
+70	PC7_12284	p75NTR regulates axonogenesis
+71	PC7_12285	p75NTR signals via NF-kB
+72	PC7_1230	Acetylation
+73	PC7_1231	Acetylcholine Binding And Downstream Events
+74	PC7_1232	Acetylcholine Neurotransmitter Release Cycle
+75	PC7_12320	phospho-PLA2 pathway
+76	PC7_1233	Acetylcholine regulates insulin secretion
+77	PC7_12487	regulation of FZD by ubiquitination
+78	PC7_12488	repression of WNT target genes
+79	PC7_12899	tRNA Aminoacylation
+80	PC7_13144	vRNP Assembly
+81	PC7_1516	Activated NOTCH1 Transmits Signal to the Nucleus
+82	PC7_1517	Activated TLR4 signalling
+83	PC7_1518	Activated point mutants of FGFR2
+84	PC7_1519	Activation and oligomerization of BAK protein
+85	PC7_1520	Activation of AMPA receptors
+86	PC7_1521	Activation of APC/C and APC/C:Cdc20 mediated degradation of mitotic proteins
+87	PC7_1522	Activation of ATR in response to replication stress
+88	PC7_1523	Activation of BAD and translocation to mitochondria
+89	PC7_1524	Activation of BH3-only proteins
+90	PC7_1525	Activation of BID and translocation to mitochondria
+91	PC7_1526	Activation of BIM and translocation to mitochondria
+92	PC7_1527	Activation of BMF and translocation to mitochondria
+93	PC7_1528	Activation of C3 and C5
+94	PC7_1529	Activation of Ca-permeable Kainate Receptor
+95	PC7_1530	Activation of CaMK IV
+96	PC7_1531	Activation of DNA fragmentation factor
+97	PC7_1532	Activation of G protein gated Potassium channels
+98	PC7_1533	Activation of GABAB receptors
+99	PC7_1534	Activation of IRF3/IRF7 mediated by TBK1/IKK epsilon
+100	PC7_1535	Activation of Kainate Receptors upon glutamate binding
+101	PC7_1536	Activation of Matrix Metalloproteinases
+102	PC7_1537	Activation of NF-kappaB in B cells
+103	PC7_1538	Activation of NIMA Kinases NEK9, NEK6, NEK7
+104	PC7_1539	Activation of NMDA receptor upon glutamate binding and postsynaptic events
+105	PC7_1540	Activation of NOXA and translocation to mitochondria
+106	PC7_1541	Activation of Na-permeable Kainate Receptors
+107	PC7_1543	Activation of PKB
+108	PC7_1544	Activation of PPARGC1A (PGC-1alpha) by phosphorylation
+109	PC7_1545	Activation of PUMA and translocation to mitochondria
+110	PC7_1546	Activation of RAS in B cells
+111	PC7_1547	Activation of Rac
+112	PC7_1548	Activation of TRKA receptors
+113	PC7_1549	Activation of caspases through apoptosome-mediated cleavage
+114	PC7_1550	Activation of gene expression by SREBF (SREBP)
+115	PC7_1551	Activation of the AP-1 family of transcription factors
+116	PC7_1552	Activation of the mRNA upon binding of the cap-binding complex and eIFs, and subsequent binding to 43S
+117	PC7_1553	Activation of the phototransduction cascade
+118	PC7_1554	Activation of the pre-replicative complex
+119	PC7_1555	Activation, translocation and oligomerization of BAX
+120	PC7_1556	Acyl chain remodeling of CL
+121	PC7_1557	Acyl chain remodeling of DAG and TAG
+122	PC7_1558	Acyl chain remodelling of PC
+123	PC7_1559	Acyl chain remodelling of PE
+124	PC7_1560	Acyl chain remodelling of PG
+125	PC7_1561	Acyl chain remodelling of PI
+126	PC7_1562	Acyl chain remodelling of PS
+127	PC7_1563	Adaptive Immune System
+128	PC7_1565	Adenosine P1 receptors
+129	PC7_1571	Adenylate cyclase activating pathway
+130	PC7_1572	Adenylate cyclase inhibitory pathway
+131	PC7_1573	Adherens junctions interactions
+132	PC7_1576	Adrenaline signalling through Alpha-2 adrenergic receptor
+133	PC7_1577	Adrenaline,noradrenaline inhibits insulin secretion
+134	PC7_1578	Adrenoceptors
+135	PC7_1580	Advanced glycosylation endproduct receptor signaling
+136	PC7_1581	Aflatoxin activation and detoxification
+137	PC7_1582	Agmatine biosynthesis
+138	PC7_1596	Alpha-defensins
+139	PC7_1597	Alpha-oxidation of phytanate
+140	PC7_1598	Alpha-synuclein signaling
+141	PC7_1599	Alpha4 beta1 integrin signaling events
+142	PC7_1600	Alpha6 beta4 integrin-ligand interactions
+143	PC7_1601	Alpha9 beta1 integrin signaling events
+144	PC7_1602	AlphaE beta7 integrin cell surface interactions
+145	PC7_1606	Alternative NF-kappaB pathway
+146	PC7_1607	Alternative complement activation
+147	PC7_1622	Amine Oxidase reactions
+148	PC7_1623	Amine compound SLC transporters
+149	PC7_1624	Amine ligand-binding receptors
+150	PC7_1625	Amine-derived hormones
+151	PC7_1626	Amino Acid conjugation
+152	PC7_1629	Amino acid and derivative metabolism
+153	PC7_1630	Amino acid and oligopeptide SLC transporters
+154	PC7_1631	Amino acid synthesis and interconversion (transamination)
+155	PC7_1632	Amino acid transport across the plasma membrane
+156	PC7_1653	Amplification of signal from the kinetochores
+157	PC7_1655	Amyloids
+158	PC7_1657	Anchoring fibril formation
+159	PC7_1658	Androgen biosynthesis
+160	PC7_1664	Angiopoietin receptor Tie2-mediated signaling
+161	PC7_1667	Antagonism of Activin by Follistatin
+162	PC7_1669	Antigen Presentation: Folding, assembly and peptide loading of class I MHC
+163	PC7_1670	Antigen activates B Cell Receptor (BCR) leading to generation of second messengers
+164	PC7_1671	Antigen processing-Cross presentation
+165	PC7_1672	Antigen processing: Ubiquitination & Proteasome degradation
+166	PC7_1674	Antiviral mechanism by IFN-stimulated genes
+167	PC7_1684	Apoptosis
+168	PC7_1687	Apoptotic cleavage of cell adhesion proteins
+169	PC7_1688	Apoptotic cleavage of cellular proteins
+170	PC7_1689	Apoptotic execution phase
+171	PC7_1690	Apoptotic factor-mediated response
+172	PC7_1691	Aquaporin-mediated transport
+173	PC7_1692	Arachidonate production from DAG
+174	PC7_1693	Arachidonic acid metabolism
+175	PC7_1695	Arf1 pathway
+176	PC7_1696	Arf6 downstream pathway
+177	PC7_1697	Arf6 signaling events
+178	PC7_1698	Arf6 trafficking events
+179	PC7_1750	Asparagine N-linked glycosylation
+180	PC7_1810	Assembly Of The HIV Virion
+181	PC7_1811	Assembly of Viral Components at the Budding Site
+182	PC7_1812	Assembly of collagen fibrils and other multimeric structures
+183	PC7_1813	Assembly of the ORC complex at the origin of replication
+184	PC7_1814	Assembly of the RAD50-MRE11-NBS1 complex at DNA double-strand breaks
+185	PC7_1815	Assembly of the RAD51-ssDNA nucleoprotein complex
+186	PC7_1816	Assembly of the pre-replicative complex
+187	PC7_1817	Association of TriC/CCT with target proteins during biosynthesis
+188	PC7_1818	Association of licensing factors with the pre-replicative complex
+189	PC7_1820	Astrocytic Glutamate-Glutamine Uptake And Metabolism
+190	PC7_1821	Asymmetric localization of PCP proteins
+191	PC7_1849	Attachment of GPI anchor to uPAR
+192	PC7_1850	Attenuation phase
+193	PC7_1851	Atypical NF-kappaB pathway
+194	PC7_1855	Aurora A signaling
+195	PC7_1856	Aurora B signaling
+196	PC7_1857	Aurora C signaling
+197	PC7_1858	Autodegradation of Cdh1 by Cdh1:APC/C
+198	PC7_1859	Autodegradation of the E3 ubiquitin ligase COP1
+199	PC7_1860	Autointegration results in viral DNA circles
+200	PC7_1863	Axon guidance
+201	PC7_1867	Axonal growth inhibition (RHOA activation)
+202	PC7_1868	Axonal growth stimulation
+203	PC7_1877	B Cell Activation
+204	PC7_1883	BARD1 signaling events
+205	PC7_1987	BCR signaling pathway
+206	PC7_1994	BH3-only proteins associate with and inactivate anti-apoptotic BCL-2 members
+207	PC7_2008	BMAL1:CLOCK,NPAS2 activates circadian gene expression
+208	PC7_2012	BMP receptor signaling
+209	PC7_2032	Base Excision Repair
+210	PC7_2033	Base-Excision Repair, AP Site Formation
+211	PC7_2034	Base-free sugar-phosphate removal via the single-nucleotide replacement pathway
+212	PC7_2035	Basigin interactions
+213	PC7_2064	Beta defensins
+214	PC7_2065	Beta oxidation of butanoyl-CoA to acetyl-CoA
+215	PC7_2066	Beta oxidation of decanoyl-CoA to octanoyl-CoA-CoA
+216	PC7_2067	Beta oxidation of hexanoyl-CoA to butanoyl-CoA
+217	PC7_2068	Beta oxidation of lauroyl-CoA to decanoyl-CoA-CoA
+218	PC7_2069	Beta oxidation of myristoyl-CoA to lauroyl-CoA
+219	PC7_2071	Beta oxidation of palmitoyl-CoA to myristoyl-CoA
+220	PC7_2072	Beta-catenin phosphorylation cascade
+221	PC7_2073	Beta-oxidation of pristanoyl-CoA
+222	PC7_2074	Beta-oxidation of very long chain fatty acids
+223	PC7_2076	Beta1 integrin cell surface interactions
+224	PC7_2078	Beta2 integrin cell surface interactions
+225	PC7_2080	Beta3 integrin cell surface interactions
+226	PC7_2081	Beta5 beta6 beta7 and beta8 integrin cell surface interactions
+227	PC7_2089	Bicarbonate transporters
+228	PC7_2090	Bile acid and bile salt metabolism
+229	PC7_2091	Bile salt and organic anion SLC transporters
+230	PC7_2095	Binding and Uptake of Ligands by Scavenger Receptors
+231	PC7_2096	Binding and entry of HIV virion
+232	PC7_2097	Biogenic amines are oxidatively deaminated to aldehydes by MAOA and MAOB
+233	PC7_2098	Biological oxidations
+234	PC7_2100	Biosynthesis of the N-glycan precursor (dolichol lipid-linked oligosaccharide, LLO) and transfer to a nascent protein
+235	PC7_2103	Biotin transport and metabolism
+236	PC7_2117	Branched-chain amino acid catabolism
+237	PC7_2118	Breakdown of the nuclear lamina
+238	PC7_2124	Budding and maturation of HIV virion
+239	PC7_2164	Butyrate Response Factor 1 (BRF1) destabilizes mRNA
+240	PC7_2170	C-MYB transcription factor network
+241	PC7_2171	C-MYC pathway
+242	PC7_2173	C6 deamination of adenosine
+243	PC7_2251	CD28 co-stimulation
+244	PC7_2252	CD28 dependent PI3K/Akt signaling
+245	PC7_2253	CD28 dependent Vav1 pathway
+246	PC7_2255	CD40/CD40L signaling
+247	PC7_2263	CDC42 signaling events
+248	PC7_2264	CDC6 association with the ORC:origin complex
+249	PC7_2265	CDK-mediated phosphorylation and removal of Cdc6
+250	PC7_2276	CDO in myogenesis
+251	PC7_2278	CDT1 association with the CDC6:ORC:origin complex
+252	PC7_2301	CHL1 interactions
+253	PC7_2324	COPI Mediated Transport
+254	PC7_2325	COPII (Coat Protein 2) Mediated Vesicle Transport
+255	PC7_2331	CREB phosphorylation
+256	PC7_2332	CREB phosphorylation through the activation of Adenylate Cyclase
+257	PC7_2333	CREB phosphorylation through the activation of CaMKII
+258	PC7_2334	CREB phosphorylation through the activation of CaMKK
+259	PC7_2335	CREB phosphorylation through the activation of Ras
+260	PC7_2347	CRMPs in Sema3A signaling
+261	PC7_2348	CS/DS degradation
+262	PC7_2360	CTLA4 inhibitory signaling
+263	PC7_2372	CXCR3-mediated signaling events
+264	PC7_2373	CXCR4-mediated signaling events
+265	PC7_2379	CYP2E1 reactions
+266	PC7_2391	Ca activated K+ channels
+267	PC7_2392	Ca-dependent events
+268	PC7_2393	Ca2+ pathway
+269	PC7_2394	CaM pathway
+270	PC7_2395	CaMK IV-mediated phosphorylation of CREB
+271	PC7_2440	Calcineurin-regulated NFAT-dependent transcription in lymphocytes
+272	PC7_2441	Calcitonin-like ligand receptors
+273	PC7_2458	Calcium signaling in the CD4+ TCR pathway
+274	PC7_2460	Calnexin/calreticulin cycle
+275	PC7_2461	Cam-PDE 1 activation
+276	PC7_2467	Canonical NF-kappaB pathway
+277	PC7_2468	Canonical Wnt signaling pathway
+278	PC7_2469	Cap-dependent Translation Initiation
+279	PC7_2500	Carbohydrate metabolism
+280	PC7_2505	Carnitine synthesis
+281	PC7_2506	Caspase Cascade in Apoptosis
+282	PC7_2507	Caspase-8 activation by cleavage
+283	PC7_2508	Caspase-mediated cleavage of cytoskeletal proteins
+284	PC7_2516	Catecholamine biosynthesis
+285	PC7_2517	Cation-coupled Chloride cotransporters
+286	PC7_2518	Cdc20:Phospho-APC/C mediated degradation of Cyclin A
+287	PC7_2519	Cell Cycle
+288	PC7_2520	Cell Cycle Checkpoints
+289	PC7_2521	Cell Cycle, Mitotic
+290	PC7_2523	Cell death signalling via NRAGE, NRIF and NADE
+291	PC7_2524	Cell junction organization
+292	PC7_2525	Cell surface interactions at the vascular wall
+293	PC7_2526	Cell-Cell communication
+294	PC7_2527	Cell-cell junction organization
+295	PC7_2528	Cell-extracellular matrix interactions
+296	PC7_2529	Cellular Senescence
+297	PC7_2530	Cellular response to heat stress
+298	PC7_2531	Cellular response to hypoxia
+299	PC7_2532	Cellular responses to stress
+300	PC7_2533	Cellular roles of Anthrax toxin
+301	PC7_2534	Centrosome maturation
+302	PC7_2535	Ceramide signaling pathway
+303	PC7_2536	Ceramide signalling
+304	PC7_2539	ChREBP activates metabolic gene expression
+305	PC7_2541	Chaperonin-mediated protein folding
+306	PC7_2543	Chemokine receptors bind chemokines
+307	PC7_2544	Chk1/Chk2(Cds1) mediated inactivation of Cyclin B:Cdk1 complex
+308	PC7_2565	Cholesterol biosynthesis
+309	PC7_2568	Chondroitin sulfate biosynthesis
+310	PC7_2569	Chondroitin sulfate/dermatan sulfate metabolism
+311	PC7_2570	Chromatin modifying enzymes
+312	PC7_2575	Chromosome Maintenance
+313	PC7_2576	Chylomicron-mediated lipid transport
+314	PC7_2582	Circadian Clock
+315	PC7_2584	Circadian rhythm pathway
+316	PC7_2610	Citric acid cycle (TCA cycle)
+317	PC7_2620	Class A/1 (Rhodopsin-like receptors)
+318	PC7_2621	Class B/2 (Secretin family receptors)
+319	PC7_2622	Class C/3 (Metabotropic glutamate/pheromone receptors)
+320	PC7_2623	Class I MHC mediated antigen processing & presentation
+321	PC7_2624	Class I PI3K signaling events
+322	PC7_2625	Class I PI3K signaling events mediated by Akt
+323	PC7_2626	Class IB PI3K non-lipid kinase events
+324	PC7_2627	Class II GLUTs
+325	PC7_2628	Classical Kir channels
+326	PC7_2629	Classical antibody-mediated complement activation
+327	PC7_2630	Clathrin derived vesicle budding
+328	PC7_2631	Clearance of Nuclear Envelope Membranes from Chromatin
+329	PC7_2632	Clearance of dopamine
+330	PC7_2633	Clearance of seratonin
+331	PC7_2634	Cleavage of Growing Transcript in the Termination Region
+332	PC7_2635	Cleavage of the damaged purine
+333	PC7_2636	Cleavage of the damaged pyrimidine
+334	PC7_2647	Clostridium neurotoxicity
+335	PC7_2651	Cobalamin (Cbl, vitamin B12) transport and metabolism
+336	PC7_2659	Coenzyme A biosynthesis
+337	PC7_2661	Cohesin Loading onto Chromatin
+338	PC7_2668	Collagen biosynthesis and modifying enzymes
+339	PC7_2669	Collagen degradation
+340	PC7_2670	Collagen formation
+341	PC7_2671	Common Pathway
+342	PC7_2672	Complement cascade
+343	PC7_2673	Condensation of Prometaphase Chromosomes
+344	PC7_2674	Condensation of Prophase Chromosomes
+345	PC7_2675	Conjugation of benzoate with glycine
+346	PC7_2677	Conjugation of phenylacetate with glutamine
+347	PC7_2678	Conjugation of salicylate with glycine
+348	PC7_2679	Constitutive PI3K/AKT Signaling in Cancer
+349	PC7_2680	Constitutive Signaling by NOTCH1 HD Domain Mutants
+350	PC7_2681	Constitutive Signaling by NOTCH1 HD+PEST Domain Mutants
+351	PC7_2683	Constitutive Signaling by NOTCH1 t(7;9)(NOTCH1:M1580_K2555) Translocation Mutant
+352	PC7_2684	Conversion from APC/C:Cdc20 to APC/C:Cdh1 in late anaphase
+353	PC7_2685	Cooperation of Prefoldin and TriC/CCT in actin and tubulin folding
+354	PC7_2698	Coregulation of Androgen receptor activity
+355	PC7_2701	Costimulation by the CD28 family
+356	PC7_2703	Creatine metabolism
+357	PC7_2704	Creation of C4 and C2 activators
+358	PC7_2705	Cross-presentation of particulate exogenous antigens (phagosomes)
+359	PC7_2706	Cross-presentation of soluble exogenous antigens (endosomes)
+360	PC7_2707	Crosslinking of collagen fibrils
+361	PC7_2829	Cyclin A/B1 associated events during G2/M transition
+362	PC7_2830	Cyclin A:Cdk2-associated events at S phase entry
+363	PC7_2831	Cyclin B2 mediated events
+364	PC7_2832	Cyclin D associated events in G1
+365	PC7_2833	Cyclin E associated events during G1/S transition
+366	PC7_2890	Cysteine formation from homocysteine
+367	PC7_2905	Cytochrome P450 - arranged by substrate type
+368	PC7_2907	Cytokine Signaling in Immune system
+369	PC7_2909	Cytosolic iron-sulfur cluster assembly
+370	PC7_2910	Cytosolic sensors of pathogen-associated DNA
+371	PC7_2911	Cytosolic sulfonation of small molecules
+372	PC7_2912	Cytosolic tRNA aminoacylation
+373	PC7_2924	DAG and IP3 signaling
+374	PC7_2925	DAP12 interactions
+375	PC7_2926	DAP12 signaling
+376	PC7_2927	DARPP-32 events
+377	PC7_2928	DCC mediated attractive signaling
+378	PC7_2942	DEx/H-box helicases activate type I IFN and inflammatory cytokines production
+379	PC7_2946	DNA Damage Bypass
+380	PC7_2947	DNA Damage Recognition in GG-NER
+381	PC7_2948	DNA Damage Reversal
+382	PC7_2949	DNA Damage/Telomere Stress Induced Senescence
+383	PC7_2950	DNA Repair
+384	PC7_2951	DNA Replication
+385	PC7_2952	DNA Replication Pre-Initiation
+386	PC7_2953	DNA methylation
+387	PC7_2955	DNA replication initiation
+388	PC7_2956	DNA strand elongation
+389	PC7_2957	DNA-PK pathway in nonhomologous end joining
+390	PC7_2968	DSCAM interactions
+391	PC7_3014	Deadenylation of mRNA
+392	PC7_3015	Deadenylation-dependent mRNA decay
+393	PC7_3016	Death Receptor Signalling
+394	PC7_3017	Defective AMN causes hereditary megaloblastic anemia 1
+395	PC7_3018	Defective B3GAT3 causes JDSSDHD
+396	PC7_3046	Defensins
+397	PC7_3059	Degradation of GABA
+398	PC7_3060	Degradation of GLI1 by the proteasome
+399	PC7_3061	Degradation of GLI2 by the proteasome
+400	PC7_3062	Degradation of beta catenin
+401	PC7_3064	Degradation of cysteine and homocysteine
+402	PC7_3065	Degradation of the extracellular matrix
+403	PC7_3071	Depolarization of the Presynaptic Terminal Triggers the Opening of Calcium Channels
+404	PC7_3072	Depolymerisation of the Nuclear Lamina
+405	PC7_3073	Deposition of new CENPA-containing nucleosomes at the centromere
+406	PC7_3077	Dermatan sulfate biosynthesis
+407	PC7_3083	Detoxification of Reactive Oxygen Species
+408	PC7_3084	Developmental Biology
+409	PC7_3166	Digestion of dietary carbohydrate
+410	PC7_3167	Digestion of dietary lipid
+411	PC7_3277	Direct p53 effectors
+412	PC7_3278	Disease
+413	PC7_3280	Diseases associated with visual transduction
+414	PC7_3282	Disinhibition of SNARE formation
+415	PC7_3283	Displacement of DNA glycosylase by APE1
+416	PC7_3284	Dissolution of Fibrin Clot
+417	PC7_3315	Dopamine Neurotransmitter Release Cycle
+418	PC7_3318	Dopamine receptors
+419	PC7_3319	Double-Strand Break Repair
+420	PC7_3320	Downregulation of ERBB2:ERBB3 signaling
+421	PC7_3321	Downregulation of ERBB4 signaling
+422	PC7_3322	Downregulation of SMAD2/3:SMAD4 transcriptional activity
+423	PC7_3323	Downregulation of TGF-beta receptor signaling
+424	PC7_3324	Downstream TCR signaling
+425	PC7_3325	Downstream signal transduction
+426	PC7_3326	Downstream signaling events of B Cell Receptor (BCR)
+427	PC7_3327	Downstream signaling in naïve CD8+ T cells
+428	PC7_3328	Downstream signaling of activated FGFR
+429	PC7_3348	Dual incision reaction in GG-NER
+430	PC7_3349	Dual incision reaction in TC-NER
+431	PC7_3358	E-cadherin signaling events
+432	PC7_3359	E-cadherin signaling in keratinocytes
+433	PC7_3360	E-cadherin signaling in the nascent adherens junction
+434	PC7_3361	E2F mediated regulation of DNA replication
+435	PC7_3362	E2F transcription factor network
+436	PC7_3363	E2F-enabled inhibition of pre-replication complex formation
+437	PC7_3366	ECM proteoglycans
+438	PC7_3384	EGFR Transactivation by Gastrin
+439	PC7_3385	EGFR downregulation
+440	PC7_3386	EGFR interacts with phospholipase C-gamma
+441	PC7_3392	EGFR-dependent Endothelin signaling events
+442	PC7_3415	EPH-Ephrin signaling
+443	PC7_3416	EPH-ephrin mediated repulsion of cells
+444	PC7_3417	EPHA forward signaling
+445	PC7_3418	EPHA-mediated growth cone collapse
+446	PC7_3419	EPHA2 forward signaling
+447	PC7_3420	EPHB forward signaling
+448	PC7_3421	EPHB-mediated forward signaling
+449	PC7_3424	EPO signaling pathway
+450	PC7_3425	ER Quality Control Compartment (ERQC)
+451	PC7_3427	ER-Phagosome pathway
+452	PC7_3433	ERK activation
+453	PC7_3434	ERK/MAPK targets
+454	PC7_3435	ERK1 activation
+455	PC7_3436	ERK2 activation
+456	PC7_3437	ERKs are inactivated
+457	PC7_3629	Early Phase of HIV Life Cycle
+458	PC7_3632	Effects of Botulinum toxin
+459	PC7_3633	Effects of PIP2 hydrolysis
+460	PC7_3646	Eicosanoid ligand-binding receptors
+461	PC7_3647	Eicosanoids
+462	PC7_3649	Elastic fibre formation
+463	PC7_3650	Electric Transmission Across Gap Junctions
+464	PC7_3651	Electron transport from NADPH to Ferredoxin
+465	PC7_3652	Elevation of cytosolic Ca2+ levels
+466	PC7_3653	Elongation arrest and recovery
+467	PC7_3663	Endogenous TLR signaling
+468	PC7_3664	Endogenous sterols
+469	PC7_3666	Endosomal Sorting Complex Required For Transport (ESCRT)
+470	PC7_3667	Endosomal/Vacuolar pathway
+471	PC7_3670	Endothelins
+472	PC7_3671	Energy dependent regulation of mTOR by LKB1-AMPK
+473	PC7_3674	Enzymatic degradation of Dopamine by monoamine oxidase
+474	PC7_3677	Ephrin A reverse signaling
+475	PC7_3678	Ephrin B reverse signaling
+476	PC7_3679	Ephrin signaling
+477	PC7_3680	EphrinA-EPHA pathway
+478	PC7_3681	EphrinB-EPHB pathway
+479	PC7_3682	Epigenetic regulation of gene expression
+480	PC7_3697	ErbB receptor signaling network
+481	PC7_3698	ErbB1 downstream signaling
+482	PC7_3699	ErbB2/ErbB3 signaling events
+483	PC7_3700	ErbB4 signaling events
+484	PC7_3701	Erythrocytes take up carbon dioxide and release oxygen
+485	PC7_3703	Establishment of Sister Chromatid Cohesion
+486	PC7_3752	Estrogen biosynthesis
+487	PC7_3756	Ethanol oxidation
+488	PC7_3772	Eukaryotic Translation Elongation
+489	PC7_3774	Eukaryotic Translation Termination
+490	PC7_3775	Export of Viral Ribonucleoproteins from Nucleus
+491	PC7_3776	Extension of Telomeres
+492	PC7_3777	Extracellular matrix organization
+493	PC7_3778	Extrinsic Pathway
+494	PC7_3798	FAS (CD95) signaling pathway
+495	PC7_3803	FBXW7 Mutants and NOTCH1 in Cancer
+496	PC7_3805	FCERI mediated Ca+2 mobilization
+497	PC7_3806	FCERI mediated MAPK activation
+498	PC7_3807	FCERI mediated NF-kB activation
+499	PC7_3808	FCGR activation
+500	PC7_3811	FGF signaling pathway
+501	PC7_3818	FGFR ligand binding and activation
+502	PC7_3819	FGFR1 ligand binding and activation
+503	PC7_3820	FGFR1b ligand binding and activation
+504	PC7_3821	FGFR1c and Klotho ligand binding and activation
+505	PC7_3822	FGFR1c ligand binding and activation
+506	PC7_3824	FGFR2b ligand binding and activation
+507	PC7_3825	FGFR2c ligand binding and activation
+508	PC7_3826	FGFR3 ligand binding and activation
+509	PC7_3827	FGFR3b ligand binding and activation
+510	PC7_3829	FGFR4 ligand binding and activation
+511	PC7_3845	FMO oxidises nucleophiles
+512	PC7_3849	FOXA transcription factor networks
+513	PC7_3852	FOXA1 transcription factor network
+514	PC7_3853	FOXA2 and FOXA3 transcription factor networks
+515	PC7_3855	FOXM1 transcription factor network
+516	PC7_3864	FRS2-mediated cascade
+517	PC7_3868	Facilitative Na+-independent glucose transporters
+518	PC7_3869	Factors involved in megakaryocyte development and platelet production
+519	PC7_3874	Fanconi Anemia pathway
+520	PC7_3875	Fanconi anemia pathway
+521	PC7_3876	FasL/ CD95L signaling
+522	PC7_3877	Fatty Acids bound to GPR40 (FFAR1) regulate insulin secretion
+523	PC7_3878	Fatty Acyl-CoA Biosynthesis
+524	PC7_3882	Fatty acid, triacylglycerol, and ketone body metabolism
+525	PC7_3883	Fatty acids
+526	PC7_3884	Fc epsilon receptor (FCERI) signaling
+527	PC7_3885	Fc-epsilon receptor I signaling in mast cells
+528	PC7_3886	Fcgamma receptor (FCGR) dependent phagocytosis
+529	PC7_3901	Fertilization
+530	PC7_3902	Fibronectin matrix formation
+531	PC7_3903	Ficolins bind to repetitive carbohydrate structures on the target cell surface
+532	PC7_3953	Folding of actin by CCT/TriC
+533	PC7_3957	Formation of ATP by chemiosmotic coupling
+534	PC7_3958	Formation of Fibrin Clot (Clotting Cascade)
+535	PC7_3959	Formation of HIV elongation complex in the absence of HIV Tat
+536	PC7_3960	Formation of HIV-1 elongation complex containing HIV-1 Tat
+537	PC7_3962	Formation of Senescence-Associated Heterochromatin Foci (SAHF)
+538	PC7_3963	Formation of a pool of free 40S subunits
+539	PC7_3964	Formation of annular gap junctions
+540	PC7_3965	Formation of apoptosome
+541	PC7_3968	Formation of the Early Elongation Complex
+542	PC7_3969	Formation of the Editosome
+543	PC7_3971	Formation of the active cofactor, UDP-glucuronate
+544	PC7_3972	Formation of the ternary complex, and subsequently, the 43S complex
+545	PC7_3974	Formation of tubulin folding intermediates by CCT/TriC
+546	PC7_3975	Formyl peptide receptors bind formyl peptides and many other ligands
+547	PC7_3980	FoxO family signaling
+548	PC7_3981	Free fatty acid receptors
+549	PC7_3983	Frs2-mediated activation
+550	PC7_3985	Fructose catabolism
+551	PC7_3991	G alpha (12/13) signalling events
+552	PC7_3992	G alpha (i) signalling events
+553	PC7_3993	G alpha (q) signalling events
+554	PC7_3994	G alpha (s) signalling events
+555	PC7_3995	G alpha (z) signalling events
+556	PC7_3996	G beta:gamma signalling through PI3Kgamma
+557	PC7_3997	G beta:gamma signalling through PLC beta
+558	PC7_3999	G-protein activation
+559	PC7_4000	G-protein beta:gamma signalling
+560	PC7_4001	G-protein mediated events
+561	PC7_4002	G0 and Early G1
+562	PC7_4004	G1/S DNA Damage Checkpoints
+563	PC7_4005	G1/S Transition
+564	PC7_4006	G1/S-Specific Transcription
+565	PC7_4007	G2 Phase
+566	PC7_4008	G2/M Checkpoints
+567	PC7_4009	G2/M DNA damage checkpoint
+568	PC7_4010	G2/M DNA replication checkpoint
+569	PC7_4011	G2/M Transition
+570	PC7_4012	GAB1 signalosome
+571	PC7_4013	GABA A (rho) receptor activation
+572	PC7_4014	GABA A receptor activation
+573	PC7_4016	GABA receptor activation
+574	PC7_4018	GABA synthesis
+575	PC7_4019	GABA synthesis, release, reuptake and degradation
+576	PC7_4037	GLI3 is processed to GLI3R by the proteasome
+577	PC7_4038	GMCSF-mediated signaling events
+578	PC7_4042	GP1b-IX-V activation signalling
+579	PC7_4043	GPCR downstream signaling
+580	PC7_4044	GPCR ligand binding
+581	PC7_4053	GPVI-mediated activation cascade
+582	PC7_4061	GRB2 events in EGFR signaling
+583	PC7_4062	GRB2 events in ERBB2 signaling
+584	PC7_4063	GRB2:SOS provides linkage to MAPK signaling for Integrins
+585	PC7_4064	GRB7 events in ERBB2 signaling
+586	PC7_4085	GTP hydrolysis and joining of the 60S ribosomal subunit
+587	PC7_4093	Galactose catabolism
+588	PC7_4099	Gamma-carboxylation of protein precursors
+589	PC7_4100	Gamma-carboxylation, transport, and amino-terminal cleavage of proteins
+590	PC7_4101	Gap junction assembly
+591	PC7_4102	Gap junction degradation
+592	PC7_4103	Gap junction trafficking
+593	PC7_4104	Gap junction trafficking and regulation
+594	PC7_4105	Gap-filling DNA repair synthesis and ligation in GG-NER
+595	PC7_4107	Gastrin-CREB signalling pathway via PKC and MAPK
+596	PC7_4112	Gene Expression
+597	PC7_4115	Generation of second messenger molecules
+598	PC7_4116	Generic Transcription Pathway
+599	PC7_4156	Global Genomic NER (GG-NER)
+600	PC7_4157	Glucagon signaling in metabolic regulation
+601	PC7_4158	Glucagon-like Peptide-1 (GLP1) regulates insulin secretion
+602	PC7_4159	Glucagon-type ligand receptors
+603	PC7_4160	Glucocorticoid biosynthesis
+604	PC7_4161	Glucocorticoid receptor regulatory network
+605	PC7_4162	Gluconeogenesis
+606	PC7_4207	Glucose metabolism
+607	PC7_4211	Glucose transport
+608	PC7_4214	Glucuronidation
+609	PC7_4215	Glutamate Binding, Activation of AMPA Receptors and Synaptic Plasticity
+610	PC7_4216	Glutamate Neurotransmitter Release Cycle
+611	PC7_4219	Glutathione conjugation
+612	PC7_4258	Glutathione synthesis and recycling
+613	PC7_4262	Glycerophospholipid biosynthesis
+614	PC7_4265	Glycogen breakdown (glycogenolysis)
+615	PC7_4267	Glycogen synthesis
+616	PC7_4269	Glycolysis
+617	PC7_4271	Glycoprotein hormones
+618	PC7_4276	Glycosphingolipid metabolism
+619	PC7_4283	Glyoxylate metabolism
+620	PC7_4284	Glypican 1 network
+621	PC7_4285	Glypican 2 network
+622	PC7_4286	Glypican 3 network
+623	PC7_4287	Glypican pathway
+624	PC7_4300	Golgi Associated Vesicle Biogenesis
+625	PC7_4301	Golgi Cisternae Pericentriolar Stack Reorganization
+626	PC7_4306	Growth hormone receptor signaling
+627	PC7_4308	HATs acetylate histones
+628	PC7_4318	HCN channels
+629	PC7_4334	HDACs deacetylate histones
+630	PC7_4335	HDL-mediated lipid transport
+631	PC7_4336	HDMs demethylate histones
+632	PC7_4340	HIF-1-alpha transcription factor network
+633	PC7_4341	HIF-2-alpha transcription factor network
+634	PC7_4365	HIV Infection
+635	PC7_4366	HIV Life Cycle
+636	PC7_4368	HIV Transcription Initiation
+637	PC7_4370	HIV-1 Nef: Negative effector of Fas and TNF-alpha
+638	PC7_4414	HS-GAG biosynthesis
+639	PC7_4415	HS-GAG degradation
+640	PC7_4416	HSF1 activation
+641	PC7_4417	HSF1-dependent transactivation
+642	PC7_4438	Hedgehog 'off' state
+643	PC7_4439	Hedgehog ligand biogenesis
+644	PC7_4440	Hedgehog signaling events mediated by Gli proteins
+645	PC7_4443	Heme biosynthesis
+646	PC7_4444	Heme degradation
+647	PC7_4449	Hemostasis
+648	PC7_4451	Heparan sulfate/heparin (HS-GAG) metabolism
+649	PC7_4466	Hexose uptake
+650	PC7_4467	Hh ligand biogenesis disease
+651	PC7_4468	Highly calcium permeable nicotinic acetylcholine receptors
+652	PC7_4469	Highly calcium permeable postsynaptic nicotinic acetylcholine receptors
+653	PC7_4470	Highly sodium permeable acetylcholine nicotinic receptors
+654	PC7_4480	Histamine receptors
+655	PC7_4482	Histidine catabolism
+656	PC7_4487	Homologous DNA pairing and strand exchange
+657	PC7_4488	Homologous Recombination Repair
+658	PC7_4490	Hormone ligand-binding receptors
+659	PC7_4491	Hormone-sensitive lipase (HSL)-mediated triacylglycerol hydrolysis
+660	PC7_4492	Host Interactions of HIV factors
+661	PC7_4493	Host Interactions with Influenza Factors
+662	PC7_4494	HuR stabilizes mRNA
+663	PC7_4496	Hyaluronan biosynthesis and export
+664	PC7_4497	Hyaluronan metabolism
+665	PC7_4498	Hyaluronan uptake and degradation
+666	PC7_4530	Hydrolysis of LPC
+667	PC7_4531	Hydrolysis of LPE
+668	PC7_4532	Hydroxycarboxylic acid-binding receptors
+669	PC7_4540	Hypoxic and oxygen homeostasis regulation of HIF-1-alpha
+670	PC7_4541	Hypusinylation
+671	PC7_4556	IFN-gamma pathway
+672	PC7_4574	IGF1 pathway
+673	PC7_4583	IGF1R signaling cascade
+674	PC7_4587	IKK complex recruitment mediated by RIP1
+675	PC7_4588	IL1-mediated signaling events
+676	PC7_4593	IL12 signaling mediated by STAT4
+677	PC7_4594	IL12-mediated signaling events
+678	PC7_4611	IL2 signaling events mediated by PI3K
+679	PC7_4612	IL2 signaling events mediated by STAT5
+680	PC7_4613	IL2-mediated signaling events
+681	PC7_4614	IL23-mediated signaling events
+682	PC7_4618	IL27-mediated signaling events
+683	PC7_4619	IL3-mediated signaling events
+684	PC7_4627	IL4-mediated signaling events
+685	PC7_4628	IL5-mediated signaling events
+686	PC7_4637	IL6-mediated signaling events
+687	PC7_4638	IL8- and CXCR1-mediated signaling events
+688	PC7_4639	IL8- and CXCR2-mediated signaling events
+689	PC7_4653	IRAK1 recruits IKK complex
+690	PC7_4655	IRAK2 mediated activation of TAK1 complex
+691	PC7_4657	IRE1alpha activates chaperones
+692	PC7_4658	IRF3 mediated activation of type 1 IFN
+693	PC7_4660	IRF3-mediated induction of type I IFN
+694	PC7_4661	IRS activation
+695	PC7_4662	IRS-mediated signalling
+696	PC7_4663	IRS-related events
+697	PC7_4664	IRS-related events triggered by IGF1R
+698	PC7_4688	Immune System
+699	PC7_4689	Immunoregulatory interactions between a Lymphoid and a non-Lymphoid cell
+700	PC7_4690	Import of palmitoyl-CoA into the mitochondrial matrix
+701	PC7_4691	Inactivation of APC/C via direct inhibition of the APC/C complex
+702	PC7_4692	Inactivation of Cdc42 and Rac
+703	PC7_4693	Inactivation, recovery and regulation of the phototransduction cascade
+704	PC7_4694	Incretin synthesis, secretion, and inactivation
+705	PC7_4725	Inflammasomes
+706	PC7_4727	Influenza Infection
+707	PC7_4728	Influenza Life Cycle
+708	PC7_4729	Influenza Viral RNA Transcription and Replication
+709	PC7_4730	Influenza Virus Induced Apoptosis
+710	PC7_4731	Inhibition of HSL
+711	PC7_4732	Inhibition of Host mRNA Processing and RNA Silencing
+712	PC7_4734	Inhibition of TSC complex formation by PKB
+713	PC7_4736	Inhibition of replication initiation of damaged DNA by RB1/E2F1
+714	PC7_4739	Initial triggering of complement
+715	PC7_4740	Initiation of Nuclear Envelope Reformation
+716	PC7_4741	Innate Immune System
+717	PC7_4742	Inositol phosphate metabolism
+718	PC7_4744	Inositol transporters
+719	PC7_4745	Insulin Pathway
+720	PC7_4746	Insulin effects increased synthesis of Xylulose-5-Phosphate
+721	PC7_4747	Insulin processing
+722	PC7_4748	Insulin receptor recycling
+723	PC7_4749	Insulin receptor signalling cascade
+724	PC7_4750	Insulin-like Growth Factor-2 mRNA Binding Proteins (IGF2BPs/IMPs/VICKZs) bind RNA
+725	PC7_4751	Insulin-mediated glucose transport
+726	PC7_4754	Integration of energy metabolism
+727	PC7_4755	Integration of provirus
+728	PC7_4757	Integrin alphaIIb beta3 signaling
+729	PC7_4758	Integrin cell surface interactions
+730	PC7_4759	Integrin family cell surface interactions
+731	PC7_4761	Integrin-linked kinase signaling
+732	PC7_4762	Integrins in angiogenesis
+733	PC7_4764	Interaction With The Zona Pellucida
+734	PC7_4765	Interaction between L1 and Ankyrins
+735	PC7_4766	Interactions of Rev with host cellular proteins
+736	PC7_4767	Interactions of Tat with host cellular proteins
+737	PC7_4768	Interactions of Vpr with host cellular proteins
+738	PC7_4769	Interconversion of 2-oxoglutarate and 2-hydroxyglutarate
+739	PC7_4770	Interconversion of polyamines
+740	PC7_4771	Interferon Signaling
+741	PC7_4772	Interferon alpha/beta signaling
+742	PC7_4773	Interferon gamma signaling
+743	PC7_4775	Interleukin receptor SHC signaling
+744	PC7_4777	Interleukin-1 processing
+745	PC7_4778	Interleukin-1 signaling
+746	PC7_4779	Interleukin-2 signaling
+747	PC7_4780	Interleukin-3, 5 and GM-CSF signaling
+748	PC7_4781	Interleukin-6 signaling
+749	PC7_4782	Interleukin-7 signaling
+750	PC7_4783	Internalization of ErbB1
+751	PC7_4784	Intrinsic Pathway
+752	PC7_4785	Intrinsic Pathway for Apoptosis
+753	PC7_4786	Inwardly rectifying K+ channels
+754	PC7_4791	Ion channel transport
+755	PC7_4792	Ion transport by P-type ATPases
+756	PC7_4806	Iron uptake and transport
+757	PC7_4819	JNK (c-Jun kinases) phosphorylation and activation mediated by activated human TAK1
+758	PC7_4820	JNK signaling in the CD4+ TCR pathway
+759	PC7_4862	KSRP destabilizes mRNA
+760	PC7_4874	Keratan sulfate biosynthesis
+761	PC7_4875	Keratan sulfate degradation
+762	PC7_4876	Keratan sulfate/keratin metabolism
+763	PC7_4884	Ketone body catabolism
+764	PC7_4887	Kinesins
+765	PC7_4888	Klotho-mediated ligand binding
+766	PC7_4917	L1CAM interactions
+767	PC7_4921	LDL endocytosis
+768	PC7_4938	LKB1 signaling events
+769	PC7_4940	LPA receptor mediated events
+770	PC7_4941	LPA4-mediated signaling events
+771	PC7_4945	LRR FLII-interacting protein 1 (LRRFIP1) activates type I IFN production
+772	PC7_4946	Lagging Strand Synthesis
+773	PC7_4947	Laminin interactions
+774	PC7_4948	Late Phase of HIV Life Cycle
+775	PC7_4949	Latent infection of Homo sapiens with Mycobacterium tuberculosis
+776	PC7_4951	Leading Strand Synthesis
+777	PC7_4952	Lectin pathway of complement activation
+778	PC7_4961	Leukotriene receptors
+779	PC7_4965	Ligand-gated ion channel transport
+780	PC7_4968	Linoleic acid (LA) metabolism
+781	PC7_4970	Lipid and lipoprotein metabolism
+782	PC7_4992	Lipoprotein metabolism
+783	PC7_4994	Lissencephaly gene (LIS1) in neuronal migration and development
+784	PC7_5016	Localization of the PINCH-ILK-PARVIN complex to focal adhesions
+785	PC7_5024	Loss of Function of FBXW7 in Cancer and NOTCH1 Signaling
+786	PC7_5025	Loss of Function of SMAD2/3 in Cancer
+787	PC7_5029	Loss of Nlp from mitotic centrosomes
+788	PC7_5045	Lysine catabolism
+789	PC7_5047	Lysosome Vesicle Biogenesis
+790	PC7_5048	Lysosphingolipid and LPA receptors
+791	PC7_5049	M Phase
+792	PC7_5051	MAP kinase activation in TLR cascade
+793	PC7_5078	MAPK targets/ Nuclear events mediated by MAP kinases
+794	PC7_5124	MASTL Facilitates Mitotic Progression
+795	PC7_5139	MEK activation
+796	PC7_5157	MHC class II antigen presentation
+797	PC7_5188	MMR
+798	PC7_5271	Meiosis
+799	PC7_5272	Meiotic recombination
+800	PC7_5273	Meiotic synapsis
+801	PC7_5307	Membrane Trafficking
+802	PC7_5308	Membrane binding and targetting of GAG proteins
+803	PC7_5322	Metabolism
+804	PC7_5323	Metabolism of Angiotensinogen to Angiotensins
+805	PC7_5324	Metabolism of RNA
+806	PC7_5325	Metabolism of folate and pterines
+807	PC7_5326	Metabolism of lipids and lipoproteins
+808	PC7_5327	Metabolism of mRNA
+809	PC7_5328	Metabolism of nitric oxide
+810	PC7_5329	Metabolism of polyamines
+811	PC7_5330	Metabolism of proteins
+812	PC7_5332	Metabolism of steroid hormones and vitamin D
+813	PC7_5339	Metal ion SLC transporters
+814	PC7_5360	Methionine salvage pathway
+815	PC7_5373	Methylation
+816	PC7_5444	MicroRNA (miRNA) biogenesis
+817	PC7_5504	Mineralocorticoid biosynthesis
+818	PC7_5508	Miscellaneous substrates
+819	PC7_5509	Mismatch repair (MMR) directed by MSH2:MSH3 (MutSbeta)
+820	PC7_5510	Mismatch repair (MMR) directed by MSH2:MSH6 (MutSalpha)
+821	PC7_5512	Mitochondrial ABC transporters
+822	PC7_5513	Mitochondrial Fatty Acid Beta-Oxidation
+823	PC7_5514	Mitochondrial Uncoupling Proteins
+824	PC7_5515	Mitochondrial biogenesis
+825	PC7_5516	Mitochondrial iron-sulfur cluster biogenesis
+826	PC7_5517	Mitochondrial protein import
+827	PC7_5518	Mitochondrial tRNA aminoacylation
+828	PC7_5519	Mitochondrial transcription initiation
+829	PC7_5521	Mitochondrial translation
+830	PC7_5522	Mitochondrial translation elongation
+831	PC7_5523	Mitochondrial translation initiation
+832	PC7_5524	Mitochondrial translation termination
+833	PC7_5527	Mitotic Anaphase
+834	PC7_5528	Mitotic G1-G1/S phases
+835	PC7_5529	Mitotic G2-G2/M phases
+836	PC7_5530	Mitotic M-M/G1 phases
+837	PC7_5531	Mitotic Metaphase and Anaphase
+838	PC7_5532	Mitotic Metaphase/Anaphase Transition
+839	PC7_5533	Mitotic Prometaphase
+840	PC7_5534	Mitotic Prophase
+841	PC7_5535	Mitotic Spindle Checkpoint
+842	PC7_5537	Molecules associated with elastic fibres
+843	PC7_5538	Molybdenum cofactor biosynthesis
+844	PC7_5546	Multifunctional anion exchangers
+845	PC7_5550	Muscarinic acetylcholine receptors
+846	PC7_5551	Muscle contraction
+847	PC7_5558	MyD88 cascade initiated on plasma membrane
+848	PC7_5559	MyD88 dependent cascade initiated on endosome
+849	PC7_5560	MyD88-independent cascade
+850	PC7_5561	MyD88:Mal cascade initiated on plasma membrane
+851	PC7_5665	N-Glycan antennae elongation
+852	PC7_5673	N-cadherin signaling events
+853	PC7_5678	N-glycan antennae elongation in the medial/trans-Golgi
+854	PC7_5679	N-glycan trimming and elongation in the cis-Golgi
+855	PC7_5680	N-glycan trimming in the ER and Calnexin/Calreticulin cycle
+856	PC7_5689	NADE modulates death signalling
+857	PC7_5697	NCAM signaling for neurite out-growth
+858	PC7_5698	NCAM1 interactions
+859	PC7_5707	NEP/NS2 Interacts with the Cellular Export Machinery
+860	PC7_5708	NF-kB activation through FADD/RIP-1 pathway mediated by caspase-8 and -10
+861	PC7_5709	NF-kB is activated and signals survival
+862	PC7_5749	NFG and proNGF binds to p75NTR
+863	PC7_5769	NGF processing
+864	PC7_5772	NGF signalling via TRKA from the plasma membrane
+865	PC7_5773	NGF-independant TRKA activation
+866	PC7_5776	NICD traffics to nucleus
+867	PC7_5779	NOD1/2 Signaling Pathway
+868	PC7_5781	NOSIP mediated eNOS trafficking
+869	PC7_5782	NOSTRIN mediated eNOS trafficking
+870	PC7_5783	NOTCH1 Intracellular Domain Regulates Transcription
+871	PC7_5788	NOTCH2 Activation and Transmission of Signal to the Nucleus
+872	PC7_5789	NOTCH2 intracellular domain regulates transcription
+873	PC7_5825	NRAGE signals death through JNK
+874	PC7_5835	NRIF signals cell death from the nucleus
+875	PC7_5837	NS1 Mediated Effects on Host Pathways
+876	PC7_5847	Na+-dependent glucose transporters
+877	PC7_5848	Na+/Cl- dependent neurotransmitter transporters
+878	PC7_5867	Nectin adhesion pathway
+879	PC7_5868	Nectin/Necl trans heterodimerization
+880	PC7_5869	Nef Mediated CD4 Down-regulation
+881	PC7_5870	Nef Mediated CD8 Down-regulation
+882	PC7_5871	Nef and signal transduction
+883	PC7_5872	Nef mediated downregulation of CD28 cell surface expression
+884	PC7_5873	Nef mediated downregulation of MHC class I complex cell surface expression
+885	PC7_5874	Nef-mediates down modulation of cell surface receptors by recruiting them to clathrin adapters
+886	PC7_5875	Negative epigenetic regulation of rRNA expression
+887	PC7_5876	Negative regulation of FGFR signaling
+888	PC7_5877	Negative regulation of the PI3K/AKT network
+889	PC7_5878	Negative regulators of RIG-I/MDA5 signaling
+890	PC7_5881	Nephrin interactions
+891	PC7_5882	Nephrin/Neph1 signaling in the kidney podocyte
+892	PC7_5883	Netrin mediated repulsion signals
+893	PC7_5884	Netrin-1 signaling
+894	PC7_5885	Netrin-mediated signaling events
+895	PC7_5886	Neurofascin interactions
+896	PC7_5887	Neuronal System
+897	PC7_5888	Neurophilin interactions with VEGF and VEGFR
+898	PC7_5889	Neurotransmitter Clearance In The Synaptic Cleft
+899	PC7_5890	Neurotransmitter Receptor Binding And Downstream Transmission In The Postsynaptic Cell
+900	PC7_5891	Neurotransmitter Release Cycle
+901	PC7_5893	Neurotrophic factor-mediated Trk receptor signaling
+902	PC7_5907	Nicotinamide salvaging
+903	PC7_5909	Nicotinate metabolism
+904	PC7_5948	Nitric oxide stimulates guanylate cyclase
+905	PC7_5966	NoRC negatively regulates rRNA expression
+906	PC7_5967	Non-coding RNA Metabolism
+907	PC7_5968	Non-integrin membrane-ECM interactions
+908	PC7_5969	Noncanonical Wnt signaling pathway
+909	PC7_5970	Nongenotropic Androgen signaling
+910	PC7_5971	Nonhomologous End-joining (NHEJ)
+911	PC7_5972	Nonsense Mediated Decay (NMD) enhanced by the Exon Junction Complex (EJC)
+912	PC7_5973	Nonsense Mediated Decay (NMD) independent of the Exon Junction Complex (EJC)
+913	PC7_5975	Norepinephrine Neurotransmitter Release Cycle
+914	PC7_5981	Notch signaling pathway
+915	PC7_5983	Notch-mediated HES/HEY network
+916	PC7_5984	NrCAM interactions
+917	PC7_5985	Nuclear Envelope Breakdown
+918	PC7_5987	Nuclear Events (kinase and transcription factor activation)
+919	PC7_5988	Nuclear Pore Complex (NPC) Disassembly
+920	PC7_5989	Nuclear Receptor transcription pathway
+921	PC7_5990	Nuclear import of Rev protein
+922	PC7_5991	Nuclear signaling by ERBB4
+923	PC7_5993	Nucleotide Excision Repair
+924	PC7_5994	Nucleotide metabolism
+925	PC7_5995	Nucleotide-binding domain, leucine rich repeat containing receptor (NLR) signaling pathways
+926	PC7_5996	Nucleotide-like (purinergic) receptors
+927	PC7_5999	O-glycosylation of TSR domain-containing proteins
+928	PC7_6000	O-linked glycosylation
+929	PC7_6001	O-linked glycosylation of mucins
+930	PC7_6044	Olfactory Signaling Pathway
+931	PC7_6045	Oligomerization of connexins into connexons
+932	PC7_6047	Oncogene Induced Senescence
+933	PC7_6050	Opioid Signalling
+934	PC7_6053	Opsins
+935	PC7_6054	Orc1 removal from chromatin
+936	PC7_6055	Orexin and neuropeptides FF and QRFP bind to their respective receptors
+937	PC7_6057	Organelle biogenesis and maintenance
+938	PC7_6058	Organic anion transport
+939	PC7_6059	Organic anion transporters
+940	PC7_6060	Organic cation transport
+941	PC7_6061	Organic cation/anion/zwitterion transport
+942	PC7_6065	Orphan transporters
+943	PC7_6066	Osteopontin-mediated events
+944	PC7_6067	Other semaphorin interactions
+945	PC7_6072	Oxidative Stress Induced Senescence
+946	PC7_6073	Oxidative demethylation of DNA
+947	PC7_6085	Oxygen-dependent asparagine hydroxylation of Hypoxia-inducible Factor Alpha
+948	PC7_6086	Oxygen-dependent proline hydroxylation of Hypoxia-inducible Factor Alpha
+949	PC7_6094	P2Y receptors
+950	PC7_6097	PAOs oxidise polyamines to amines
+951	PC7_6098	PAR1-mediated thrombin signaling events
+952	PC7_6099	PAR4-mediated thrombin signaling events
+953	PC7_610	2-LTR circle formation
+954	PC7_6108	PCP/CE pathway
+955	PC7_6128	PD-1 signaling
+956	PC7_6135	PDGF receptor signaling network
+957	PC7_6140	PDGFR-alpha signaling pathway
+958	PC7_6141	PDGFR-beta signaling pathway
+959	PC7_6142	PECAM1 interactions
+960	PC7_6143	PERK regulates gene expression
+961	PC7_6147	PI Metabolism
+962	PC7_6149	PI-3K cascade
+963	PC7_6153	PI3K Cascade
+964	PC7_6157	PI3K/AKT activation
+965	PC7_6171	PKA activation
+966	PC7_6172	PKA activation in glucagon signalling
+967	PC7_6173	PKA-mediated phosphorylation of CREB
+968	PC7_6174	PKA-mediated phosphorylation of key metabolic factors
+969	PC7_6175	PKB-mediated events
+970	PC7_6177	PLC beta mediated events
+971	PC7_6178	PLC-gamma1 signalling
+972	PC7_6180	PLCG1 events in ERBB2 signaling
+973	PC7_6189	PLK1 signaling events
+974	PC7_6190	PLK2 and PLK4 events
+975	PC7_6191	PLK3 signaling events
+976	PC7_6200	POU5F1 (OCT4), SOX2, NANOG activate genes related to proliferation
+977	PC7_6201	POU5F1 (OCT4), SOX2, NANOG repress genes related to differentiation
+978	PC7_6202	PP2A-mediated dephosphorylation of key metabolic factors
+979	PC7_6203	PPARA activates gene expression
+980	PC7_6233	PRC2 methylates histones and DNA
+981	PC7_6269	PRPP biosynthesis
+982	PC7_6310	PTM: gamma carboxylation, hypusine formation and arylsulfatase activation
+983	PC7_6315	Packaging Of Telomere Ends
+984	PC7_6373	Passive transport by Aquaporins
+985	PC7_6375	Pausing and recovery of Tat-mediated HIV elongation
+986	PC7_6393	Peptide chain elongation
+987	PC7_6394	Peptide hormone biosynthesis
+988	PC7_6395	Peptide hormone metabolism
+989	PC7_6396	Peptide ligand-binding receptors
+990	PC7_6403	Peroxisomal lipid metabolism
+991	PC7_6432	Phase 1 - Functionalization of compounds
+992	PC7_6433	Phase II conjugation
+993	PC7_6443	Phenylalanine and tyrosine catabolism
+994	PC7_6455	Phosphate bond hydrolysis by NUDT proteins
+995	PC7_6461	Phospholipase C-mediated cascade
+996	PC7_6462	Phospholipid metabolism
+997	PC7_6463	Phosphorylation of CD3 and TCR zeta chains
+998	PC7_6464	Phosphorylation of Emi1
+999	PC7_6465	Phosphorylation of proteins involved in G1/S transition by active Cyclin E:Cdk2 complexes
+1000	PC7_6466	Phosphorylation of proteins involved in the G2/M transition by Cyclin A:Cdc2 complexes
+1001	PC7_6467	Phosphorylation of the APC/C
+1002	PC7_6507	Plasma membrane estrogen receptor signaling
+1003	PC7_6508	Plasmalogen biosynthesis
+1004	PC7_6510	Platelet Adhesion to exposed collagen
+1005	PC7_6511	Platelet Aggregation (Plug Formation)
+1006	PC7_6512	Platelet activation, signaling and aggregation
+1007	PC7_6513	Platelet calcium homeostasis
+1008	PC7_6514	Platelet degranulation
+1009	PC7_6515	Platelet homeostasis
+1010	PC7_6516	Platelet sensitization by LDL
+1011	PC7_6517	Plexin-D1 Signaling
+1012	PC7_6519	Polo-like kinase mediated events
+1013	PC7_6520	Polo-like kinase signaling events in the cell cycle
+1014	PC7_6532	Porphyrin metabolism
+1015	PC7_6533	Post NMDA receptor activation events
+1016	PC7_6534	Post-Elongation Processing of Intron-Containing pre-mRNA
+1017	PC7_6535	Post-Elongation Processing of Intronless pre-mRNA
+1018	PC7_6537	Post-chaperonin tubulin folding pathway
+1019	PC7_6538	Post-transcriptional silencing by small RNAs
+1020	PC7_6539	Post-translational modification: synthesis of GPI-anchored proteins
+1021	PC7_6540	Post-translational protein modification
+1022	PC7_6542	Posttranslational regulation of adherens junction stability and dissassembly
+1023	PC7_6543	Potassium Channels
+1024	PC7_6555	Potassium transport channels
+1025	PC7_6561	Pre-NOTCH Expression and Processing
+1026	PC7_6562	Pre-NOTCH Processing in Golgi
+1027	PC7_6563	Pre-NOTCH Processing in the Endoplasmic Reticulum
+1028	PC7_6564	Pre-NOTCH Transcription and Translation
+1029	PC7_6566	Prefoldin mediated transfer of substrate to CCT/TriC
+1030	PC7_6567	Pregnenolone biosynthesis
+1031	PC7_6569	Presenilin action in Notch and Wnt signaling
+1032	PC7_6570	Presynaptic function of Kainate receptors
+1033	PC7_6571	Presynaptic nicotinic acetylcholine receptors
+1034	PC7_6572	Presynaptic phase of homologous DNA pairing and strand exchange
+1035	PC7_6588	Processing and activation of SUMO
+1036	PC7_6589	Processing of Capped Intron-Containing Pre-mRNA
+1037	PC7_6591	Processing of DNA double-strand break ends
+1038	PC7_6592	Processing of DNA ends prior to end rejoining
+1039	PC7_6593	Processing of Intronless Pre-mRNAs
+1040	PC7_6595	Processive synthesis on the C-strand of the telomere
+1041	PC7_6596	Processive synthesis on the lagging strand
+1042	PC7_6615	Progressive trimming of alpha-1,2-linked mannose residues from Man9/8/7GlcNAc2 to produce Man5GlcNAc2
+1043	PC7_6616	Prolactin receptor signaling
+1044	PC7_6617	Proline catabolism
+1045	PC7_6618	Prolonged ERK activation events
+1046	PC7_6620	Propionyl-CoA catabolism
+1047	PC7_6638	Prostacyclin signalling through prostacyclin receptor
+1048	PC7_6640	Prostanoid ligand receptors
+1049	PC7_6642	Protein folding
+1050	PC7_6643	Proteoglycan syndecan-mediated signaling events
+1051	PC7_6644	Proton-coupled monocarboxylate transport
+1052	PC7_6645	Proton-coupled neutral amino acid transporters
+1053	PC7_6646	Proton/oligonucleotide cotransporters
+1054	PC7_6649	Purine catabolism
+1055	PC7_6652	Purine metabolism
+1056	PC7_6653	Purine ribonucleoside monophosphate biosynthesis
+1057	PC7_6654	Purine salvage
+1058	PC7_6660	Pyrimidine biosynthesis
+1059	PC7_6661	Pyrimidine catabolism
+1060	PC7_6663	Pyrimidine metabolism
+1061	PC7_6664	Pyrimidine salvage reactions
+1062	PC7_6666	Pyrophosphate hydrolysis
+1063	PC7_6669	Pyruvate metabolism
+1064	PC7_6670	Pyruvate metabolism and Citric Acid (TCA) cycle
+1065	PC7_6740	RAC1 signaling pathway
+1066	PC7_6745	RAF activation
+1067	PC7_6747	RAF/MAP kinase cascade
+1068	PC7_6777	REV-ERBA represses gene expression
+1069	PC7_6786	RIG-I/MDA5 mediated induction of IFN-alpha/beta pathways
+1070	PC7_6787	RIP-mediated NFkB activation via ZBP1
+1071	PC7_6788	RMTs methylate histone arginines
+1072	PC7_6789	RNA Pol II CTD phosphorylation and interaction with CE
+1073	PC7_6790	RNA Polymerase I Chain Elongation
+1074	PC7_6791	RNA Polymerase I Promoter Clearance
+1075	PC7_6792	RNA Polymerase I Promoter Escape
+1076	PC7_6793	RNA Polymerase I Promoter Opening
+1077	PC7_6794	RNA Polymerase I Transcription
+1078	PC7_6795	RNA Polymerase I Transcription Initiation
+1079	PC7_6796	RNA Polymerase I Transcription Termination
+1080	PC7_6797	RNA Polymerase I, RNA Polymerase III, and Mitochondrial Transcription
+1081	PC7_6799	RNA Polymerase II Pre-transcription Events
+1082	PC7_6801	RNA Polymerase II Transcription
+1083	PC7_6807	RNA Polymerase III Abortive And Retractive Initiation
+1084	PC7_6808	RNA Polymerase III Chain Elongation
+1085	PC7_6810	RNA Polymerase III Transcription Initiation
+1086	PC7_6811	RNA Polymerase III Transcription Initiation From Type 1 Promoter
+1087	PC7_6812	RNA Polymerase III Transcription Initiation From Type 2 Promoter
+1088	PC7_6813	RNA Polymerase III Transcription Initiation From Type 3 Promoter
+1089	PC7_6814	RNA Polymerase III Transcription Termination
+1090	PC7_6815	RNF mutants show enhanced WNT signaling and proliferation
+1091	PC7_6818	RORA activates circadian gene expression
+1092	PC7_6826	RSK activation
+1093	PC7_6828	RXR and RAR heterodimerization with other nuclear receptor
+1094	PC7_6848	Rap1 signalling
+1095	PC7_6849	Rapid glucocorticoid signaling
+1096	PC7_685	3' -UTR-mediated translational regulation
+1097	PC7_6852	Ras activation uopn Ca2+ infux through NMDA receptor
+1098	PC7_6853	Ras signaling in the CD4+ TCR pathway
+1099	PC7_6855	Reactions specific to the complex N-glycan synthesis pathway
+1100	PC7_6860	Receptor-ligand binding initiates the second proteolytic cleavage of Notch receptor
+1101	PC7_6863	Recruitment of NuMA to mitotic centrosomes
+1102	PC7_6865	Recruitment of repair and signaling proteins to double-strand breaks
+1103	PC7_6866	Recycling of bile acids and salts
+1104	PC7_6867	Recycling of eIF2:GDP
+1105	PC7_6868	Recycling pathway of L1
+1106	PC7_6869	Reduction of cytosolic Ca++ levels
+1107	PC7_6870	Reelin signaling pathway
+1108	PC7_6871	Regulated proteolysis of p75NTR
+1109	PC7_6874	Regulation of AMPK activity via LKB1
+1110	PC7_6875	Regulation of APC/C activators between G1/S and early anaphase
+1111	PC7_6876	Regulation of Androgen receptor activity
+1112	PC7_6877	Regulation of Apoptosis
+1113	PC7_6878	Regulation of CDC42 activity
+1114	PC7_6879	Regulation of Commissural axon pathfinding by Slit and Robo
+1115	PC7_6880	Regulation of Complement cascade
+1116	PC7_6881	Regulation of DNA replication
+1117	PC7_6882	Regulation of Glucokinase by Glucokinase Regulatory Protein
+1118	PC7_6883	Regulation of HSF1-mediated heat shock response
+1119	PC7_6885	Regulation of IFNA signaling
+1120	PC7_6886	Regulation of IFNG signaling
+1121	PC7_6887	Regulation of IGF Activity by IGFBP
+1122	PC7_6888	Regulation of KIT signaling
+1123	PC7_6890	Regulation of PLK1 Activity at G2/M Transition
+1124	PC7_6891	Regulation of RAC1 activity
+1125	PC7_6892	Regulation of Ras family activation
+1126	PC7_6893	Regulation of Rheb GTPase activity by AMPK
+1127	PC7_6894	Regulation of RhoA activity
+1128	PC7_6895	Regulation of Telomerase
+1129	PC7_6896	Regulation of actin dynamics for phagocytic cup formation
+1130	PC7_6897	Regulation of activated PAK-2p34 by proteasome mediated degradation
+1131	PC7_6898	Regulation of beta-cell development
+1132	PC7_6899	Regulation of cholesterol biosynthesis by SREBP (SREBF)
+1133	PC7_6900	Regulation of cytoplasmic and nuclear SMAD2/3 signaling
+1134	PC7_6901	Regulation of cytoskeletal remodeling and cell spreading by IPP complex components
+1135	PC7_6902	Regulation of gap junction activity
+1136	PC7_6903	Regulation of gene expression by Hypoxia-inducible Factor
+1137	PC7_6904	Regulation of gene expression in beta cells
+1138	PC7_6905	Regulation of gene expression in early pancreatic precursor cells
+1139	PC7_6906	Regulation of gene expression in endocrine-committed (NEUROG3+) progenitor cells
+1140	PC7_6907	Regulation of gene expression in late stage (branching morphogenesis) pancreatic bud precursor cells
+1141	PC7_6908	Regulation of innate immune responses to cytosolic DNA
+1142	PC7_6909	Regulation of insulin secretion
+1143	PC7_6910	Regulation of lipid metabolism by Peroxisome proliferator-activated receptor alpha (PPARalpha)
+1144	PC7_6911	Regulation of mRNA stability by proteins that bind AU-rich elements
+1145	PC7_6913	Regulation of nuclear SMAD2/3 signaling
+1146	PC7_6914	Regulation of nuclear beta catenin signaling and target gene transcription
+1147	PC7_6915	Regulation of ornithine decarboxylase (ODC)
+1148	PC7_6916	Regulation of p38-alpha and p38-beta
+1149	PC7_6917	Regulation of pyruvate dehydrogenase (PDH) complex
+1150	PC7_6918	Regulation of retinoblastoma protein
+1151	PC7_6919	Regulation of signaling by CBL
+1152	PC7_6920	Regulation of signaling by NODAL
+1153	PC7_6921	Regulation of the Fanconi anemia pathway
+1154	PC7_6922	Regulation of thyroid hormone activity
+1155	PC7_6923	Regulatory RNA pathways
+1156	PC7_6924	Relaxin receptors
+1157	PC7_6925	Release of Hh-Np from the secreting cell
+1158	PC7_6926	Release of apoptotic factors from the mitochondria
+1159	PC7_6927	Release of eIF4E
+1160	PC7_6928	Removal of DNA patch containing abasic residue
+1161	PC7_6929	Removal of aminoterminal propeptides from gamma-carboxylated proteins
+1162	PC7_6930	Removal of licensing factors from origins
+1163	PC7_6931	Removal of the Flap Intermediate
+1164	PC7_6932	Removal of the Flap Intermediate from the C-strand
+1165	PC7_6933	Repair synthesis for gap-filling by DNA polymerase in TC-NER
+1166	PC7_6937	Resolution of AP sites via the single-nucleotide replacement pathway
+1167	PC7_6939	Resolution of D-loop structures
+1168	PC7_6941	Resolution of Sister Chromatid Cohesion
+1169	PC7_6942	Respiratory electron transport
+1170	PC7_6943	Respiratory electron transport, ATP synthesis by chemiosmotic coupling, and heat production by uncoupling proteins.
+1171	PC7_6945	Response to elevated platelet cytosolic Ca2+
+1172	PC7_6946	Retinoic acid receptors-mediated signaling
+1173	PC7_6947	Retinoid cycle disease events
+1174	PC7_6948	Retinoid metabolism and transport
+1175	PC7_6950	Retrograde neurotrophin signalling
+1176	PC7_6951	Reuptake of GABA
+1177	PC7_6952	Rev-mediated nuclear export of HIV RNA
+1178	PC7_6953	Reversal of Alkylation Damage By DNA Dioxygenases
+1179	PC7_6955	Reversible hydration of carbon dioxide
+1180	PC7_6956	Rhesus glycoproteins mediate ammonium transport.
+1181	PC7_6957	Rho GTPase cycle
+1182	PC7_6958	RhoA signaling pathway
+1183	PC7_6966	Ribosomal scanning and start codon recognition
+1184	PC7_6991	Role of Abl in Robo-Slit signaling
+1185	PC7_6992	Role of Calcineurin-dependent NFAT signaling in lymphocytes
+1186	PC7_6993	Role of DCC in regulating apoptosis
+1187	PC7_6994	Role of LAT2/NTAL/LAB on calcium mobilization
+1188	PC7_6995	Role of phospholipids in phagocytosis
+1189	PC7_6996	Role of second messengers in netrin-1 signaling
+1190	PC7_7024	S Phase
+1191	PC7_7040	S1P1 pathway
+1192	PC7_7041	S1P2 pathway
+1193	PC7_7042	S1P3 pathway
+1194	PC7_7043	S1P4 pathway
+1195	PC7_7044	S1P5 pathway
+1196	PC7_7048	S6K1 signalling
+1197	PC7_7049	S6K1-mediated signalling
+1198	PC7_7230	SCF(Skp2)-mediated degradation of p27/p21
+1199	PC7_7231	SCF-beta-TrCP mediated degradation of Emi1
+1200	PC7_7249	SEMA3A-Plexin repulsion signaling by inhibiting Integrin adhesion
+1201	PC7_7261	SHC activation
+1202	PC7_7262	SHC-mediated cascade
+1203	PC7_7263	SHC-mediated signalling
+1204	PC7_7264	SHC-related events
+1205	PC7_7265	SHC-related events triggered by IGF1R
+1206	PC7_7266	SHC1 events in EGFR signaling
+1207	PC7_7267	SHC1 events in ERBB2 signaling
+1208	PC7_7268	SHC1 events in ERBB4 signaling
+1209	PC7_7269	SHP2 signaling
+1210	PC7_7272	SIRT1 negatively regulates rRNA Expression
+1211	PC7_7288	SLBP Dependent Processing of Replication-Dependent Histone Pre-mRNAs
+1212	PC7_7289	SLBP independent Processing of Histone Pre-mRNAs
+1213	PC7_7290	SLC-mediated transmembrane transport
+1214	PC7_7307	SMAC binds to IAPs
+1215	PC7_7313	SMAD2/SMAD3:SMAD4 heterotrimer regulates transcription
+1216	PC7_7341	SOS-mediated signalling
+1217	PC7_7357	SRP-dependent cotranslational protein targeting to membrane
+1218	PC7_7371	STAT6-mediated induction of chemokines
+1219	PC7_7372	STING mediated induction of host immune responses
+1220	PC7_7384	SUMO is conjugated to E1 (UBA2:SAE1)
+1221	PC7_7385	SUMO is proteolytically processed
+1222	PC7_7386	SUMO is transferred from E1 to E2 (UBE2I, UBC9)
+1223	PC7_7392	Scavenging by Class A Receptors
+1224	PC7_7393	Scavenging by Class B Receptors
+1225	PC7_7394	Scavenging by Class F Receptors
+1226	PC7_7395	Scavenging by Class H Receptors
+1227	PC7_7396	Scavenging of heme from plasma
+1228	PC7_7421	Sema3A PAK dependent Axon repulsion
+1229	PC7_7422	Sema4D in semaphorin signaling
+1230	PC7_7423	Sema4D induced cell migration and growth-cone collapse
+1231	PC7_7424	Sema4D mediated inhibition of cell attachment and migration
+1232	PC7_7425	Semaphorin interactions
+1233	PC7_7426	Senescence-Associated Secretory Phenotype (SASP)
+1234	PC7_7427	Separation of Sister Chromatids
+1235	PC7_7428	Serine biosynthesis
+1236	PC7_7431	Serotonin and melatonin biosynthesis
+1237	PC7_7432	Serotonin receptors
+1238	PC7_7434	Sialic acid metabolism
+1239	PC7_7435	Signal amplification
+1240	PC7_7436	Signal attenuation
+1241	PC7_7437	Signal regulatory protein (SIRP) family interactions
+1242	PC7_7438	Signal transduction by L1
+1243	PC7_7439	Signaling Pathways
+1244	PC7_7440	Signaling by Activin
+1245	PC7_7441	Signaling by Aurora kinases
+1246	PC7_7442	Signaling by BMP
+1247	PC7_7443	Signaling by EGFR
+1248	PC7_7444	Signaling by EGFR in Cancer
+1249	PC7_7445	Signaling by ERBB2
+1250	PC7_7446	Signaling by ERBB4
+1251	PC7_7447	Signaling by FGFR
+1252	PC7_7448	Signaling by FGFR in disease
+1253	PC7_7449	Signaling by FGFR mutants
+1254	PC7_7451	Signaling by FGFR1 fusion mutants
+1255	PC7_7452	Signaling by FGFR1 mutants
+1256	PC7_7457	Signaling by GPCR
+1257	PC7_7458	Signaling by Hedgehog
+1258	PC7_7459	Signaling by Hippo
+1259	PC7_7460	Signaling by Insulin receptor
+1260	PC7_7461	Signaling by Interleukins
+1261	PC7_7462	Signaling by Leptin
+1262	PC7_7463	Signaling by NGF
+1263	PC7_7464	Signaling by NODAL
+1264	PC7_7465	Signaling by NOTCH
+1265	PC7_7472	Signaling by NOTCH2
+1266	PC7_7473	Signaling by NOTCH3
+1267	PC7_7474	Signaling by NOTCH4
+1268	PC7_7475	Signaling by PDGF
+1269	PC7_7477	Signaling by Robo receptor
+1270	PC7_7478	Signaling by SCF-KIT
+1271	PC7_7482	Signaling by VEGF
+1272	PC7_7483	Signaling by WNT in cancer
+1273	PC7_7484	Signaling by Wnt
+1274	PC7_7487	Signaling by constitutively active EGFR
+1275	PC7_7488	Signaling events mediated by HDAC Class I
+1276	PC7_7489	Signaling events mediated by HDAC Class II
+1277	PC7_7490	Signaling events mediated by HDAC Class III
+1278	PC7_7491	Signaling events mediated by Hepatocyte Growth Factor Receptor (c-Met)
+1279	PC7_7492	Signaling events mediated by PRL
+1280	PC7_7493	Signaling events mediated by PTP1B
+1281	PC7_7494	Signaling events mediated by Stem cell factor receptor (c-Kit)
+1282	PC7_7495	Signaling events mediated by TCPTP
+1283	PC7_7496	Signaling events mediated by VEGFR1 and VEGFR2
+1284	PC7_7497	Signaling events mediated by focal adhesion kinase
+1285	PC7_7498	Signaling events mediated by the Hedgehog family
+1286	PC7_7499	Signaling events regulated by Ret tyrosine kinase
+1287	PC7_7500	Signaling mediated by p38-alpha and p38-beta
+1288	PC7_7501	Signaling mediated by p38-gamma and p38-delta
+1289	PC7_7502	Signalling to ERK5
+1290	PC7_7503	Signalling to ERKs
+1291	PC7_7504	Signalling to RAS
+1292	PC7_7505	Signalling to STAT3
+1293	PC7_7506	Signalling to p38 via RIT and RIN
+1294	PC7_7623	Small interfering RNA (siRNA) biogenesis
+1295	PC7_7625	Smooth Muscle Contraction
+1296	PC7_7642	Sodium-coupled phosphate cotransporters
+1297	PC7_7643	Sodium-coupled sulphate, di- and tri-carboxylate transporters
+1298	PC7_7644	Sodium/Calcium exchangers
+1299	PC7_7645	Sodium/Proton exchangers
+1300	PC7_7646	Sperm Motility And Taxes
+1301	PC7_7647	Sperm:Oocyte Membrane Binding
+1302	PC7_7649	Sphingolipid de novo biosynthesis
+1303	PC7_7651	Sphingolipid metabolism
+1304	PC7_7652	Sphingosine 1-phosphate (S1P) pathway
+1305	PC7_7659	Spry regulation of FGF signaling
+1306	PC7_7660	Stabilization and expansion of the E-cadherin adherens junction
+1307	PC7_7661	Stabilization of p53
+1308	PC7_7679	Sterols are 12-hydroxylated by CYP8B1
+1309	PC7_7680	Stimulation of the cell death response by PAK-2p34
+1310	PC7_7681	Stimuli-sensing channels
+1311	PC7_7682	Striated Muscle Contraction
+1312	PC7_7701	Sulfide oxidation to sulfate
+1313	PC7_7703	Sulfur amino acid metabolism
+1314	PC7_7707	Sumoylation by RanBP2 regulates transcriptional repression
+1315	PC7_7717	Syndecan interactions
+1316	PC7_7718	Syndecan-1-mediated signaling events
+1317	PC7_7719	Syndecan-2-mediated signaling events
+1318	PC7_7720	Syndecan-3-mediated signaling events
+1319	PC7_7721	Syndecan-4-mediated signaling events
+1320	PC7_7723	Synthesis and interconversion of nucleotide di- and triphosphates
+1321	PC7_7726	Synthesis of (16-20)-hydroxyeicosatetraenoic acids (HETE)
+1322	PC7_7727	Synthesis of 12-eicosatetraenoic acid derivatives
+1323	PC7_7728	Synthesis of 15-eicosatetraenoic acid derivatives
+1324	PC7_7729	Synthesis of 5-eicosatetraenoic acids
+1325	PC7_7731	Synthesis of DNA
+1326	PC7_7732	Synthesis of Dolichyl-phosphate
+1327	PC7_7733	Synthesis of GDP-mannose
+1328	PC7_7735	Synthesis of IP2, IP, and Ins in the cytosol
+1329	PC7_7736	Synthesis of IP3 and IP4 in the cytosol
+1330	PC7_7738	Synthesis of IPs in the nucleus
+1331	PC7_7739	Synthesis of Ketone Bodies
+1332	PC7_7740	Synthesis of Leukotrienes (LT) and Eoxins (EX)
+1333	PC7_7741	Synthesis of Lipoxins (LX)
+1334	PC7_7742	Synthesis of PA
+1335	PC7_7743	Synthesis of PC
+1336	PC7_7744	Synthesis of PE
+1337	PC7_7745	Synthesis of PG
+1338	PC7_7746	Synthesis of PI
+1339	PC7_7747	Synthesis of PIPs at the ER membrane
+1340	PC7_7748	Synthesis of PIPs at the Golgi membrane
+1341	PC7_7749	Synthesis of PIPs at the early endosome membrane
+1342	PC7_7750	Synthesis of PIPs at the late endosome membrane
+1343	PC7_7751	Synthesis of PIPs at the plasma membrane
+1344	PC7_7752	Synthesis of PS
+1345	PC7_7753	Synthesis of Prostaglandins (PG) and Thromboxanes (TX)
+1346	PC7_7754	Synthesis of UDP-N-acetyl-glucosamine
+1347	PC7_7755	Synthesis of bile acids and bile salts
+1348	PC7_7756	Synthesis of bile acids and bile salts via 24-hydroxycholesterol
+1349	PC7_7757	Synthesis of bile acids and bile salts via 27-hydroxycholesterol
+1350	PC7_7758	Synthesis of bile acids and bile salts via 7alpha-hydroxycholesterol
+1351	PC7_7759	Synthesis of dolichyl-phosphate mannose
+1352	PC7_7761	Synthesis of epoxy (EET) and dihydroxyeicosatrienoic acids (DHET)
+1353	PC7_7762	Synthesis of glycosylphosphatidylinositol (GPI)
+1354	PC7_7763	Synthesis of pyrophosphates in the cytosol
+1355	PC7_7764	Synthesis of substrates in N-glycan biosythesis
+1356	PC7_7765	Synthesis of very long-chain fatty acyl-CoAs
+1357	PC7_7766	Synthesis, secretion, and deacylation of Ghrelin
+1358	PC7_7767	Synthesis, secretion, and inactivation of Glucagon-like Peptide-1 (GLP-1)
+1359	PC7_7768	Synthesis, secretion, and inactivation of Glucose-dependent Insulinotropic Polypeptide (GIP)
+1360	PC7_7778	TAK1 activates NFkB by phosphorylation and activation of IKKs complex
+1361	PC7_7784	TCF dependent signaling in response to WNT
+1362	PC7_7786	TCR signaling
+1363	PC7_7787	TCR signaling in naïve CD4+ T cells
+1364	PC7_7788	TCR signaling in naïve CD8+ T cells
+1365	PC7_7795	TGF-beta receptor signaling
+1366	PC7_7796	TGF-beta receptor signaling activates SMADs
+1367	PC7_7797	TGF-beta receptor signaling in EMT (epithelial to mesenchymal transition)
+1368	PC7_7851	TNF receptor signaling pathway 
+1369	PC7_7852	TNF signaling
+1370	PC7_8053	TRAF3-dependent IRF activation pathway
+1371	PC7_8054	TRAF6 Mediated Induction of proinflammatory cytokines
+1372	PC7_8055	TRAF6 mediated IRF7 activation
+1373	PC7_8056	TRAF6 mediated IRF7 activation in TLR7/8 or 9 signaling
+1374	PC7_8057	TRAF6 mediated NF-kB activation
+1375	PC7_8058	TRAF6 mediated induction of NFkB and MAP kinases upon TLR7/8 or 9 activation
+1376	PC7_8059	TRAF6 mediated induction of TAK1 complex
+1377	PC7_8060	TRAIL signaling
+1378	PC7_8061	TRAIL signaling pathway
+1379	PC7_8064	TRIF-mediated programmed cell death
+1380	PC7_8065	TRKA activation by NGF
+1381	PC7_8066	TRP channels
+1382	PC7_8074	TWIK related potassium channel (TREK)
+1383	PC7_8075	TWIK-related alkaline pH activated K+ channel (TALK)
+1384	PC7_8077	TWIK-releated acid-sensitive K+ channel (TASK)
+1385	PC7_8093	Tachykinin receptors bind tachykinins
+1386	PC7_8130	Tandem of pore domain in a weak inwardly rectifying K+ channels (TWIK)
+1387	PC7_8132	Tandem pore domain potassium channels
+1388	PC7_8138	Telomere C-strand (Lagging Strand) Synthesis
+1389	PC7_8140	Telomere Extension By Telomerase
+1390	PC7_8141	Telomere Maintenance
+1391	PC7_8154	Terminal pathway of complement
+1392	PC7_8155	Termination of O-glycan biosynthesis
+1393	PC7_8208	Tetrahydrobiopterin (BH4) synthesis, recycling, salvage and regulation
+1394	PC7_8223	The AIM2 inflammasome
+1395	PC7_8224	The IPAF inflammasome
+1396	PC7_8225	The NLRP1 inflammasome
+1397	PC7_8226	The NLRP3 inflammasome
+1398	PC7_8227	The activation of arylsulfatases
+1399	PC7_8228	The canonical retinoid cycle in rods (twilight vision)
+1400	PC7_8229	The citric acid (TCA) cycle and respiratory electron transport
+1401	PC7_8231	The phototransduction cascade
+1402	PC7_8233	The retinoid cycle in cones (daylight vision)
+1403	PC7_8234	The role of Nef in HIV-1 replication and disease pathogenesis
+1404	PC7_8264	Thrombin signalling through proteinase activated receptors (PARs)
+1405	PC7_8266	Thromboxane A2 receptor signaling
+1406	PC7_8267	Thromboxane signalling through TP receptor
+1407	PC7_8274	Thyroxine biosynthesis
+1408	PC7_8275	Tie2 Signaling
+1409	PC7_8276	Tight junction interactions
+1410	PC7_8288	Toll Like Receptor 4 (TLR4) Cascade
+1411	PC7_8291	Toll Like Receptor 9 (TLR9) Cascade
+1412	PC7_8295	Toll-Like Receptors Cascades
+1413	PC7_8303	Toxicity of botulinum toxin type A (BoNT/A)
+1414	PC7_8304	Toxicity of botulinum toxin type B (BoNT/B)
+1415	PC7_8305	Toxicity of botulinum toxin type C (BoNT/C)
+1416	PC7_8306	Toxicity of botulinum toxin type D (BoNT/D)
+1417	PC7_8307	Toxicity of botulinum toxin type E (BoNT/E)
+1418	PC7_8309	Toxicity of botulinum toxin type G (BoNT/G)
+1419	PC7_8310	Trafficking and processing of endosomal TLR
+1420	PC7_8312	Trafficking of GluR2-containing AMPA receptors
+1421	PC7_8313	Trafficking of dietary sterols
+1422	PC7_8317	Transcription
+1423	PC7_8318	Transcription from mitochondrial promoters
+1424	PC7_8319	Transcription of the HIV genome
+1425	PC7_8321	Transcription-coupled NER (TC-NER)
+1426	PC7_8322	Transcriptional activation of cell cycle inhibitor p21
+1427	PC7_8323	Transcriptional activation of mitochondrial biogenesis
+1428	PC7_8325	Transcriptional activity of SMAD2/SMAD3:SMAD4 heterotrimer
+1429	PC7_8326	Transcriptional regulation by small RNAs
+1430	PC7_8327	Transcriptional regulation of pluripotent stem cells
+1431	PC7_8328	Transcriptional regulation of white adipocyte differentiation
+1432	PC7_8329	Transfer of LPS from LBP carrier to CD14
+1433	PC7_8330	Transferrin endocytosis and recycling
+1434	PC7_8331	Translation
+1435	PC7_8332	Translation initiation complex formation
+1436	PC7_8337	Translocation of GLUT4 to the plasma membrane
+1437	PC7_8338	Translocation of ZAP-70 to Immunological synapse
+1438	PC7_8339	Transmembrane transport of small molecules
+1439	PC7_8340	Transmission across Chemical Synapses
+1440	PC7_8342	Transport and synthesis of PAPS
+1441	PC7_8343	Transport of Mature Transcript to Cytoplasm
+1442	PC7_8344	Transport of Mature mRNA Derived from an Intronless Transcript
+1443	PC7_8345	Transport of Mature mRNA derived from an Intron-Containing Transcript
+1444	PC7_8346	Transport of Mature mRNAs Derived from Intronless Transcripts
+1445	PC7_8347	Transport of Ribonucleoproteins into the Host Nucleus
+1446	PC7_8349	Transport of connexons to the plasma membrane
+1447	PC7_8350	Transport of fatty acids
+1448	PC7_8351	Transport of gamma-carboxylated protein precursors from the endoplasmic reticulum to the Golgi apparatus
+1449	PC7_8352	Transport of glucose and other sugars, bile salts and organic acids, metal ions and amine compounds
+1450	PC7_8353	Transport of glycerol from adipocytes to the liver by Aquaporins
+1451	PC7_8354	Transport of inorganic cations/anions and amino acids/oligopeptides
+1452	PC7_8355	Transport of nucleosides and free purine and pyrimidine bases across the plasma membrane
+1453	PC7_8356	Transport of nucleotide sugars
+1454	PC7_8357	Transport of organic anions
+1455	PC7_8358	Transport of the SLBP Dependant Mature mRNA
+1456	PC7_8359	Transport of the SLBP independent Mature mRNA
+1457	PC7_8360	Transport of vitamins, nucleosides, and related molecules
+1458	PC7_8361	Transport to the Golgi and subsequent modification
+1459	PC7_8424	Triglyceride Biosynthesis
+1460	PC7_8429	Tristetraprolin (TTP) destabilizes mRNA
+1461	PC7_8430	Trk receptor signaling mediated by PI3K and PLC-gamma
+1462	PC7_8431	Trk receptor signaling mediated by the MAPK pathway
+1463	PC7_8432	Tryptophan catabolism
+1464	PC7_8444	Type I hemidesmosome assembly
+1465	PC7_8445	Type II Na+/Pi cotransporters
+1466	PC7_8609	U12 Dependent Splicing
+1467	PC7_8621	Ubiquinol biosynthesis
+1468	PC7_8625	Ubiquitin Mediated Degradation of Phosphorylated Cdc25A
+1469	PC7_8627	Ubiquitin-dependent degradation of Cyclin D
+1470	PC7_8629	Unblocking of NMDA receptor, glutamate binding and activation
+1471	PC7_8631	Unfolded Protein Response (UPR)
+1472	PC7_8632	Unwinding of DNA
+1473	PC7_8633	Uptake and actions of bacterial toxins
+1474	PC7_8634	Uptake and function of anthrax toxins
+1475	PC7_8635	Urea cycle
+1476	PC7_8639	Urokinase-type plasminogen activator (uPA) and uPAR-mediated signaling
+1477	PC7_8659	VEGF and VEGFR signaling network
+1478	PC7_8660	VEGF binds to VEGFR leading to receptor dimerization
+1479	PC7_8664	VEGFA-VEGFR2 Pathway
+1480	PC7_8665	VEGFR1 specific signals
+1481	PC7_8666	VEGFR2 mediated cell proliferation
+1482	PC7_8667	VEGFR2 mediated vascular permeability
+1483	PC7_8668	VEGFR3 signaling in lymphatic endothelium
+1484	PC7_8675	Validated nuclear estrogen receptor alpha network
+1485	PC7_8676	Validated nuclear estrogen receptor beta network
+1486	PC7_8677	Validated targets of C-MYC transcriptional activation
+1487	PC7_8678	Validated targets of C-MYC transcriptional repression
+1488	PC7_8679	Validated transcriptional targets of AP1 family members Fra1 and Fra2
+1489	PC7_8680	Validated transcriptional targets of TAp63 isoforms
+1490	PC7_8681	Validated transcriptional targets of deltaNp63 isoforms
+1491	PC7_8701	Vasopressin regulates renal water homeostasis via Aquaporins
+1492	PC7_8703	Vasopressin-like receptors
+1493	PC7_8709	Vif-mediated degradation of APOBEC3G
+1494	PC7_8710	Viral Messenger RNA Synthesis
+1495	PC7_8711	Viral RNP Complexes in the Host Cell Nucleus
+1496	PC7_8712	Viral mRNA Translation
+1497	PC7_8715	Visual signal transduction: Cones
+1498	PC7_8716	Visual signal transduction: Rods
+1499	PC7_8720	Vitamin B1 (thiamin) metabolism
+1500	PC7_8721	Vitamin B2 (riboflavin) metabolism
+1501	PC7_8722	Vitamin B5 (pantothenate) metabolism
+1502	PC7_8725	Vitamin C (ascorbate) metabolism
+1503	PC7_8726	Vitamin D (calciferol) metabolism
+1504	PC7_8761	Vitamins
+1505	PC7_8762	Vitamins B6 activation to pyridoxal phosphate
+1506	PC7_8763	Voltage gated Potassium channels
+1507	PC7_8764	Vpr-mediated induction of apoptosis by mitochondrial outer membrane permeabilization
+1508	PC7_8765	Vpr-mediated nuclear import of PICs
+1509	PC7_8766	Vpu mediated degradation of CD4
+1510	PC7_8771	WNT ligand biogenesis and trafficking
+1511	PC7_8773	WNT mediated activation of DVL
+1512	PC7_8775	WNT5A-dependent internalization of FZD2, FZD5 and ROR2
+1513	PC7_8776	WNT5A-dependent internalization of FZD4
+1514	PC7_8783	Wnt signaling network
+1515	PC7_8786	XBP1(S) activates chaperone genes
+1516	PC7_8790	Xenobiotics
+1517	PC7_8798	YAP1- and WWTR1 (TAZ)-stimulated gene expression
+1518	PC7_8803	ZBP1(DAI) mediated induction of type I IFNs
+1519	PC7_8833	Zinc efflux and compartmentalization by the SLC30 family
+1520	PC7_8834	Zinc influx into cells by the SLC39 gene family
+1521	PC7_8856	Zinc transporters
+1522	PC7_965	A tetrasaccharide linker sequence is required for GAG synthesis
+1523	PC7_966	A third proteolytic cleavage releases NICD
+1524	PC7_967	ABC-family proteins mediated transport
+1525	PC7_968	ABCA transporters in lipid homeostasis
+1526	PC7_983	ADP signalling through P2Y purinoceptor 1
+1527	PC7_984	ADP signalling through P2Y purinoceptor 12
+1528	WP100_r74146	Glutathione metabolism
+1529	WP106_r74147	Alanine and aspartate metabolism
+1530	WP107_r78489	Translation Factors
+1531	WP111_r82216	Electron Transport Chain
+1532	WP117_r82985	GPCRs, Other
+1533	WP127_r78498	IL-5 Signaling Pathway
+1534	WP129_r72054	Matrix Metalloproteinases
+1535	WP12_r81176	Osteoclast Signaling
+1536	WP134_r82700	Pentose Phosphate Pathway
+1537	WP136_r80005	Phase I biotransformations, non P450
+1538	WP138_r79958	Androgen receptor signaling pathway
+1539	WP1403_r79471	AMPK Signaling
+1540	WP1422_r79871	Sphingolipid Metabolism
+1541	WP1423_r79812	Ganglio Sphingolipid Metabolism
+1542	WP1424_r83526	Globo Sphingolipid Metabolism
+1543	WP1425_r74390	BMP Signalling and Regulation
+1544	WP1433_r83527	NOD pathway
+1545	WP1434_r78545	Osteopontin Signaling
+1546	WP143_r79783	Fatty Acid Beta Oxidation
+1547	WP1449_r81172	Regulation of toll-like receptor signaling pathway
+1548	WP1455_r68965	Serotonin Transporter Activity
+1549	WP1471_r82750	TOR Signaling
+1550	WP1528_r78581	Physiological and Pathological Hypertrophy  of the Heart
+1551	WP1530_r84694	miRNA Regulation of DNA Damage Response
+1552	WP1531_r82221	Vitamin D Metabolism
+1553	WP1533_r82707	Vitamin B12 Metabolism
+1554	WP1539_r79949	Angiogenesis
+1555	WP1544_r84696	MicroRNAs in cardiomyocyte hypertrophy
+1556	WP1545_r84697	miRNAs involved in DNA damage response
+1557	WP1559_r84698	TFs Regulate miRNAs related to cardiac hypertrophy
+1558	WP1584_r81779	Type II diabetes mellitus
+1559	WP1589_r82223	Folate-Alcohol and Cancer Pathway
+1560	WP1591_r84699	Heart Development
+1561	WP15_r82705	Selenium Micronutrient Network
+1562	WP1600_r70113	Nicotine Metabolism
+1563	WP1601_r84700	Fluoropyrimidine Activity
+1564	WP1602_r78486	Nicotine Activity on Dopaminergic Neurons
+1565	WP1603_r78574	Nicotine Activity on Chromaffin Cells
+1566	WP1604_r74317	Codeine and Morphine Metabolism
+1567	WP167_r82702	Eicosanoid Synthesis
+1568	WP170_r71083	Nuclear Receptors
+1569	WP1742_r71700	TP53 Network
+1570	WP176_r82704	Folate Metabolism
+1571	WP1772_r84701	Apoptosis Modulation and Signaling
+1572	WP179_r70629	Cell Cycle
+1573	WP183_r81161	Proteasome Degradation
+1574	WP185_r80036	Integrin-mediated Cell Adhesion
+1575	WP186_r68935	Homologous recombination
+1576	WP1941_r73548	Peroxisomal beta-oxidation of tetracosanoyl-CoA
+1577	WP1946_r79691	Cori Cycle
+1578	WP195_r79965	IL-1 signaling pathway
+1579	WP1971_r82939	Integrated Cancer Pathway
+1580	WP197_r81059	Cholesterol Biosynthesis
+1581	WP1981_r70955	Thyroxine (Thyroid Hormone) Production
+1582	WP1982_r79943	SREBP signalling
+1583	WP1984_r82941	Integrated Breast Cancer Pathway
+1584	WP1991_r82940	SRF and miRs in Smooth Muscle Differentiation and Proliferation
+1585	WP1992_r78296	TarBasePathway
+1586	WP1995_r69910	Effects of Nitric Oxide
+1587	WP2007_r69751	Iron metabolism in placenta
+1588	WP2011_r75253	SREBF and miR33 in cholesterol and lipid homeostasis
+1589	WP2012_r82900	miRs in Muscle Cell Differentiation
+1590	WP2018_r79959	RANKL/RANK Signaling Pathway
+1591	WP2029_r82903	Cell Differentiation - Index
+1592	WP2032_r79960	TSH signaling pathway
+1593	WP2034_r80016	Leptin signaling pathway
+1594	WP2035_r78536	FSH signaling pathway
+1595	WP2036_r84527	TWEAK Signaling Pathway
+1596	WP2059_r82906	Alzheimers Disease
+1597	WP205_r80223	IL-7 Signaling Pathway
+1598	WP2064_r79263	Neural Crest Differentiation
+1599	WP206_r68882	Fatty Acid Omega Oxidation
+1600	WP2112_r63216	IL17 signaling pathway
+1601	WP2113_r70107	Type III interferon signaling
+1602	WP2118_r71265	Arrhythmogenic Right Ventricular Cardiomyopathy
+1603	WP2197_r74852	Endothelin Pathways
+1604	WP2203_r78549	TSLP Signaling Pathway
+1605	WP2249_r84646	Metastatic brain tumor
+1606	WP2253_r74520	Pilocytic astrocytoma
+1607	WP2261_r81197	Signaling Pathways in Glioblastoma
+1608	WP2267_r78595	Synaptic Vesicle Pathway
+1609	WP2272_r78594	Pathogenic Escherichia coli infection
+1610	WP2276_r63194	Glial Cell Differentiation
+1611	WP2289_r78511	Drug Induction of Bile Acid Pathway
+1612	WP2290_r79988	RalA downstream regulated genes
+1613	WP2291_r68922	Deregulation of Rab and Rab Effector Genes in Bladder Cancer
+1614	WP229_r68389	Irinotecan Pathway
+1615	WP22_r79264	IL-9 Signaling Pathway
+1616	WP231_r81070	TNF alpha Signaling Pathway
+1617	WP2324_r78487	AGE/RAGE pathway
+1618	WP2328_r84648	Allograft Rejection
+1619	WP2332_r79525	Interleukin-11 Signaling Pathway
+1620	WP2333_r72015	Trans-sulfuration pathway
+1621	WP2338_r78504	miRNA Biogenesis
+1622	WP2355_r79973	Corticotropin-releasing hormone
+1623	WP2359_r72121	Parkin-Ubiquitin Proteasomal System pathway
+1624	WP2361_r84551	Gastric Cancer Network 1
+1625	WP2363_r84552	Gastric Cancer Network 2
+1626	WP2366_r73980	Butyrate-induced histone acetylation
+1627	WP2369_r83012	Histone Modifications
+1628	WP236_r80209	Adipogenesis
+1629	WP2371_r84649	Parkinsons Disease Pathway
+1630	WP2374_r73668	Oncostatin M Signaling Pathway
+1631	WP2377_r80437	Integrated Pancreatic Cancer Pathway
+1632	WP237_r78497	Glucocorticoid & Mineralcorticoid Metabolism
+1633	WP2380_r79953	BDNF signaling pathway
+1634	WP23_r79985	B Cell Receptor Signaling Pathway
+1635	WP2406_r73324	Cardiac Progenitor Differentiation
+1636	WP241_r83818	One Carbon Metabolism
+1637	WP2431_r84650	Spinal Cord Injury
+1638	WP2435_r80008	Quercetin and Nf-kB/ AP-1 Induced Cell Apoptosis
+1639	WP2436_r71387	Dopamine metabolism
+1640	WP2446_r84651	Retinoblastoma (RB) in Cancer
+1641	WP2447_r84415	Amyotrophic lateral sclerosis (ALS)
+1642	WP244_r78506	Alpha 6 Beta 4 signaling pathway
+1643	WP2453_r80143	TCA Cycle and PDHc
+1644	WP247_r74422	Small Ligand GPCRs
+1645	WP2485_r70025	NAD Biosynthesis II (from tryptophan)
+1646	WP2491_r73891	Diclofenac Metabolic Pathway
+1647	WP24_r79999	Peptide GPCRs
+1648	WP2516_r84490	ATM Signaling Pathway
+1649	WP2525_r80205	Trans-sulfuration and one carbon metabolism
+1650	WP2526_r82681	PDGF Pathway
+1651	WP2533_r84117	Glycerophospholipid Biosynthetic Pathway
+1652	WP2542_r70621	Sulindac Metabolic Pathway
+1653	WP254_r84652	Apoptosis
+1654	WP2572_r79947	Primary Focal Segmental Glomerulosclerosis FSGS
+1655	WP2583_r84488	T-Cell Receptor and Co-stimulatory Signaling
+1656	WP2586_r79995	Aryl Hydrocarbon Receptor
+1657	WP2596_r72724	Gastric acid production
+1658	WP2597_r78485	Secretion of Hydrochloric Acid in Parietal Cells
+1659	WP262_r84487	EBV LMP1 signaling
+1660	WP2637_r80029	Structural Pathway of Interleukin 1 (IL-1)
+1661	WP2643_r74251	Nanoparticle-mediated activation of receptor signaling
+1662	WP2646_r74430	Lidocaine metabolism
+1663	WP268_r70096	Notch Signaling Pathway
+1664	WP26_r79950	Signal Transduction of S1P Receptor
+1665	WP272_r84876	Blood Clotting Cascade
+1666	WP2795_r78544	Cardiac Hypertrophic Response
+1667	WP2804_r79882	Hair Follicle Development: Induction (Part 1 of 3)
+1668	WP2805_r81654	RNA interference
+1669	WP2816_r76465	Felbamate Metabolism
+1670	WP2828_r79529	Bladder Cancer
+1671	WP2848_r80009	Differentiation Pathway
+1672	WP2849_r84764	Hematopoietic Stem Cell Differentiation
+1673	WP2853_r83014	Endoderm Differentiation
+1674	WP2854_r79970	Gene regulatory network modelling somitogenesis 
+1675	WP2855_r79211	Dopaminergic Neurogenesis
+1676	WP2857_r80151	Mesodermal Commitment Pathway
+1677	WP2858_r83015	Ectoderm Differentiation
+1678	WP2864_r79278	Apoptosis-related network due to altered Notch3 in ovarian cancer
+1679	WP2865_r81650	IL1 and megakaryotyces in obesity
+1680	WP2868_r78079	TCA Cycle Nutrient Utilization and Invasiveness of Ovarian Cancer
+1681	WP286_r78583	IL-3 Signaling Pathway
+1682	WP2870_r79555	Extracellular vesicle-mediated signaling in recipient cells
+1683	WP2873_r79696	Aryl Hydrocarbon Receptor Pathway
+1684	WP2874_r82709	Liver X Receptor Pathway
+1685	WP2875_r79890	Constitutive Androstane Receptor Pathway
+1686	WP2878_r79689	PPAR Alpha Pathway
+1687	WP2879_r79602	Farnesoid X Receptor  Pathway
+1688	WP2881_r79603	Estrogen Receptor Pathway
+1689	WP2884_r83041	NRF2 pathway
+1690	WP2889_r79753	Oxytocin signaling
+1691	WP288_r80026	NLR Proteins
+1692	WP2895_r79216	Differentiation of white and brown adipocyte   
+1693	WP289_r81078	Myometrial Relaxation and Contraction Pathways
+1694	WP28_r71888	Selenium Metabolism and Selenoproteins
+1695	WP2911_r83020	miRNA targets in ECM and membrane receptors
+1696	WP2916_r79908	Interactome of polycomb repressive complex 2 (PRC2) 
+1697	WP2942_r84388	DDX1 as a regulatory component of the Drosha microprocessor
+1698	WP2943_r83778	Hypoxia-mediated EMT and Stemness
+1699	WP2946_r83779	Imatinib Resistance in Chronic Myeloid Leukemia
+1700	WP299_r78587	Nuclear Receptors in Lipid Metabolism and Toxicity
+1701	WP304_r78799	Kit receptor signaling pathway
+1702	WP306_r80308	Focal Adhesion
+1703	WP311_r68921	Synthesis and Degradation of Ketone Bodies
+1704	WP313_r79946	Signaling of Hepatocyte Growth Factor Receptor
+1705	WP314_r80438	FAS pathway and Stress induction of HSP regulation
+1706	WP322_r79496	Osteoblast Signaling
+1707	WP325_r71223	Triacylglyceride Synthesis
+1708	WP3286_r84312	Copper homeostasis
+1709	WP3287_r84570	Overview of nanoparticle effects
+1710	WP3297_r83780	EV release from cardiac cells and their functional effects
+1711	WP3298_r84382	Melatonin metabolism and effects
+1712	WP3300_r81234	Dual hijack model of Vif in HIV infection
+1713	WP3301_r81279	MFAP5-mediated ovarian cancer cell motility and invasiveness
+1714	WP3302_r81679	eIF5A regulation in response to inhibition of the nuclear export system
+1715	WP3303_r83781	Rac1/Pak1/p38/MMP-2 pathway
+1716	WP334_r79716	GPCRs, Class B Secretin-like
+1717	WP3407_r81707	FTO Obesity Variant Mechanism
+1718	WP3408_r81714	Evolocumab Mechanism
+1719	WP3413_r82217	NOTCH1 regulation of human endothelial cell calcification
+1720	WP3414_r82252	Initiation of transcription and translation elongation at the HIV-1 LTR
+1721	WP34_r72115	Ovarian Infertility Genes
+1722	WP3527_r84571	Preimplantation Embryo
+1723	WP3529_r84285	Zinc homeostasis
+1724	WP357_r70641	Fatty Acid Biosynthesis
+1725	WP3584_r84776	Mecp2 and Associated Rett Syndrome
+1726	WP3585_r84793	Cytosine methylation
+1727	WP3593_r84853	miR-148a/miR-31/FIH1/HIF1α-Notch signaling in glioblastoma 
+1728	WP3594_r84573	Circadian rythm related genes
+1729	WP3595_r84854	mir-124 predicted interactions with cell cycle and differentiation 
+1730	WP3596_r84855	miR-517 relationship with ARCN1 and USP1
+1731	WP3599_r84770	Transcription factor regulation in adipogenesis
+1732	WP35_r79952	G Protein Signaling Pathways
+1733	WP3601_r84331	Composition of Lipid Particles
+1734	WP363_r78571	Wnt Signaling Pathway Netpath
+1735	WP364_r83783	IL-6 signaling pathway
+1736	WP366_r84196	TGF-beta Signaling Pathway
+1737	WP368_r79271	Mitochondrial LC-Fatty Acid Beta-Oxidation
+1738	WP382_r79951	MAPK Signaling Pathway
+1739	WP383_r80200	Striated Muscle Contraction
+1740	WP384_r67054	Apoptosis Modulation by HSP70
+1741	WP391_r71373	Mitochondrial Gene Expression
+1742	WP395_r79978	IL-4 Signaling Pathway
+1743	WP399_r79474	Wnt Signaling Pathway and Pluripotency
+1744	WP3_r79527	Transcriptional activation by NRF2
+1745	WP400_r72084	p38 MAPK Signaling Pathway
+1746	WP404_r68960	Nucleotide Metabolism
+1747	WP405_r73594	Eukaryotic Transcription Initiation
+1748	WP408_r78546	Oxidative Stress
+1749	WP410_r84683	Diurnally Regulated Genes with Circadian Orthologs
+1750	WP411_r79980	mRNA Processing
+1751	WP422_r72129	MAPK Cascade
+1752	WP428_r79854	Wnt Signaling Pathway
+1753	WP430_r82344	Statin Pathway
+1754	WP437_r79266	EGF/EGFR Signaling Pathway
+1755	WP438_r80022	Non-homologous end joining
+1756	WP43_r84102	Oxidation by Cytochrome P450
+1757	WP453_r80206	Inflammatory Response Pathway
+1758	WP455_r81793	GPCRs, Class A Rhodopsin-like
+1759	WP45_r80001	G1 to S cell cycle control
+1760	WP465_r79226	Tryptophan metabolism
+1761	WP466_r79981	DNA Replication
+1762	WP474_r80208	Endochondral Ossification
+1763	WP477_r67139	Cytoplasmic Ribosomal Proteins
+1764	WP47_r78542	Hedgehog Signaling Pathway
+1765	WP481_r82731	Insulin Signaling
+1766	WP496_r69016	Steroid Biosynthesis
+1767	WP497_r72142	Urea cycle and metabolism of amino groups
+1768	WP49_r78543	IL-2 Signaling Pathway
+1769	WP500_r63201	Glycogen Metabolism
+1770	WP501_r79715	GPCRs, Class C Metabotropic glutamate, pheromone
+1771	WP516_r71358	Hypertrophy Model
+1772	WP51_r79977	Regulation of Actin Cytoskeleton
+1773	WP521_r63156	Amino acid conjugation of benzoic acid
+1774	WP524_r72112	G13 Signaling Pathway
+1775	WP528_r79855	Acetylcholine Synthesis
+1776	WP530_r79331	Cytokines and Inflammatory Response
+1777	WP531_r69021	Mismatch repair
+1778	WP534_r78585	Glycolysis and Gluconeogenesis
+1779	WP536_r80211	Calcium Regulation in the Cardiac Cell
+1780	WP53_r67360	ID signaling pathway
+1781	WP545_r82142	Complement Activation
+1782	WP550_r81207	Biogenic Amine Synthesis
+1783	WP554_r84372	ACE Inhibitor Pathway
+1784	WP558_r79680	Complement and Coagulation Cascades
+1785	WP560_r83868	TGF-beta Receptor Signaling
+1786	WP561_r72035	Heme Biosynthesis
+1787	WP581_r67199	EPO Receptor Signaling
+1788	WP585_r80201	Interferon type I signaling pathways
+1789	WP58_r80015	Monoamine GPCRs
+1790	WP615_r81193	Senescence and Autophagy in Cancer
+1791	WP619_r71168	Type II interferon signaling (IFNG)
+1792	WP61_r78592	Notch Signaling Pathway
+1793	WP623_r79961	Oxidative phosphorylation
+1794	WP666_r68893	Hypothetical Network for Drug Addiction
+1795	WP673_r80202	ErbB Signaling Pathway
+1796	WP678_r71506	Arachidonate Epoxygenase / Epoxide Hydrolase
+1797	WP688_r84769	Catalytic cycle of mammalian Flavin-containing MonoOxygenases (FMOs)
+1798	WP690_r72132	Polyol Pathway
+1799	WP691_r79986	Tamoxifen metabolism
+1800	WP692_r69031	Sulfation Biotransformation Reaction
+1801	WP694_r67062	Arylamine metabolism
+1802	WP696_r72081	Benzo(a)pyrene metabolism
+1803	WP697_r80025	Estrogen metabolism
+1804	WP698_r79224	Glucuronidation
+1805	WP699_r70509	Aflatoxin B1 metabolism
+1806	WP69_r79955	TCR Signaling Pathway
+1807	WP702_r73516	Metapathway biotransformation
+1808	WP704_r79563	Methylation Pathways
+1809	WP706_r80056	SIDS Susceptibility Pathways
+1810	WP707_r82937	DNA Damage Response
+1811	WP710_r79974	DNA Damage Response (only ATM dependent)
+1812	WP712_r78491	Estrogen signaling pathway
+1813	WP716_r83589	Vitamin A and Carotenoid Metabolism
+1814	WP727_r79969	Monoamine Transport
+1815	WP732_r80010	Serotonin Receptor 2 and ELK-SRF/GATA4 signaling
+1816	WP733_r74441	Serotonin Receptor 2 and STAT3 Signaling
+1817	WP734_r74438	Serotonin Receptor 4/6/7 and NR3C Signaling
+1818	WP75_r83867	Toll-like Receptor Signaling Pathway
+1819	WP78_r70014	TCA Cycle
+1820	WP80_r68938	Nucleotide GPCRs
+1821	WP98_r72088	Prostaglandin Synthesis and Regulation
