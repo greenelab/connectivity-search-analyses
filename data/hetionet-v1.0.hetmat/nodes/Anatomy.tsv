@@ -1,0 +1,403 @@
+position	identifier	name
+0	UBERON:0000002	uterine cervix
+1	UBERON:0000004	nose
+2	UBERON:0000006	islet of Langerhans
+3	UBERON:0000007	pituitary gland
+4	UBERON:0000010	peripheral nervous system
+5	UBERON:0000011	parasympathetic nervous system
+6	UBERON:0000013	sympathetic nervous system
+7	UBERON:0000020	sense organ
+8	UBERON:0000026	appendage
+9	UBERON:0000029	lymph node
+10	UBERON:0000033	head
+11	UBERON:0000038	follicular fluid
+12	UBERON:0000042	serous membrane
+13	UBERON:0000043	tendon
+14	UBERON:0000045	ganglion
+15	UBERON:0000053	macula lutea
+16	UBERON:0000054	macula
+17	UBERON:0000056	ureter
+18	UBERON:0000057	urethra
+19	UBERON:0000165	mouth
+20	UBERON:0000178	blood
+21	UBERON:0000211	ligament
+22	UBERON:0000473	testis
+23	UBERON:0000474	female reproductive system
+24	UBERON:0000482	basal lamina of epithelium
+25	UBERON:0000483	epithelium
+26	UBERON:0000922	embryo
+27	UBERON:0000941	cranial nerve II
+28	UBERON:0000946	cardial valve
+29	UBERON:0000948	heart
+30	UBERON:0000949	endocrine system
+31	UBERON:0000955	brain
+32	UBERON:0000959	optic chiasma
+33	UBERON:0000964	cornea
+34	UBERON:0000966	retina
+35	UBERON:0000970	eye
+36	UBERON:0000974	neck
+37	UBERON:0000975	sternum
+38	UBERON:0000977	pleura
+39	UBERON:0000978	leg
+40	UBERON:0000982	skeletal joint
+41	UBERON:0000985	axillary vein
+42	UBERON:0000988	pons
+43	UBERON:0000989	penis
+44	UBERON:0000991	gonad
+45	UBERON:0000992	female gonad
+46	UBERON:0000993	oviduct
+47	UBERON:0000995	uterus
+48	UBERON:0000996	vagina
+49	UBERON:0000997	mammalian vulva
+50	UBERON:0000998	seminal vesicle
+51	UBERON:0000999	ejaculatory duct
+52	UBERON:0001000	vas deferens
+53	UBERON:0001003	skin epidermis
+54	UBERON:0001004	respiratory system
+55	UBERON:0001007	digestive system
+56	UBERON:0001008	renal system
+57	UBERON:0001011	hemolymph
+58	UBERON:0001013	adipose tissue
+59	UBERON:0001016	nervous system
+60	UBERON:0001017	central nervous system
+61	UBERON:0001021	nerve
+62	UBERON:0001031	sheath of Schwann
+63	UBERON:0001037	strand of hair
+64	UBERON:0001044	saliva-secreting gland
+65	UBERON:0001064	ventral pancreatic duct
+66	UBERON:0001067	vertebral arch joint
+67	UBERON:0001070	external carotid artery
+68	UBERON:0001072	posterior vena cava
+69	UBERON:0001088	urine
+70	UBERON:0001089	sweat
+71	UBERON:0001090	synovial fluid
+72	UBERON:0001093	vertebral bone 2
+73	UBERON:0001103	diaphragm
+74	UBERON:0001105	clavicle bone
+75	UBERON:0001111	intercostal muscle
+76	UBERON:0001130	vertebral column
+77	UBERON:0001132	parathyroid gland
+78	UBERON:0001135	smooth muscle tissue
+79	UBERON:0001140	renal vein
+80	UBERON:0001143	hepatic vein
+81	UBERON:0001148	median nerve
+82	UBERON:0001174	common bile duct
+83	UBERON:0001175	common hepatic duct
+84	UBERON:0001182	superior mesenteric artery
+85	UBERON:0001183	inferior mesenteric artery
+86	UBERON:0001184	renal artery
+87	UBERON:0001193	hepatic artery
+88	UBERON:0001194	splenic artery
+89	UBERON:0001224	renal pelvis
+90	UBERON:0001225	cortex of kidney
+91	UBERON:0001228	renal papilla
+92	UBERON:0001231	nephron tubule
+93	UBERON:0001232	collecting duct of renal tubule
+94	UBERON:0001235	adrenal cortex
+95	UBERON:0001236	adrenal medulla
+96	UBERON:0001237	paraaortic body
+97	UBERON:0001264	pancreas
+98	UBERON:0001267	femoral nerve
+99	UBERON:0001283	bile canaliculus
+100	UBERON:0001285	nephron
+101	UBERON:0001288	loop of Henle
+102	UBERON:0001295	endometrium
+103	UBERON:0001296	myometrium
+104	UBERON:0001300	scrotum
+105	UBERON:0001305	ovarian follicle
+106	UBERON:0001310	umbilical artery
+107	UBERON:0001322	sciatic nerve
+108	UBERON:0001323	tibial nerve
+109	UBERON:0001324	common fibular nerve
+110	UBERON:0001343	seminiferous tubule of testis
+111	UBERON:0001348	brown adipose tissue
+112	UBERON:0001352	external acoustic meatus
+113	UBERON:0001361	femoral vein
+114	UBERON:0001365	sacro-iliac joint
+115	UBERON:0001394	axillary artery
+116	UBERON:0001398	brachial artery
+117	UBERON:0001404	radial artery
+118	UBERON:0001406	ulnar artery
+119	UBERON:0001437	epiphysis
+120	UBERON:0001456	face
+121	UBERON:0001460	arm
+122	UBERON:0001461	elbow
+123	UBERON:0001463	manual digit 1
+124	UBERON:0001464	hip
+125	UBERON:0001465	knee
+126	UBERON:0001467	shoulder
+127	UBERON:0001469	sternoclavicular joint
+128	UBERON:0001470	glenohumeral joint
+129	UBERON:0001479	sesamoid bone
+130	UBERON:0001484	articular capsule
+131	UBERON:0001485	knee joint
+132	UBERON:0001486	hip joint
+133	UBERON:0001488	ankle joint
+134	UBERON:0001490	elbow joint
+135	UBERON:0001492	radial nerve
+136	UBERON:0001494	ulnar nerve
+137	UBERON:0001515	thoracic aorta
+138	UBERON:0001516	abdominal aorta
+139	UBERON:0001529	brachiocephalic artery
+140	UBERON:0001530	common carotid artery plus branches
+141	UBERON:0001532	internal carotid artery
+142	UBERON:0001533	subclavian artery
+143	UBERON:0001535	vertebral artery
+144	UBERON:0001544	popliteal vein
+145	UBERON:0001567	cheek
+146	UBERON:0001577	facial muscle
+147	UBERON:0001579	olfactory nerve
+148	UBERON:0001585	anterior vena cava
+149	UBERON:0001587	subclavian vein
+150	UBERON:0001594	azygos vein
+151	UBERON:0001597	masseter muscle
+152	UBERON:0001598	temporalis muscle
+153	UBERON:0001599	stapedius muscle
+154	UBERON:0001600	tensor tympani
+155	UBERON:0001616	maxillary artery
+156	UBERON:0001619	ophthalmic artery
+157	UBERON:0001620	central retinal artery
+158	UBERON:0001624	anterior cerebral artery
+159	UBERON:0001627	middle cerebral artery
+160	UBERON:0001633	basilar artery
+161	UBERON:0001636	posterior cerebral artery
+162	UBERON:0001637	artery
+163	UBERON:0001638	vein
+164	UBERON:0001640	celiac artery
+165	UBERON:0001643	oculomotor nerve
+166	UBERON:0001644	trochlear nerve
+167	UBERON:0001645	trigeminal nerve
+168	UBERON:0001646	abducens nerve
+169	UBERON:0001647	facial nerve
+170	UBERON:0001648	vestibulocochlear nerve
+171	UBERON:0001649	glossopharyngeal nerve
+172	UBERON:0001650	hypoglossal nerve
+173	UBERON:0001673	central retinal vein
+174	UBERON:0001675	trigeminal ganglion
+175	UBERON:0001676	occipital bone
+176	UBERON:0001677	sphenoid bone
+177	UBERON:0001678	temporal bone
+178	UBERON:0001679	ethmoid bone
+179	UBERON:0001681	nasal bone
+180	UBERON:0001684	mandible
+181	UBERON:0001685	hyoid bone
+182	UBERON:0001687	stapes bone
+183	UBERON:0001688	incus bone
+184	UBERON:0001689	malleus bone
+185	UBERON:0001690	ear
+186	UBERON:0001691	external ear
+187	UBERON:0001694	petrous part of temporal bone
+188	UBERON:0001697	orbit of skull
+189	UBERON:0001700	geniculate ganglion
+190	UBERON:0001702	eyelash
+191	UBERON:0001705	nail
+192	UBERON:0001707	nasal cavity
+193	UBERON:0001708	jaw skeleton
+194	UBERON:0001710	lower jaw region
+195	UBERON:0001711	eyelid
+196	UBERON:0001716	secondary palate
+197	UBERON:0001717	spinal nucleus of trigeminal nerve
+198	UBERON:0001720	cochlear nucleus
+199	UBERON:0001723	tongue
+200	UBERON:0001724	sphenoidal sinus
+201	UBERON:0001733	soft palate
+202	UBERON:0001734	palatine uvula
+203	UBERON:0001736	submandibular gland
+204	UBERON:0001737	larynx
+205	UBERON:0001744	lymphoid tissue
+206	UBERON:0001750	lacrimal apparatus
+207	UBERON:0001756	middle ear
+208	UBERON:0001759	vagus nerve
+209	UBERON:0001760	frontal sinus
+210	UBERON:0001762	turbinate bone
+211	UBERON:0001764	maxillary sinus
+212	UBERON:0001768	uvea
+213	UBERON:0001769	iris
+214	UBERON:0001771	pupil
+215	UBERON:0001772	corneal epithelium
+216	UBERON:0001773	sclera
+217	UBERON:0001775	ciliary body
+218	UBERON:0001776	optic choroid
+219	UBERON:0001777	substantia propria of cornea
+220	UBERON:0001780	spinal nerve
+221	UBERON:0001783	optic disc
+222	UBERON:0001785	cranial nerve
+223	UBERON:0001786	fovea centralis
+224	UBERON:0001796	aqueous humor of eyeball
+225	UBERON:0001805	autonomic ganglion
+226	UBERON:0001814	brachial nerve plexus
+227	UBERON:0001815	lumbosacral nerve plexus
+228	UBERON:0001818	tarsal gland
+229	UBERON:0001820	sweat gland
+230	UBERON:0001821	sebaceous gland
+231	UBERON:0001825	paranasal sinus
+232	UBERON:0001827	secretion of lacrimal gland
+233	UBERON:0001831	parotid gland
+234	UBERON:0001832	sublingual gland
+235	UBERON:0001833	lip
+236	UBERON:0001836	saliva
+237	UBERON:0001837	duct of salivary gland
+238	UBERON:0001840	semicircular canal
+239	UBERON:0001844	cochlea
+240	UBERON:0001846	internal ear
+241	UBERON:0001855	cochlear duct of membranous labyrinth
+242	UBERON:0001860	endolymphatic duct
+243	UBERON:0001864	scala tympani
+244	UBERON:0001866	sebum
+245	UBERON:0001884	phrenic nerve
+246	UBERON:0001886	choroid plexus
+247	UBERON:0001887	internal capsule of telencephalon
+248	UBERON:0001890	forebrain
+249	UBERON:0001891	midbrain
+250	UBERON:0001893	telencephalon
+251	UBERON:0001895	metencephalon
+252	UBERON:0001896	medulla oblongata
+253	UBERON:0001905	pineal body
+254	UBERON:0001908	optic tract
+255	UBERON:0001910	medial forebrain bundle
+256	UBERON:0001911	mammary gland
+257	UBERON:0001914	colostrum
+258	UBERON:0001968	semen
+259	UBERON:0001969	blood plasma
+260	UBERON:0001970	bile
+261	UBERON:0001971	gastric juice
+262	UBERON:0001980	arteriole
+263	UBERON:0001981	blood vessel
+264	UBERON:0001985	corneal endothelium
+265	UBERON:0001986	endothelium
+266	UBERON:0001988	feces
+267	UBERON:0001989	superior cervical ganglion
+268	UBERON:0002005	enteric nervous system
+269	UBERON:0002010	celiac nerve plexus
+270	UBERON:0002012	pulmonary artery
+271	UBERON:0002016	pulmonary vein
+272	UBERON:0002017	portal vein
+273	UBERON:0002018	synovial membrane of synovial joint
+274	UBERON:0002019	accessory XI nerve
+275	UBERON:0002028	hindbrain
+276	UBERON:0002030	nipple
+277	UBERON:0002037	cerebellum
+278	UBERON:0002040	bronchial artery
+279	UBERON:0002046	thyroid gland
+280	UBERON:0002048	lung
+281	UBERON:0002053	zona glomerulosa of adrenal gland
+282	UBERON:0002054	zona fasciculata of adrenal gland
+283	UBERON:0002055	zona reticularis of adrenal gland
+284	UBERON:0002060	femoral artery
+285	UBERON:0002061	truncus arteriosus
+286	UBERON:0002066	umbilical vein
+287	UBERON:0002067	dermis
+288	UBERON:0002073	hair follicle
+289	UBERON:0002081	cardiac atrium
+290	UBERON:0002082	cardiac ventricle
+291	UBERON:0002097	skin of body
+292	UBERON:0002099	cardiac septum
+293	UBERON:0002102	forelimb
+294	UBERON:0002103	hindlimb
+295	UBERON:0002107	liver
+296	UBERON:0002110	gall bladder
+297	UBERON:0002113	kidney
+298	UBERON:0002129	cerebellar cortex
+299	UBERON:0002130	cerebellar nuclear complex
+300	UBERON:0002134	tricuspid valve
+301	UBERON:0002135	mitral valve
+302	UBERON:0002137	aortic valve
+303	UBERON:0002146	pulmonary valve
+304	UBERON:0002148	locus ceruleus
+305	UBERON:0002162	area postrema
+306	UBERON:0002165	endocardium
+307	UBERON:0002185	bronchus
+308	UBERON:0002204	musculoskeletal system
+309	UBERON:0002205	manubrium of sternum
+310	UBERON:0002223	endolymphatic sac
+311	UBERON:0002226	basilar membrane of cochlea
+312	UBERON:0002228	rib
+313	UBERON:0002240	spinal cord
+314	UBERON:0002250	popliteal artery
+315	UBERON:0002275	reticular formation
+316	UBERON:0002279	vestibular aqueduct
+317	UBERON:0002282	stria vascularis of cochlear duct
+318	UBERON:0002285	telencephalic ventricle
+319	UBERON:0002286	third ventricle
+320	UBERON:0002294	biliary system
+321	UBERON:0002297	cerumen
+322	UBERON:0002298	brainstem
+323	UBERON:0002299	alveolus of lung
+324	UBERON:0002303	juxtaglomerular apparatus
+325	UBERON:0002347	thoracic vertebra
+326	UBERON:0002349	myocardium
+327	UBERON:0002351	sinoatrial node
+328	UBERON:0002352	atrioventricular node
+329	UBERON:0002353	atrioventricular bundle
+330	UBERON:0002354	purkinje fiber
+331	UBERON:0002356	perineum
+332	UBERON:0002360	meninx
+333	UBERON:0002361	pia mater
+334	UBERON:0002362	arachnoid mater
+335	UBERON:0002363	dura mater
+336	UBERON:0002365	exocrine gland
+337	UBERON:0002366	bulbo-urethral gland
+338	UBERON:0002367	prostate gland
+339	UBERON:0002368	endocrine gland
+340	UBERON:0002369	adrenal gland
+341	UBERON:0002371	bone marrow
+342	UBERON:0002377	muscle of neck
+343	UBERON:0002378	muscle of abdomen
+344	UBERON:0002382	rectus abdominis muscle
+345	UBERON:0002384	connective tissue
+346	UBERON:0002385	muscle tissue
+347	UBERON:0002386	forelimb zeugopod
+348	UBERON:0002387	pes
+349	UBERON:0002389	manual digit
+350	UBERON:0002390	hematopoietic system
+351	UBERON:0002392	nasolacrimal duct
+352	UBERON:0002394	bile duct
+353	UBERON:0002397	maxilla
+354	UBERON:0002398	manus
+355	UBERON:0002405	immune system
+356	UBERON:0002407	pericardium
+357	UBERON:0002410	autonomic nervous system
+358	UBERON:0002411	clitoris
+359	UBERON:0002413	cervical vertebra
+360	UBERON:0002414	lumbar vertebra
+361	UBERON:0002418	cartilage tissue
+362	UBERON:0002422	fourth ventricle
+363	UBERON:0002439	myenteric nerve plexus
+364	UBERON:0002441	cervicothoracic ganglion
+365	UBERON:0002450	decidua
+366	UBERON:0002453	ethmoid sinus
+367	UBERON:0002466	intestine secretion
+368	UBERON:0002481	bone tissue
+369	UBERON:0002486	glottis
+370	UBERON:0002494	papillary muscle of heart
+371	UBERON:0002497	acromion
+372	UBERON:0002500	zygomatic arch
+373	UBERON:0002501	oval window
+374	UBERON:0002502	round window of inner ear
+375	UBERON:0002512	corpus luteum
+376	UBERON:0002515	periosteum
+377	UBERON:0002516	epiphyseal plate
+378	UBERON:0002517	basicranium
+379	UBERON:0002518	otolith organ
+380	UBERON:0002519	otolithic part of statoconial membrane
+381	UBERON:0002521	elastic tissue
+382	UBERON:0002522	tunica media
+383	UBERON:0002523	tunica intima
+384	UBERON:0002606	neuropil
+385	UBERON:0002673	vestibular nuclear complex
+386	UBERON:0002707	corticospinal tract
+387	UBERON:0002741	diagonal band of Broca
+388	UBERON:0002925	trigeminal nucleus
+389	UBERON:0002944	spinothalamic tract of medulla
+390	UBERON:0003092	ultimobranchial body
+391	UBERON:0003126	trachea
+392	UBERON:0003129	skull
+393	UBERON:0003216	hard palate
+394	UBERON:0003685	cranial suture
+395	UBERON:0003889	fallopian tube
+396	UBERON:0004288	skeleton
+397	UBERON:0004452	carpal region
+398	UBERON:0004535	cardiovascular system
+399	UBERON:0004727	cochlear nerve
+400	UBERON:0004769	diaphysis
+401	UBERON:0006849	scapula
