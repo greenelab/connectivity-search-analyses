@@ -45,8 +45,6 @@ def hetmat_from_permuted_graph(hetmat, permutation_id, permuted_graph):
     Assumes subdirectory structure and that permutations inherit nodes but not
     edges.
     """
-    if '.' in permutation_id:
-        raise ValueError('Permutations ids cannot contain `.`')
     if not hetmat.permutations_directory.is_dir():
         hetmat.permutations_directory.mkdir()
     directory = hetmat.permutations_directory.joinpath(f'{permutation_id}.hetmat')
@@ -150,7 +148,8 @@ class HetMat:
     def permutations(self):
         """
         Return a dictionary of permutation name to permutation directory.
-        Assumes permutation name is the directory stem (excludes suffixes).
+        Assumes permutation name is the directory name minus its .hetmat
+        extension.
         """
         permutations = {}
         for directory in sorted(self.permutations_directory.glob('*.hetmat')):
@@ -158,7 +157,8 @@ class HetMat:
                 continue
             permutation = HetMat(directory)
             permutation.is_permutation = True
-            permutations[directory.stem] = permutation
+            name, _ = directory.name.rsplit('.', 1)
+            permutations[name] = permutation
         return permutations
 
     @property
