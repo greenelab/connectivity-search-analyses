@@ -23,6 +23,7 @@ def category_to_function(category):
                            'disjoint': _dwpc_disjoint,
                            'disjoint_groups': _dwpc_disjoint,
                            'short_repeat': _dwpc_short_repeat,
+                           'single_repeat': _dwpc_single_repeat,
                            'long_repeat': _dwpc_general_case,
                            'BAAB': _dwpc_baab,
                            'BABA': _dwpc_baba,
@@ -32,6 +33,7 @@ def category_to_function(category):
     return function_dictionary[category]
 
 
+@functools.lru_cache()
 def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False,
          dtype=numpy.float64):
     """
@@ -88,6 +90,7 @@ def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False,
     return row_names, col_names, dwpc_matrix, total_time
 
 
+@functools.lru_cache()
 def dwwc(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
     """
     Compute the degree-weighted walk count (DWWC) in which nodes can be
@@ -164,7 +167,9 @@ def categorize(metapath):
     if len(grouped) == len(repeated):
         # Identify if there is only one metanode
         if len(repeated) == 1:
-            if max(freq.values()) < 4:
+            if max(freq.values()) < 3:
+                return 'single_repeat'
+            elif max(freq.values()) < 4:
                 return 'short_repeat'
             else:
                 return 'long_repeat'
@@ -277,7 +282,8 @@ def get_segments(metagraph, metapath):
         indices = [[0, 1], [1, 2], [2, 5]] if len(grouped[0]) == 2 else [
             [0, 3], [3, 4], [4, 5]]
 
-    elif category in ('disjoint', 'short_repeat', 'long_repeat'):
+    elif category in ('disjoint', 'short_repeat', 'single_repeat',
+                      'long_repeat'):
         indices = sorted([[metanodes.index(i), len(metapath) - list(
             reversed(metanodes)).index(i)] for i in repeated])
         indices = add_head_tail(metapath, indices)
@@ -363,11 +369,9 @@ def _dwpc_disjoint(graph, metapath, damping=0.5, dense_threshold=0,
     col_names = None
     dwpc_matrix = None
     for segment in segments:
-        segment_category = categorize(segment)
-        dwpc_function = category_to_function(segment_category)
-        rows, cols, seg_matrix = dwpc_function(
-            graph, segment, damping=damping, dense_threshold=dense_threshold,
-            dtype=dtype)
+        rows, cols, seg_matrix, t = dwpc(graph, segment, damping=damping,
+                                         dense_threshold=dense_threshold,
+                                         dtype=dtype)
         if row_names is None:
             row_names = rows
         if segment is segments[-1]:
@@ -522,6 +526,54 @@ def _dwpc_baba(graph, metapath, damping=0.5, dense_threshold=0,
     return row_names, col_names, dwpc_matrix
 
 
+def _dwpc_single_repeat(graph, metapath, damping=0.5, dense_threshold=0,
+                        dtype=numpy.float64):
+    """
+    One metanode repeated exactly once. Eg: (A-B-C-B-E). This function is to
+    allow the slowest DWPC computations, namely those with large-degree,
+    single-repeat segments like the example, to be cached. In general, the
+    goal is to split (A-B-C-B-E) to (A-B-C-B) (B-E) with the former being
+    sent to a very limited cache in _dwpc_short_repeat and the latter to a
+    larger cache in dwwc. We cache the front portion selectively because
+    metapath extraction methods order metapaths with the last metaedges
+    changing most frequently.
+    """
+    segments = get_segments(graph.metagraph, metapath)
+    assert len(segments) <= 3
+
+    head_segment = None
+    tail_segment = None
+
+    # Label the segments as head, tail, and repeat
+    for i, segment in enumerate(segments):
+        if segment.source() == segment.target():
+            repeat_segment = segment
+        elif i == 0:
+            head_segment = segment
+        else:
+            tail_segment = segment
+
+    if head_segment is not None:
+        front_segment = graph.metagraph.get_metapath(
+            (*tuple(head_segment), *tuple(repeat_segment)))
+        row_names, col_names, dwpc_matrix = _dwpc_short_repeat(
+            graph, front_segment, damping=damping,
+            dense_threshold=dense_threshold, dtype=dtype)
+    else:
+        row_names, col_names, dwpc_matrix = dwwc(
+            graph, repeat_segment, damping=damping,
+            dense_threshold=dense_threshold, dtype=dtype)
+        dwpc_matrix = remove_diag(dwpc_matrix)
+    if tail_segment is not None:
+        tail_rows, col_names, dwpc_tail = dwwc(
+            graph, tail_segment, damping=damping,
+            dense_threshold=dense_threshold, dtype=dtype)
+        dwpc_matrix = dwpc_matrix @ dwpc_tail
+
+    return row_names, col_names, dwpc_matrix
+
+
+@functools.lru_cache(maxsize=10)
 def _dwpc_short_repeat(graph, metapath, damping=0.5, dense_threshold=0,
                        dtype=numpy.float64):
     """
