@@ -363,9 +363,11 @@ def _dwpc_disjoint(graph, metapath, damping=0.5, dense_threshold=0,
     col_names = None
     dwpc_matrix = None
     for segment in segments:
-        rows, cols, seg_matrix, t = dwpc(graph, segment, damping=damping,
-                                         dense_threshold=dense_threshold,
-                                         dtype=dtype)
+        segment_category = categorize(segment)
+        dwpc_function = category_to_function(segment_category)
+        rows, cols, seg_matrix = dwpc_function(
+            graph, segment, damping=damping, dense_threshold=dense_threshold,
+            dtype=dtype)
         if row_names is None:
             row_names = rows
         if segment is segments[-1]:
