@@ -5,6 +5,7 @@ import shutil
 
 import hetio.hetnet
 import hetio.matrix
+import hetio.permute
 import hetio.readwrite
 import numpy
 import pandas
@@ -113,6 +114,30 @@ def read_first_matrix(specs):
         '\n'.join(paths))
 
 
+def permute_matrix(adjacency_matrix, directed=False, multiplier=10,
+                   excluded_pair_set=set(), seed=0, log=False):
+
+    nonzeros = [list(i) for i in adjacency_matrix.nonzero()]
+    edge_list = list(zip(*nonzeros))
+    permuted_edges, logs = hetio.permute.permute_pair_list(
+        edge_list, directed=directed, multiplier=multiplier,
+        excluded_pair_set=excluded_pair_set, seed=seed, log=log)
+
+    edges = numpy.array(permuted_edges)
+    ones = numpy.ones(len(edges), dtype=adjacency_matrix.dtype)
+    permuted_adjacency = scipy.sparse.csc_matrix((ones, (edges[:, 0], edges[:, 1])),
+                                                 shape=adjacency_matrix.shape)
+
+    # Keep the same sparse type as adjacency_matrix
+    permuted_adjacency = type(adjacency_matrix)(permuted_adjacency)
+
+    # Ensure node degrees have been preserved
+    assert (permuted_adjacency.sum(axis=1) != adjacency_matrix.sum(axis=1)).sum() == 0
+    assert (permuted_adjacency.sum(axis=0) != adjacency_matrix.sum(axis=0)).sum() == 0
+
+    return permuted_adjacency, logs
+
+
 class HetMat:
 
     # Supported formats for nodes files
@@ -177,6 +202,55 @@ class HetMat:
             name, _ = directory.name.rsplit('.', 1)
             permutations[name] = permutation
         return permutations
+
+    def permute_graph(self, num_new_permutations=None, namer=None, start_from=None,
+                      multiplier=10, excluded_pair_set=set(), seed=0, log=True):
+        """
+        Generate and save permutations of the HetMat adjacency matrices.
+
+        Parameters
+        ----------
+        num_new_permutations : int
+        namer : generator
+        start_from : str
+        multiplier : int
+        excluded_pair_set : set
+        seed : int
+        log : bool
+        """
+        if namer is None:
+            # If no namer given, continue increasing names by one for new permutations
+            def namer():
+                i = 1
+                while i:
+                    yield i
+                    i += 1
+            namer = namer()
+        for _ in range(num_new_permutations):
+            name = f'{next(namer)}.hetmat/'
+            new_permutation_path = self.permutations_directory.joinpath(name)
+
+            new_hetmat = HetMat(new_permutation_path, initialize=True)
+            new_hetmat.is_permutation = True
+            new_hetmat.metagraph_path.symlink_to('../../metagraph.json')
+            new_hetmat.nodes_directory.rmdir()
+            new_hetmat.nodes_directory.symlink_to('../../nodes', target_is_directory=True)
+
+            if start_from is not None:
+                original_hetmat = self.permutations[start_from]
+            else:
+                original_hetmat = self
+
+            metaedges = list(self.metagraph.get_edges(exclude_inverts=True))
+            for metaedge in metaedges:
+                rows, cols, original_matrix = original_hetmat.metaedge_to_adjacency_matrix(
+                    metaedge, dense_threshold=1)
+                is_directed = (metaedge.direction != 'both')
+                permuted_matrix = permute_matrix(
+                    original_matrix, directed=is_directed, multiplier=multiplier,
+                    excluded_pair_set=excluded_pair_set, seed=seed, log=log)
+                path = new_hetmat.get_edges_path(metaedge, file_format='sparse.npz')
+                scipy.sparse.save_npz(str(path), permuted_matrix, compressed=True)
 
     @property
     @functools.lru_cache()
