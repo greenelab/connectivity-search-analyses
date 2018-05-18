@@ -223,7 +223,7 @@ class HetMat:
             def namer():
                 i = 1
                 while i:
-                    yield i
+                    yield str(i).zfill(3)
                     i += 1
             namer = namer()
         for _ in range(num_new_permutations):
