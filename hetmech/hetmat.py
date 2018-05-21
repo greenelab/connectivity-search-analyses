@@ -134,8 +134,8 @@ def _permute_matrix(adjacency_matrix, directed=False, multiplier=10,
         permuted_adjacency = permuted_adjacency.toarray()
 
     # Ensure node degrees have been preserved
-    assert all(permuted_adjacency.sum(axis=1) == adjacency_matrix.sum(axis=1))
-    assert all(permuted_adjacency.sum(axis=0) == adjacency_matrix.sum(axis=0))
+    assert (permuted_adjacency.sum(axis=1) == adjacency_matrix.sum(axis=1)).all()
+    assert (permuted_adjacency.sum(axis=0) == adjacency_matrix.sum(axis=0)).all()
 
     return permuted_adjacency, logs
 
