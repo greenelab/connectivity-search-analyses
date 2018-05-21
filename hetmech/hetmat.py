@@ -250,17 +250,12 @@ class HetMat:
         """
         if namer is None:
             # If no namer given, continue increasing names by one for new permutations
-            def namer():
-                i = 1
-                while True:
-                    yield str(i).zfill(3)
-                    i += 1
-            namer = namer()
+            namer = itertools.count(start=1)
 
         logging_stats = list()
         for _ in range(num_new_permutations):
             permutation_name = next(namer)
-            name = f'{permutation_name}.hetmat/'
+            name = f'{permutation_name}.hetmat'
             new_permutation_path = self.permutations_directory.joinpath(name)
             if new_permutation_path.is_dir():
                 # If directory exists, back it up using a .bak extension
@@ -275,14 +270,14 @@ class HetMat:
             new_hetmat.nodes_directory.rmdir()
             new_hetmat.nodes_directory.symlink_to('../../nodes', target_is_directory=True)
 
-            if start_from is not None:
-                original_hetmat = self.permutations[start_from]
-            else:
-                original_hetmat = self
+            if start_from is None:
+                start_from= self
+            elif isinstance(start_from, str):
+                start_from = self.permutations[start_from]
 
             metaedges = list(self.metagraph.get_edges(exclude_inverts=True))
             for metaedge in metaedges:
-                rows, cols, original_matrix = original_hetmat.metaedge_to_adjacency_matrix(
+                rows, cols, original_matrix = start_from.metaedge_to_adjacency_matrix(
                     metaedge, dense_threshold=1)
                 is_directed = metaedge.direction != 'both'
                 permuted_matrix, stats = _permute_matrix(
