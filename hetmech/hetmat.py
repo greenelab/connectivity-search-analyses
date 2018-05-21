@@ -117,8 +117,7 @@ def read_first_matrix(specs):
 def _permute_matrix(adjacency_matrix, directed=False, multiplier=10,
                     excluded_pair_set=set(), seed=0, log=False):
 
-    nonzeros = [list(i) for i in adjacency_matrix.nonzero()]
-    edge_list = list(zip(*nonzeros))
+    edge_list = list(zip(*adjacency_matrix.nonzero()))
     permuted_edges, logs = hetio.permute.permute_pair_list(
         edge_list, directed=directed, multiplier=multiplier,
         excluded_pair_set=excluded_pair_set, seed=seed, log=log)
@@ -132,8 +131,8 @@ def _permute_matrix(adjacency_matrix, directed=False, multiplier=10,
     permuted_adjacency = type(adjacency_matrix)(permuted_adjacency)
 
     # Ensure node degrees have been preserved
-    assert (permuted_adjacency.sum(axis=1) != adjacency_matrix.sum(axis=1)).sum() == 0
-    assert (permuted_adjacency.sum(axis=0) != adjacency_matrix.sum(axis=0)).sum() == 0
+    assert all(permuted_adjacency.sum(axis=1) == adjacency_matrix.sum(axis=1))
+    assert all(permuted_adjacency.sum(axis=0) == adjacency_matrix.sum(axis=0))
 
     return permuted_adjacency, logs
 
@@ -231,7 +230,7 @@ class HetMat:
             # If no namer given, continue increasing names by one for new permutations
             def namer():
                 i = 1
-                while i:
+                while True:
                     yield str(i).zfill(3)
                     i += 1
             namer = namer()
@@ -257,7 +256,7 @@ class HetMat:
             for metaedge in metaedges:
                 rows, cols, original_matrix = original_hetmat.metaedge_to_adjacency_matrix(
                     metaedge, dense_threshold=1)
-                is_directed = (metaedge.direction != 'both')
+                is_directed = metaedge.direction != 'both'
                 permuted_matrix, stats = _permute_matrix(
                     original_matrix, directed=is_directed, multiplier=multiplier,
                     excluded_pair_set=excluded_pair_set, seed=seed, log=log)
