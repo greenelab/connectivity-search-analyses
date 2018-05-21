@@ -73,7 +73,7 @@ def permute_matrix(adjacency_matrix, directed=False, multiplier=10,
                    excluded_pair_set=set(), seed=0):
     """
     Perform a degree-preserving permutation on a given adjacency matrix. Assumes
-    boolean matrix, and is incompatibile with weighted edges.
+    boolean matrix, and is incompatible with weighted edges.
 
     Parameters
     ----------
