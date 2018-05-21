@@ -49,6 +49,25 @@ def hetmat_from_permuted_graph(hetmat, permutation_id, permuted_graph):
     Assumes subdirectory structure and that permutations inherit nodes but not
     edges.
     """
+    permuted_hetmat = initialize_permutation_directory(hetmat, permutation_id)
+    permuted_hetmat = hetmat_from_graph(
+        permuted_graph, permuted_hetmat.directory, save_metagraph=False, save_nodes=False)
+    return permuted_hetmat
+
+
+def initialize_permutation_directory(hetmat, permutation_id):
+    """
+    Initializes the directory structure of a HetMat permutation.
+
+    Parameters
+    ----------
+    hetmat : HetMat
+    permutation_id : str
+
+    Returns
+    -------
+    HetMat
+    """
     if not hetmat.permutations_directory.is_dir():
         hetmat.permutations_directory.mkdir()
     directory = hetmat.permutations_directory.joinpath(f'{permutation_id}.hetmat')
@@ -63,8 +82,6 @@ def hetmat_from_permuted_graph(hetmat, permutation_id, permuted_graph):
     permuted_hetmat.metagraph_path.symlink_to('../../metagraph.json')
     permuted_hetmat.nodes_directory.rmdir()
     permuted_hetmat.nodes_directory.symlink_to('../../nodes', target_is_directory=True)
-    permuted_hetmat = hetmat_from_graph(
-        permuted_graph, directory, save_metagraph=False, save_nodes=False)
     return permuted_hetmat
 
 
@@ -226,21 +243,8 @@ class HetMat:
         stat_dfs = list()
         for _ in range(num_new_permutations):
             permutation_name = next(namer)
-            name = f'{permutation_name}.hetmat'
-            new_permutation_path = self.permutations_directory.joinpath(name)
-            if new_permutation_path.is_dir():
-                # If directory exists, back it up using a .bak extension
-                backup_directory = new_permutation_path.with_name(new_permutation_path.name + '.bak')
-                if backup_directory.is_dir():
-                    shutil.rmtree(backup_directory)
-                shutil.move(new_permutation_path, backup_directory)
-
-            new_hetmat = HetMat(new_permutation_path, initialize=True)
-            new_hetmat.is_permutation = True
-            new_hetmat.metagraph_path.symlink_to('../../metagraph.json')
-            new_hetmat.nodes_directory.rmdir()
-            new_hetmat.nodes_directory.symlink_to('../../nodes', target_is_directory=True)
-
+            new_hetmat = initialize_permutation_directory(self, permutation_name)
+           
             if start_from is None:
                 start_from = self
             elif isinstance(start_from, str):
