@@ -263,8 +263,12 @@ class HetMat:
                 permuted_matrix, stats = _permute_matrix(
                     original_matrix, directed=is_directed, multiplier=multiplier,
                     excluded_pair_set=excluded_pair_set, seed=seed, log=log)
-                path = new_hetmat.get_edges_path(metaedge, file_format='sparse.npz')
-                scipy.sparse.save_npz(str(path), permuted_matrix, compressed=True)
+                if scipy.sparse.issparse(permuted_matrix):
+                    path = new_hetmat.get_edges_path(metaedge, file_format='sparse.npz')
+                    scipy.sparse.save_npz(str(path), permuted_matrix, compressed=True)
+                else:
+                    path = new_hetmat.get_edges_path(metaedge, file_format='npy')
+                    numpy.save(str(path), permuted_matrix)
                 logging_stats.append(stats)
             start_from = permutation_name
         if log:
