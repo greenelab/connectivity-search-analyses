@@ -112,7 +112,7 @@ def read_first_matrix(specs):
     potential path from which to read a matrix. Currently, the spec dictionary
     supports the following keys:
     - path: path to the file
-    - transpose: whether to tranpose the file after reading it. If omitted,
+    - transpose: whether to transpose the file after reading it. If omitted,
       then False.
     - file_format: format of the matrix. If omitted, then infer.
     """
@@ -317,7 +317,7 @@ class HetMat:
     def get_nodes_path(self, metanode, file_format='tsv'):
         """
         Get the path for the nodes file for the specified metanode. Setting
-        file_format=None returns the path without any exension suffix.
+        file_format=None returns the path without any extension suffix.
         """
         metanode = self.metagraph.get_metanode(metanode)
         path = self.nodes_directory.joinpath(f'{metanode}')
@@ -328,7 +328,7 @@ class HetMat:
     def get_edges_path(self, metaedge, file_format='npy'):
         """
         Get the path for the edges file for the specified metaedge. Setting
-        file_format=None returns the path without any exension suffix.
+        file_format=None returns the path without any extension suffix.
         """
         metaedge_abbrev = self.metagraph.get_metaedge(metaedge).get_abbrev()
         path = self.edges_directory.joinpath(f'{metaedge_abbrev}')
@@ -338,7 +338,7 @@ class HetMat:
 
     def get_path_counts_path(self, metapath, metric, damping, file_format):
         """
-        Setting file_format=None returns the path without any exension suffix.
+        Setting file_format=None returns the path without any extension suffix.
         Supported metrics are 'dwpc' and 'dwwc'.
         """
         path = self.path_counts_directory.joinpath(f'{metric}-{damping}/{metapath}')
