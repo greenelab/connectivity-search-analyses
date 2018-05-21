@@ -68,6 +68,7 @@ def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False,
         the computation time in seconds
     """
     start_time = time.perf_counter()
+    
     category = categorize(metapath)
     dwpc_function = category_to_function(category)
     if category in ('long_repeat', 'other'):
