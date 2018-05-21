@@ -262,6 +262,12 @@ class HetMat:
             permutation_name = next(namer)
             name = f'{permutation_name}.hetmat/'
             new_permutation_path = self.permutations_directory.joinpath(name)
+            if new_permutation_path.is_dir():
+                # If directory exists, back it up using a .bak extension
+                backup_directory = new_permutation_path.with_name(new_permutation_path.name + '.bak')
+                if backup_directory.is_dir():
+                    shutil.rmtree(backup_directory)
+                shutil.move(new_permutation_path, backup_directory)
 
             new_hetmat = HetMat(new_permutation_path, initialize=True)
             new_hetmat.is_permutation = True
