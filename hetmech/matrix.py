@@ -71,7 +71,26 @@ def copy_array(matrix, copy=True, dtype=numpy.float64):
 
 def permute_matrix(adjacency_matrix, directed=False, multiplier=10,
                    excluded_pair_set=set(), seed=0):
+    """
+    Perform a degree-preserving permutation on a given adjacency matrix. Assumes
+    boolean matrix, and is incompatibile with weighted edges.
 
+    Parameters
+    ----------
+    adjacency_matrix : numpy.ndarray or scipy.sparse
+    directed : bool
+    multiplier : float
+        Number of times to try edge swaps as a fraction of the number of edges.
+        Default is ten times the number of tries as edges.
+    excluded_pair_set : set
+        Pairs of nodes to exclude from the permutation
+    seed : int
+
+    Returns
+    -------
+    numpy.ndarray or scipy.sparse
+        Same object type as the original adjacency matrix.
+    """
     edge_list = list(zip(*adjacency_matrix.nonzero()))
     permuted_edges, stats = hetio.permute.permute_pair_list(
         edge_list, directed=directed, multiplier=multiplier,
