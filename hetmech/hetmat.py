@@ -244,7 +244,7 @@ class HetMat:
         for _ in range(num_new_permutations):
             permutation_name = next(namer)
             new_hetmat = initialize_permutation_directory(self, permutation_name)
-           
+
             if start_from is None:
                 start_from = self
             elif isinstance(start_from, str):
