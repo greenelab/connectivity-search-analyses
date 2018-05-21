@@ -250,7 +250,7 @@ class HetMat:
         """
         if namer is None:
             # If no namer given, continue increasing names by one for new permutations
-            namer = itertools.count(start=1)
+            namer = (f'{x:03}' for x in itertools.count(start=1))
 
         logging_stats = list()
         for _ in range(num_new_permutations):
