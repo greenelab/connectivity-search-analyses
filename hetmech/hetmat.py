@@ -128,7 +128,10 @@ def _permute_matrix(adjacency_matrix, directed=False, multiplier=10,
                                                  shape=adjacency_matrix.shape)
 
     # Keep the same sparse type as adjacency_matrix
-    permuted_adjacency = type(adjacency_matrix)(permuted_adjacency)
+    if scipy.sparse.issparse(adjacency_matrix):
+        permuted_adjacency = type(adjacency_matrix)(permuted_adjacency)
+    else:
+        permuted_adjacency = permuted_adjacency.toarray()
 
     # Ensure node degrees have been preserved
     assert all(permuted_adjacency.sum(axis=1) == adjacency_matrix.sum(axis=1))
