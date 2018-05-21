@@ -114,8 +114,8 @@ def read_first_matrix(specs):
         '\n'.join(paths))
 
 
-def permute_matrix(adjacency_matrix, directed=False, multiplier=10,
-                   excluded_pair_set=set(), seed=0, log=False):
+def _permute_matrix(adjacency_matrix, directed=False, multiplier=10,
+                    excluded_pair_set=set(), seed=0, log=False):
 
     nonzeros = [list(i) for i in adjacency_matrix.nonzero()]
     edge_list = list(zip(*nonzeros))
@@ -227,7 +227,8 @@ class HetMat:
                     i += 1
             namer = namer()
         for _ in range(num_new_permutations):
-            name = f'{next(namer)}.hetmat/'
+            permutation_name = next(namer)
+            name = f'{permutation_name}.hetmat/'
             new_permutation_path = self.permutations_directory.joinpath(name)
 
             new_hetmat = HetMat(new_permutation_path, initialize=True)
@@ -246,11 +247,12 @@ class HetMat:
                 rows, cols, original_matrix = original_hetmat.metaedge_to_adjacency_matrix(
                     metaedge, dense_threshold=1)
                 is_directed = (metaedge.direction != 'both')
-                permuted_matrix = permute_matrix(
+                permuted_matrix, stats = _permute_matrix(
                     original_matrix, directed=is_directed, multiplier=multiplier,
                     excluded_pair_set=excluded_pair_set, seed=seed, log=log)
                 path = new_hetmat.get_edges_path(metaedge, file_format='sparse.npz')
                 scipy.sparse.save_npz(str(path), permuted_matrix, compressed=True)
+            start_from = permutation_name
 
     @property
     @functools.lru_cache()
