@@ -211,12 +211,21 @@ class HetMat:
         Parameters
         ----------
         num_new_permutations : int
+            The number of new, permuted HetMats to generate
         namer : generator
+            Yields the names of new permutations. Cannot pass names of existing permutations
         start_from : str
+            Name of permutation to use as starting point. For multiple permutations,
+            the first permutation starts from start_from, and future permutations
+            continue from the previous one.
         multiplier : int
+            How many attempts to make when cross-swapping edges.
         excluded_pair_set : set
+            Pairs of nodes which are not to be changed
         seed : int
+            Random seed for generating new permutations
         log : bool
+            When log=True, give information about permutation attempts
         """
         if namer is None:
             # If no namer given, continue increasing names by one for new permutations
@@ -226,6 +235,8 @@ class HetMat:
                     yield str(i).zfill(3)
                     i += 1
             namer = namer()
+
+        logging_stats = list()
         for _ in range(num_new_permutations):
             permutation_name = next(namer)
             name = f'{permutation_name}.hetmat/'
@@ -252,7 +263,10 @@ class HetMat:
                     excluded_pair_set=excluded_pair_set, seed=seed, log=log)
                 path = new_hetmat.get_edges_path(metaedge, file_format='sparse.npz')
                 scipy.sparse.save_npz(str(path), permuted_matrix, compressed=True)
+                logging_stats.append(stats)
             start_from = permutation_name
+        if log:
+            return logging_stats
 
     @property
     @functools.lru_cache()
