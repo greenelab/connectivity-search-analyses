@@ -88,8 +88,9 @@ def permute_matrix(adjacency_matrix, directed=False, multiplier=10,
 
     Returns
     -------
-    numpy.ndarray or scipy.sparse
-        Same object type as the original adjacency matrix.
+    numpy.ndarray or scipy.sparse, list
+        Permuted adjacency matrix of the same type as was passed. List of
+        OrderedDicts of information on the permutations performed.
     """
     edge_list = list(zip(*adjacency_matrix.nonzero()))
     permuted_edges, stats = hetio.permute.permute_pair_list(
