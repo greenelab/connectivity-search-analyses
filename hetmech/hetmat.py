@@ -271,7 +271,7 @@ class HetMat:
             new_hetmat.nodes_directory.symlink_to('../../nodes', target_is_directory=True)
 
             if start_from is None:
-                start_from= self
+                start_from = self
             elif isinstance(start_from, str):
                 start_from = self.permutations[start_from]
 
