@@ -12,6 +12,7 @@ import pandas
 import scipy.sparse
 
 import hetmech.degree_weight
+import hetmech.matrix
 
 
 def hetmat_from_graph(graph, path, save_metagraph=True, save_nodes=True, save_edges=True):
@@ -133,32 +134,6 @@ def read_first_matrix(specs):
         '\n'.join(paths))
 
 
-def _permute_matrix(adjacency_matrix, directed=False, multiplier=10,
-                    excluded_pair_set=set(), seed=0, log=False):
-
-    edge_list = list(zip(*adjacency_matrix.nonzero()))
-    permuted_edges, logs = hetio.permute.permute_pair_list(
-        edge_list, directed=directed, multiplier=multiplier,
-        excluded_pair_set=excluded_pair_set, seed=seed, log=log)
-
-    edges = numpy.array(permuted_edges)
-    ones = numpy.ones(len(edges), dtype=adjacency_matrix.dtype)
-    permuted_adjacency = scipy.sparse.csc_matrix((ones, (edges[:, 0], edges[:, 1])),
-                                                 shape=adjacency_matrix.shape)
-
-    # Keep the same sparse type as adjacency_matrix
-    if scipy.sparse.issparse(adjacency_matrix):
-        permuted_adjacency = type(adjacency_matrix)(permuted_adjacency)
-    else:
-        permuted_adjacency = permuted_adjacency.toarray()
-
-    # Ensure node degrees have been preserved
-    assert (permuted_adjacency.sum(axis=1) == adjacency_matrix.sum(axis=1)).all()
-    assert (permuted_adjacency.sum(axis=0) == adjacency_matrix.sum(axis=0)).all()
-
-    return permuted_adjacency, logs
-
-
 class HetMat:
 
     # Supported formats for nodes files
@@ -225,7 +200,7 @@ class HetMat:
         return permutations
 
     def permute_graph(self, num_new_permutations=None, namer=None, start_from=None,
-                      multiplier=10, excluded_pair_set=set(), seed=0, log=True):
+                      multiplier=10, seed=0):
         """
         Generate and save permutations of the HetMat adjacency matrices.
 
@@ -241,18 +216,14 @@ class HetMat:
             continue from the previous one.
         multiplier : int
             How many attempts to make when cross-swapping edges.
-        excluded_pair_set : set
-            Pairs of nodes which are not to be changed
         seed : int
             Random seed for generating new permutations
-        log : bool
-            When log=True, give information about permutation attempts
         """
         if namer is None:
             # If no namer given, continue increasing names by one for new permutations
             namer = (f'{x:03}' for x in itertools.count(start=1))
 
-        logging_stats = list()
+        stat_dfs = list()
         for _ in range(num_new_permutations):
             permutation_name = next(namer)
             name = f'{permutation_name}.hetmat'
@@ -274,21 +245,24 @@ class HetMat:
                 start_from = self
             elif isinstance(start_from, str):
                 start_from = self.permutations[start_from]
+            assert isinstance(start_from, HetMat)
 
             metaedges = list(self.metagraph.get_edges(exclude_inverts=True))
             for metaedge in metaedges:
                 rows, cols, original_matrix = start_from.metaedge_to_adjacency_matrix(
                     metaedge, dense_threshold=1)
                 is_directed = metaedge.direction != 'both'
-                permuted_matrix, stats = _permute_matrix(
+                permuted_matrix, stats = hetmech.matrix.permute_matrix(
                     original_matrix, directed=is_directed, multiplier=multiplier,
-                    excluded_pair_set=excluded_pair_set, seed=seed, log=log)
+                    seed=seed)
                 path = new_hetmat.get_edges_path(metaedge, file_format=None)
                 save_matrix(permuted_matrix, path)
-                logging_stats.append(stats)
+                stat_df = pandas.DataFrame(stats)
+                stat_df['permutation'] = permutation_name
+                stat_dfs.append(stat_df)
             start_from = permutation_name
-        if log:
-            return logging_stats
+            seed += 1
+        return pandas.concat(stat_dfs)
 
     @property
     @functools.lru_cache()
