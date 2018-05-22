@@ -266,6 +266,7 @@ class HetMat:
                 stat_dfs.append(stat_df)
             start_from = permutation_name
             seed += 1
+            self.permutations[permutation_name] = new_hetmat
         return pandas.concat(stat_dfs)
 
     @property
