@@ -4,6 +4,7 @@ import functools
 import inspect
 import itertools
 import logging
+import time
 
 import numpy
 from scipy import sparse
@@ -45,7 +46,6 @@ def path_count_cache(metric):
             bound_args = signature.bind(*args, **kwargs)
             bound_args.apply_defaults()
             arguments = bound_args.arguments
-            # Replace below with caching
             graph = arguments['graph']
             metapath = arguments['metapath']
             damping = arguments['damping']
@@ -61,9 +61,11 @@ def path_count_cache(metric):
                 else:
                     set_cache = True
             if cached_result is None:
+                start = time.perf_counter()
                 row_names, col_names, matrix = user_function(*args, **kwargs)
                 if set_cache:
-                    graph.path_counts_cache.set(**cache_key, matrix=matrix)
+                    runtime = time.perf_counter() - start
+                    graph.path_counts_cache.set(**cache_key, matrix=matrix, runtime=runtime)
             return row_names, col_names, matrix
         return wrapper
     return decorator
