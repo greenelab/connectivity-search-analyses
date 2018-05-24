@@ -390,13 +390,12 @@ def get_all_segments(metagraph, metapath):
     segments = get_segments(metagraph, metapath)
     if len(segments) == 1:
         return [metapath]
-    else:
-        all_subsegments = []
-        for segment in segments:
-            subsegments = get_all_segments(metagraph, segment)
-            next_split = subsegments if len(subsegments) > 1 else []
-            all_subsegments = all_subsegments + [segment] + next_split
-        return all_subsegments
+    all_subsegments = []
+    for segment in segments:
+        subsegments = get_all_segments(metagraph, segment)
+        next_split = subsegments if len(subsegments) > 1 else []
+        all_subsegments = all_subsegments + [segment] + next_split
+    return all_subsegments
 
 
 def order_segments(metagraph, metapaths, store_inverses=False):
@@ -424,16 +423,13 @@ def order_segments(metagraph, metapaths, store_inverses=False):
     all_segments = [segment for metapath in metapaths for segment in get_all_segments(metagraph, metapath)]
     if not store_inverses:
         # Change all instances of inverted segments to the same direction, using a first-seen ordering
-        stored_directions = set(all_segments)
-        for i, v in enumerate(all_segments):
-            if v.inverse in stored_directions:
-                if v in stored_directions:
-                    stored_directions.remove(v.inverse)
-                else:
-                    all_segments[i] = v.inverse
+        seen = set()
+        aligned_segments = list()
+        for segment in all_segments:
+            add = segment.inverse if segment.inverse in seen else segment
+            aligned_segments.append(add)
+            seen.add(add)
     segment_counts = collections.Counter(all_segments)
-    # Keep only those which appear more than once
-    segment_counts = collections.Counter({k: v for k, v in segment_counts.items() if v > 1})
     return segment_counts
 
 
