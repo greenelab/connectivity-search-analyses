@@ -429,6 +429,7 @@ def order_segments(metagraph, metapaths, store_inverses=False):
             add = segment.inverse if segment.inverse in seen else segment
             aligned_segments.append(add)
             seen.add(add)
+        all_segments = aligned_segments
     segment_counts = collections.Counter(all_segments)
     return segment_counts
 
