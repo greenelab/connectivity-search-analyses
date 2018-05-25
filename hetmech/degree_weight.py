@@ -47,7 +47,8 @@ def path_count_cache(metric):
             bound_args.apply_defaults()
             arguments = bound_args.arguments
             graph = arguments['graph']
-            metapath = arguments['metapath']
+            metapath = graph.metagraph.get_metapath(arguments['metapath'])
+            arguments['metapath'] = metapath
             damping = arguments['damping']
             cached_result = None
             start = time.perf_counter()
@@ -60,7 +61,7 @@ def path_count_cache(metric):
                     matrix = sparsify_or_densify(matrix, arguments['dense_threshold'])
                     matrix = matrix.astype(arguments['dtype'])
             if cached_result is None:
-                row_names, col_names, matrix = user_function(*args, **kwargs)
+                row_names, col_names, matrix = user_function(**arguments)
             if supports_cache:
                 runtime = time.perf_counter() - start
                 graph.path_counts_cache.set(**cache_key, matrix=matrix, runtime=runtime)
