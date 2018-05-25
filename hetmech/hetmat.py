@@ -408,7 +408,7 @@ class PathCountCache:
                 matrix = self.cache[key]
                 if invert:
                     matrix = matrix.transpose()
-        if matrix:
+        if matrix is not None:
             row_ids = self.hetmat.get_node_identifiers(metapath.source())
             col_ids = self.hetmat.get_node_identifiers(metapath.target())
             return row_ids, col_ids, matrix
@@ -449,6 +449,8 @@ class PathCountPriorityCache(PathCountCache):
         priority = self.priorities.get(key, 0)
         tie_breaker = next(self.priority_queue_counter)
         nbytes = get_matrix_size(matrix)
+        if nbytes > self.allocate_B:
+            return
         item = priority, tie_breaker, key, nbytes
         while self.current_B + nbytes > self.allocate_B:
             popped = heapq.heappop(self.priority_queue)
