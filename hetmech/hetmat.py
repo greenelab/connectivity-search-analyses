@@ -1,3 +1,4 @@
+import collections
 import functools
 import heapq
 import itertools
@@ -394,6 +395,11 @@ class PathCountCache:
     def __init__(self, hetmat):
         self.hetmat = hetmat
         self.cache = {}
+        self.hits = {
+            'memory': 0,
+            'disk': 0,
+            'absent': 0,
+        }
 
     def get(self, metapath, metric, damping):
         """
@@ -409,12 +415,16 @@ class PathCountCache:
                 if invert:
                     matrix = matrix.transpose()
         if matrix is not None:
+            self.hits['memory'] += 1
             row_ids = self.hetmat.get_node_identifiers(metapath.source())
             col_ids = self.hetmat.get_node_identifiers(metapath.target())
             return row_ids, col_ids, matrix
         try:
-            return self.hetmat.read_path_counts(metapath, metric, damping)
+            result = self.hetmat.read_path_counts(metapath, metric, damping)
+            self.hits['disk'] += 1
+            return result
         except FileNotFoundError:
+            self.hits['absent'] += 1
             return None
 
     def set(self, metapath, metric, damping, matrix, runtime):

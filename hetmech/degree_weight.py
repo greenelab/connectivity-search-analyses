@@ -291,6 +291,7 @@ def get_segments(metagraph, metapath):
             indices = indices + [(indices[-1][-1], len(metapath))]
         return indices
 
+    metapath = metagraph.get_metapath(metapath)
     category = categorize(metapath)
     metanodes = metapath.get_nodes()
     freq = collections.Counter(metanodes)
@@ -388,10 +389,11 @@ def get_all_segments(metagraph, metapath):
     >>> get_all_segments(metagraph, CrCbGaDrDaG)
     [CrC, CbG, GaDrDaG, GaD, DrD, DaG]
     """
+    metapath = metagraph.get_metapath(metapath)
     segments = get_segments(metagraph, metapath)
     if len(segments) == 1:
         return [metapath]
-    all_subsegments = []
+    all_subsegments = [metapath]
     for segment in segments:
         subsegments = get_all_segments(metagraph, segment)
         next_split = subsegments if len(subsegments) > 1 else []
