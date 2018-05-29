@@ -154,24 +154,19 @@ def dwwc(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
 
 
 @path_count_cache(metric='dwwc')
-def dwwc_recursive(graph, metapath, dwwc_matrix=None, row_names=None,
-                   damping=0.5, dense_threshold=0, dtype=numpy.float64):
+def dwwc_recursive(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
     metapath = graph.metagraph.get_metapath(metapath)
-    rows, cols, adj_mat = metaedge_to_adjacency_matrix(
+    rows, cols, adj_mat = hetmech.matrix.metaedge_to_adjacency_matrix(
         graph, metapath[0], dense_threshold=dense_threshold, dtype=dtype)
     adj_mat = _degree_weight(adj_mat, damping, dtype=dtype)
-    if dwwc_matrix is None:
-        row_names = rows
+    if len(metapath[1:]) > 0:
+        _, cols, dwwc_next = dwwc_recursive(graph, metapath[1:], damping=damping,
+                                            dense_threshold=dense_threshold, dtype=dtype)
+        dwwc_matrix = adj_mat @ dwwc_next
+    else:
         dwwc_matrix = adj_mat
-    else:
-        dwwc_matrix = dwwc_matrix @ adj_mat
-        dwwc_matrix = sparsify_or_densify(dwwc_matrix, dense_threshold)
-    if len(metapath) == 1:
-        return row_names, cols, dwwc_matrix
-    else:
-        return dwwc_recursive(graph, metapath[1:], dwwc_matrix=dwwc_matrix,
-                              row_names=row_names, damping=damping,
-                              dense_threshold=dense_threshold, dtype=dtype)
+    dwwc_matrix = sparsify_or_densify(dwwc_matrix, dense_threshold)
+    return rows, cols, dwwc_matrix
 
 
 def dwwc_chain(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
