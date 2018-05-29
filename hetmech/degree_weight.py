@@ -182,9 +182,8 @@ def dwwc_chain(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.floa
     row_names = None
     array_dims = []
     for edge in metapath:
-        rows, cols, adj_mat = metaedge_to_adjacency_matrix(graph, edge,
-                                                           dense_threshold=dense_threshold,
-                                                           dtype=dtype)
+        rows, cols, adj_mat = metaedge_to_adjacency_matrix(
+            graph, edge, dense_threshold=dense_threshold, dtype=dtype)
         adj_mat = _degree_weight(adj_mat, damping, dtype=dtype)
         if row_names is None:
             row_names = rows
