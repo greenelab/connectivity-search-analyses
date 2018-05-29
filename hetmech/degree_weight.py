@@ -155,6 +155,9 @@ def dwwc(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
 
 @path_count_cache(metric='dwwc')
 def dwwc_recursive(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
+    """
+    Recursive DWWC implementation to take better advantage of caching.
+    """
     metapath = graph.metagraph.get_metapath(metapath)
     rows, cols, adj_mat = hetmech.matrix.metaedge_to_adjacency_matrix(
         graph, metapath[0], dense_threshold=dense_threshold, dtype=dtype)
