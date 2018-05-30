@@ -170,49 +170,24 @@ def dwwc_recursive(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.
     return rows, cols, dwwc_matrix
 
 
+def _multi_dot(metapath, order, i, j, graph, damping, dense_threshold, dtype):
+    """
+    Perform matrix multiplication with the given order. Modified from
+    original at https://git.io/vh31f
+    """
+    if i == j:
+        _, _, adj_mat = metaedge_to_adjacency_matrix(
+            graph, metapath[i], dense_threshold=dense_threshold, dtype=dtype)
+        adj_mat = _degree_weight(adj_mat, damping=damping)
+        return adj_mat
+    return _multi_dot(metapath, order, i, order[i, j], graph, damping, dense_threshold, dtype) \
+        @ _multi_dot(metapath, order, order[i, j] + 1, j, graph, damping, dense_threshold, dtype)
+
+
 def dwwc_chain(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
     """
     Uses optimal matrix chain multiplication as in numpy.multi_dot, but allows
     for sparse matrices. See original source, numpy.linalg: https://git.io/vh38o
-    This version keeps all matrices in memory
-    """
-    metapath = graph.metagraph.get_metapath(metapath)
-    arrays = []
-    row_names = None
-    array_dims = []
-    for edge in metapath:
-        rows, cols, adj_mat = metaedge_to_adjacency_matrix(
-            graph, edge, dense_threshold=dense_threshold, dtype=dtype)
-        adj_mat = _degree_weight(adj_mat, damping, dtype=dtype)
-        if row_names is None:
-            row_names = rows
-        arrays.append(adj_mat)
-        array_dims.append(adj_mat.shape[0])
-    array_dims.append(adj_mat.shape[1])
-
-    # Find optimal matrix chain ordering. See https://git.io/vh38o
-    n = len(metapath)
-    m = numpy.zeros((n, n), dtype=numpy.double)
-    ordering = numpy.empty((n, n), dtype=numpy.intp)
-    for l in range(1, n):
-        for i in range(n - l):
-            j = i + l
-            m[i, j] = numpy.inf
-            for k in range(i, j):
-                q = m[i, k] + m[k + 1, j] + array_dims[i] * array_dims[k + 1] * array_dims[j + 1]
-                if q < m[i, j]:
-                    m[i, j] = q
-                    ordering[i, j] = k
-
-    dwwc_matrix = numpy.linalg.linalg._multi_dot(arrays, ordering, 0, n - 1)
-    dwwc_matrix = sparsify_or_densify(dwwc_matrix, dense_threshold)
-    return row_names, cols, dwwc_matrix
-
-
-def dwwc_chain_nomem(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
-    """
-    Equivalent to dwwc_chain, but this does not keep all matrices in memory during
-    computation. https://git.io/vh38o
     """
     metapath = graph.metagraph.get_metapath(metapath)
     row_names = None
@@ -241,20 +216,7 @@ def dwwc_chain_nomem(graph, metapath, damping=0.5, dense_threshold=0, dtype=nump
                     m[i, j] = q
                     ordering[i, j] = k
 
-    def _multi_dot(metapath, order, i, j):
-        """
-        Actually do the multiplication with the given order. Modified from
-        original at https://git.io/vh31f
-        """
-        if i == j:
-            _, _, adj_mat = metaedge_to_adjacency_matrix(
-                graph, metapath[i], dense_threshold=dense_threshold, dtype=dtype)
-            adj_mat = _degree_weight(adj_mat, damping)
-            return adj_mat
-        return _multi_dot(metapath, order, i, order[i, j]) @ _multi_dot(metapath, order, order[i, j] + 1, j)
-
-    dwwc_matrix = _multi_dot(metapath, ordering, 0, n - 1)
-
+    dwwc_matrix = _multi_dot(metapath, ordering, 0, n - 1, graph, damping, dense_threshold, dtype)
     dwwc_matrix = sparsify_or_densify(dwwc_matrix, dense_threshold)
     return row_names, column_names, dwwc_matrix
 
