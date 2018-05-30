@@ -137,7 +137,6 @@ def dwwc(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
         converted to a dense automatically.
     dtype : dtype object
     """
-    metapath = graph.metagraph.get_metapath(metapath)
     dwwc_matrix = None
     row_names = None
     for metaedge in metapath:
@@ -158,11 +157,10 @@ def dwwc_recursive(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.
     """
     Recursive DWWC implementation to take better advantage of caching.
     """
-    metapath = graph.metagraph.get_metapath(metapath)
     rows, cols, adj_mat = hetmech.matrix.metaedge_to_adjacency_matrix(
         graph, metapath[0], dense_threshold=dense_threshold, dtype=dtype)
     adj_mat = _degree_weight(adj_mat, damping, dtype=dtype)
-    if len(metapath[1:]) > 0:
+    if len(metapath) > 1:
         _, cols, dwwc_next = dwwc_recursive(graph, metapath[1:], damping=damping,
                                             dense_threshold=dense_threshold, dtype=dtype)
         dwwc_matrix = adj_mat @ dwwc_next
@@ -253,9 +251,7 @@ def dwwc_chain_nomem(graph, metapath, damping=0.5, dense_threshold=0, dtype=nump
                 graph, metapath[i], dense_threshold=dense_threshold, dtype=dtype)
             adj_mat = _degree_weight(adj_mat, damping)
             return adj_mat
-        else:
-            return numpy.dot(_multi_dot(metapath, order, i, order[i, j]),
-                             _multi_dot(metapath, order, order[i, j] + 1, j))
+        return _multi_dot(metapath, order, i, order[i, j]) @ _multi_dot(metapath, order, order[i, j] + 1, j)
 
     dwwc_matrix = _multi_dot(metapath, ordering, 0, n - 1)
 
