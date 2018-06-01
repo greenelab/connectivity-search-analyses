@@ -172,8 +172,9 @@ def dwwc_recursive(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.
 
 def _multi_dot(metapath, order, i, j, graph, damping, dense_threshold, dtype):
     """
-    Perform matrix multiplication with the given order. Modified from
-    original at https://git.io/vh31f
+    Perform matrix multiplication with the given order. Modified from 
+    numpy.linalg.linalg._multi_dot (https://git.io/vh31f) which is released 
+    under a 3-Clause BSD License (https://git.io/vhCDC).
     """
     if i == j:
         _, _, adj_mat = metaedge_to_adjacency_matrix(
@@ -184,6 +185,24 @@ def _multi_dot(metapath, order, i, j, graph, damping, dense_threshold, dtype):
         @ _multi_dot(metapath, order, order[i, j] + 1, j, graph, damping, dense_threshold, dtype)
 
 
+def _dimensions_to_ordering(dimensions):
+    # Find optimal matrix chain ordering. See https://git.io/vh38o
+    n = len(dimensions) - 1
+    m = numpy.zeros((n, n), dtype=numpy.double)
+    ordering = numpy.empty((n, n), dtype=numpy.intp)
+    for l in range(1, n):
+        for i in range(n - l):
+            j = i + l
+            m[i, j] = numpy.inf
+            for k in range(i, j):
+                q = m[i, k] + m[k + 1, j] + dimensions[i] * dimensions[k + 1] * dimensions[j + 1]
+                if q < m[i, j]:
+                    m[i, j] = q
+                    ordering[i, j] = k
+    return ordering
+
+
+@path_count_cache(metric='dwwc')
 def dwwc_chain(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
     """
     Uses optimal matrix chain multiplication as in numpy.multi_dot, but allows
@@ -201,22 +220,8 @@ def dwwc_chain(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.floa
             row_names = rows
     column_names = graph.get_node_identifiers(target)
     array_dims.append(len(column_names))
-
-    # Find optimal matrix chain ordering. See https://git.io/vh38o
-    n = len(metapath)
-    m = numpy.zeros((n, n), dtype=numpy.double)
-    ordering = numpy.empty((n, n), dtype=numpy.intp)
-    for l in range(1, n):
-        for i in range(n - l):
-            j = i + l
-            m[i, j] = numpy.inf
-            for k in range(i, j):
-                q = m[i, k] + m[k + 1, j] + array_dims[i] * array_dims[k + 1] * array_dims[j + 1]
-                if q < m[i, j]:
-                    m[i, j] = q
-                    ordering[i, j] = k
-
-    dwwc_matrix = _multi_dot(metapath, ordering, 0, n - 1, graph, damping, dense_threshold, dtype)
+    ordering = _dimensions_to_ordering(array_dims)
+    dwwc_matrix = _multi_dot(metapath, ordering, 0, len(metapath) - 1, graph, damping, dense_threshold, dtype)
     dwwc_matrix = sparsify_or_densify(dwwc_matrix, dense_threshold)
     return row_names, column_names, dwwc_matrix
 
