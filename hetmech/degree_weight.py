@@ -746,12 +746,12 @@ def _dwpc_short_repeat(graph, metapath, damping=0.5, dense_threshold=0,
     col_names = cols
 
     if head_segment:
-        row_names, cols, head_dwpc = dwwc(graph, head_segment, damping=damping,
+        row_names, cols, head_dwpc = dwpc(graph, head_segment, damping=damping,
                                           dense_threshold=dense_threshold,
                                           dtype=dtype)
         dwpc_matrix = head_dwpc @ dwpc_matrix
     if tail_segment:
-        rows, col_names, tail_dwpc = dwwc(graph, tail_segment, damping=damping,
+        rows, col_names, tail_dwpc = dwpc(graph, tail_segment, damping=damping,
                                           dense_threshold=dense_threshold,
                                           dtype=dtype)
         dwpc_matrix = dwpc_matrix @ tail_dwpc
