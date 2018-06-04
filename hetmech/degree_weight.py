@@ -206,7 +206,9 @@ def _dimensions_to_ordering(dimensions):
 def dwwc_chain(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.float64):
     """
     Uses optimal matrix chain multiplication as in numpy.multi_dot, but allows
-    for sparse matrices. See original source, numpy.linalg: https://git.io/vh38o
+    for sparse matrices. Uses ordering modified from numpy.linalg.linalg._multi_dot
+    (https://git.io/vh31f) which is released under a 3-Clause BSD License
+    (https://git.io/vhCDC).
     """
     metapath = graph.metagraph.get_metapath(metapath)
     row_names = None
