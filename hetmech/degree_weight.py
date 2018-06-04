@@ -172,8 +172,8 @@ def dwwc_recursive(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.
 
 def _multi_dot(metapath, order, i, j, graph, damping, dense_threshold, dtype):
     """
-    Perform matrix multiplication with the given order. Modified from 
-    numpy.linalg.linalg._multi_dot (https://git.io/vh31f) which is released 
+    Perform matrix multiplication with the given order. Modified from
+    numpy.linalg.linalg._multi_dot (https://git.io/vh31f) which is released
     under a 3-Clause BSD License (https://git.io/vhCDC).
     """
     if i == j:
