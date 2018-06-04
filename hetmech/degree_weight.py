@@ -213,7 +213,7 @@ def _multi_dot(metapath, order, i, j, graph, damping, dense_threshold, dtype):
     if i == j:
         _, _, adj_mat = metaedge_to_adjacency_matrix(
             graph, metapath[i], dense_threshold=dense_threshold, dtype=dtype)
-        adj_mat = _degree_weight(adj_mat, damping=damping)
+        adj_mat = _degree_weight(adj_mat, damping=damping, dtype=dtype)
         return adj_mat
     return _multi_dot(metapath, order, i, order[i, j], graph, damping, dense_threshold, dtype) \
         @ _multi_dot(metapath, order, order[i, j] + 1, j, graph, damping, dense_threshold, dtype)
@@ -244,21 +244,13 @@ def dwwc_chain(graph, metapath, damping=0.5, dense_threshold=0, dtype=numpy.floa
     (https://git.io/vhCDC).
     """
     metapath = graph.metagraph.get_metapath(metapath)
-    row_names = None
-    array_dims = []
-    for edge in metapath:
-        source = edge.source
-        target = edge.target
-        rows = graph.get_node_identifiers(source)
-        array_dims.append(len(rows))
-        if row_names is None:
-            row_names = rows
-    column_names = graph.get_node_identifiers(target)
-    array_dims.append(len(column_names))
+    array_dims = [graph.count_nodes(mn) for mn in metapath.get_nodes()]
+    row_ids = hetmech.matrix.get_node_identifiers(graph, metapath.source())
+    columns_ids = hetmech.matrix.get_node_identifiers(graph, metapath.target())
     ordering = _dimensions_to_ordering(array_dims)
     dwwc_matrix = _multi_dot(metapath, ordering, 0, len(metapath) - 1, graph, damping, dense_threshold, dtype)
     dwwc_matrix = sparsify_or_densify(dwwc_matrix, dense_threshold)
-    return row_names, column_names, dwwc_matrix
+    return row_ids, columns_ids, dwwc_matrix
 
 
 def categorize(metapath):
@@ -562,7 +554,6 @@ def _degree_weight(matrix, damping, copy=True, dtype=numpy.float64):
     column_sums = numpy.array(matrix.sum(axis=0), dtype=dtype).flatten()
     matrix = normalize(matrix, row_sums, 'rows', damping)
     matrix = normalize(matrix, column_sums, 'columns', damping)
-
     return matrix
 
 

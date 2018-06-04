@@ -612,13 +612,20 @@ def test_dwpc(metapath, expected, dense_threshold):
 @pytest.mark.parametrize('metapath,dtype', [
     ('TeGaDaG', numpy.float64),
     ('TeGaDaG', numpy.float32),
+    # ('TeGaDaG', numpy.float16),  # fails due to https://github.com/scipy/scipy/issues/8903
 ])
-def test_dtype(metapath, dtype):
+@pytest.mark.parametrize('dwwc_method', [
+    None,
+    dwwc_sequential,
+    dwwc_recursive,
+    dwwc_chain,
+])
+def test_dtype(metapath, dtype, dwwc_method):
     url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
         '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
         'test/data/disease-gene-example-graph.json',
     )
     graph = hetio.readwrite.read_graph(url)
     metapath = graph.metagraph.metapath_from_abbrev(metapath)
-    rows, cols, dwpc_matrix = dwpc(graph, metapath, dtype=dtype)
+    rows, cols, dwpc_matrix = dwpc(graph, metapath, dtype=dtype, dwwc_method=dwwc_method)
     assert dwpc_matrix.dtype == dtype
