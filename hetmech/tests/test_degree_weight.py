@@ -3,11 +3,28 @@ import numpy
 import pytest
 from scipy import sparse
 
-from hetmech.degree_weight import _dwpc_baab, _dwpc_baba, _dwpc_general_case, \
-    _dwpc_short_repeat, categorize, dwpc, dwwc, get_segments
+from hetmech.degree_weight import (
+    _dwpc_baab,
+    _dwpc_baba,
+    _dwpc_general_case,
+    _dwpc_short_repeat,
+    categorize,
+    dwpc,
+    dwwc,
+    dwwc_sequential,
+    dwwc_recursive,
+    dwwc_chain,
+    get_segments,
+)
 
 
-def test_disease_gene_example_dwwc():
+@pytest.mark.parametrize('dwwc_method', [
+    None,
+    dwwc_sequential,
+    dwwc_recursive,
+    dwwc_chain,
+])
+def test_disease_gene_example_dwwc(dwwc_method):
     """
     Test the PC & DWWC computations in Figure 2D of Himmelstein & Baranzini
     (2015) PLOS Comp Bio. https://doi.org/10.1371/journal.pcbi.1004259.g002
@@ -21,8 +38,8 @@ def test_disease_gene_example_dwwc():
 
     # Compute GiGaD path count and DWWC matrices
     metapath = metagraph.metapath_from_abbrev('GiGaD')
-    rows, cols, wc_matrix = dwwc(graph, metapath, damping=0)
-    rows, cols, dwwc_matrix = dwwc(graph, metapath, damping=0.5)
+    rows, cols, wc_matrix = dwwc(graph, metapath, damping=0, dwwc_method=dwwc_method)
+    rows, cols, dwwc_matrix = dwwc(graph, metapath, damping=0.5, dwwc_method=dwwc_method)
 
     # Check row and column name assignment
     assert rows == ['CXCR4', 'IL2RA', 'IRF1', 'IRF8', 'ITCH', 'STAT3', 'SUMO1']
