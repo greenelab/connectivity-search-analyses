@@ -60,17 +60,6 @@ def generate_degree_group_stats(source_degree_to_ind, target_degree_to_ind, matr
             yield row
 
 
-# def compute(graph, metapaths, )
-# rows = hetmech.degree_group.generate_degree_group_stats(source_deg_to_ind, target_deg_to_ind,
-#                                                  dwpc_matrix, scale=True, scaler=dwpc_matrix.mean())
-# degree_stats_df = (
-#     pd.DataFrame(rows)
-#     .set_index(['source_degree', 'target_degree'])
-#     .assign(n_perms=1)
-# )
-# degree_stats_df.head(2)
-
-
 def compute_summary_metrics(df):
     df['mean'] = df['sum'] / df['n']
     df['sd'] = ((df['sum_of_squares'] - df['sum'] ** 2 / df['n']) / (df['n'] - 1)) ** 0.5
