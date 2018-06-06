@@ -20,7 +20,7 @@ from hetmech.matrix import (
 )
 
 
-def _category_to_function(category, dwwc_method, use_general):
+def _category_to_function(category, dwwc_method, approx_ok):
     function_dictionary = {
         'no_repeats': dwwc_method,
         'disjoint': _dwpc_disjoint,
@@ -34,7 +34,7 @@ def _category_to_function(category, dwwc_method, use_general):
         'interior_complete_group': _dwpc_baba,
         'other': _dwpc_approx,
     }
-    if use_general:
+    if approx_ok:
         function_dictionary.update({'long_repeat': _dwpc_general_case,
                                     'other': _dwpc_general_case})
     return function_dictionary[category]
@@ -79,7 +79,7 @@ def path_count_cache(metric):
 
 
 @path_count_cache(metric='dwpc')
-def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False,
+def dwpc(graph, metapath, damping=0.5, dense_threshold=0, approx_ok=False,
          dtype=numpy.float64, dwwc_method=None):
     """
     A unified function to compute the degree-weighted path count.
@@ -94,10 +94,10 @@ def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False,
     dense_threshold : float (0 <= dense_threshold <= 1)
         sets the density threshold above which a sparse matrix will be
         converted to a dense automatically.
-    use_general : bool
-        if True, dwpc will call _dwpc_general_case and give a warning
-        on metapaths which are categorized 'other' and 'long_repeat'.
-        If False, uses an approximation to DWPC.
+    approx_ok : bool
+        if True, uses an approximation to DWPC. If False, dwpc will call
+        _dwpc_general_case and give a warning on metapaths which are
+        categorized 'other' and 'long_repeat'..
     dtype : dtype object
         numpy.float32 or numpy.float64. At present, numpy.float16 fails when
         using sparse matrices, due to a bug in scipy.sparse
@@ -115,7 +115,7 @@ def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False,
         the DWPC matrix
     """
     category = categorize(metapath)
-    dwpc_function = _category_to_function(category, dwwc_method=dwwc_method, use_general=use_general)
+    dwpc_function = _category_to_function(category, dwwc_method=dwwc_method, approx_ok=approx_ok)
     row_names, col_names, dwpc_matrix = dwpc_function(
         graph, metapath, damping, dense_threshold=dense_threshold,
         dtype=dtype)
