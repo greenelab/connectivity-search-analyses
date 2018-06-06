@@ -641,7 +641,7 @@ def test_dtype(metapath, dtype, dwwc_method):
 @pytest.mark.parametrize('metapath,relative', [
     ('DrDaGiG', 'equal'),
     ('DaGiGaD', 'equal'),
-    ('DaGaDaGaD', 'not_equal'),
+    ('DaGaDrDaGaD', 'not_equal'),
     ('CrCpDrD', 'equal')
 ])
 def test_dwpc_approx(metapath, relative):
@@ -657,5 +657,5 @@ def test_dwpc_approx(metapath, relative):
     if relative == 'equal':
         assert abs((dwpc_approx - dwpc_matrix)).max() == pytest.approx(0, abs=1e-7)
     else:
-        assert sum(dwpc_approx - dwpc_matrix) >= 0
+        assert numpy.sum((dwpc_approx - dwpc_matrix)) >= 0
     assert abs((dwwc_matrix - dwpc_approx)).max() >= 0
