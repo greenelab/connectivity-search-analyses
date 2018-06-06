@@ -688,6 +688,8 @@ def _dwpc_baba(graph, metapath, damping=0.5, dense_threshold=0,
     Computes the degree-weighted path count for overlapping metanode
     repeats of the form B-A-B-A. Supports random inserts.
     Segment must start with B and end with A. AXBYAZB
+    Also supports four-node repeats of a single node, including random,
+    non-repeated inserts. For example, ABBBXBC, AAAA.
     """
     segments = get_segments(graph.metagraph, metapath)
     seg_axb = None
