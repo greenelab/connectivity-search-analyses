@@ -20,20 +20,23 @@ from hetmech.matrix import (
 )
 
 
-def _category_to_function(category, dwwc_method):
+def _category_to_function(category, dwwc_method, use_general):
     function_dictionary = {
         'no_repeats': dwwc_method,
         'disjoint': _dwpc_disjoint,
         'disjoint_groups': _dwpc_disjoint,
         'short_repeat': _dwpc_short_repeat,
         'four_repeat': _dwpc_baba,
-        'long_repeat': _dwpc_general_case,
+        'long_repeat': _dwpc_approx,
         'BAAB': _dwpc_baab,
         'BABA': _dwpc_baba,
         'repeat_around': _dwpc_repeat_around,
         'interior_complete_group': _dwpc_baba,
-        'other': _dwpc_general_case,
+        'other': _dwpc_approx,
     }
+    if use_general:
+        function_dictionary.update({'long_repeat': _dwpc_general_case,
+                                    'other': _dwpc_general_case})
     return function_dictionary[category]
 
 
@@ -94,8 +97,7 @@ def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False,
     use_general : bool
         if True, dwpc will call _dwpc_general_case and give a warning
         on metapaths which are categorized 'other' and 'long_repeat'.
-        If False, an exception is raised when such a metapath is given,
-        and the general function will not be called.
+        If False, uses an approximation to DWPC.
     dtype : dtype object
         numpy.float32 or numpy.float64. At present, numpy.float16 fails when
         using sparse matrices, due to a bug in scipy.sparse
@@ -113,19 +115,10 @@ def dwpc(graph, metapath, damping=0.5, dense_threshold=0, use_general=False,
         the DWPC matrix
     """
     category = categorize(metapath)
-    dwpc_function = _category_to_function(category, dwwc_method=dwwc_method)
-    if category in ('long_repeat', 'other'):
-        if use_general:
-            row_names, col_names, dwpc_matrix = _dwpc_general_case(
-                graph, metapath, damping)
-        else:
-            raise NotImplementedError(
-                'Metapath category will use _dwpc_general_case')
-    else:
-        row_names, col_names, dwpc_matrix = dwpc_function(
-            graph, metapath, damping, dense_threshold=dense_threshold,
-            dtype=dtype)
-
+    dwpc_function = _category_to_function(category, dwwc_method=dwwc_method, use_general=use_general)
+    row_names, col_names, dwpc_matrix = dwpc_function(
+        graph, metapath, damping, dense_threshold=dense_threshold,
+        dtype=dtype)
     return row_names, col_names, dwpc_matrix
 
 
@@ -569,6 +562,43 @@ def _degree_weight(matrix, damping, copy=True, dtype=numpy.float64):
     matrix = normalize(matrix, row_sums, 'rows', damping)
     matrix = normalize(matrix, column_sums, 'columns', damping)
     return matrix
+
+
+def _dwpc_approx(graph, metapath, damping=0.5, dense_threshold=0,
+                 dtype=numpy.float64):
+    """
+    Compute an approximation of DWPC. Only removes the diagonal for the first
+    repeated node, and any disjoint repetitions that follow the last occurrence
+    of the first repeating node.
+
+    Examples
+    --------
+    GiGbCrC -> Identical output to DWPC
+    GiGbCbGiG -> Approximation
+    """
+    dwpc_matrix = None
+    row_names = None
+    # Find the first repeated metanode and where it occurs
+    nodes = metapath.get_nodes()
+    repeated_nodes = [node for i, node in enumerate(nodes) if node in nodes[i + 1:]]
+    first_repeat = repeated_nodes[0]
+    repeated_indices = [i for i, v in enumerate(nodes) if v == first_repeat]
+    for i, segment in enumerate(repeated_indices[1:]):
+        rows, cols, dwpc_matrix = dwwc(graph, metapath[repeated_indices[i]:segment],
+                                       damping=damping, dense_threshold=dense_threshold,
+                                       dtype=dtype)
+        if row_names is None:
+            row_names = rows
+    # Add head and tail segments, if applicable
+    if repeated_indices[0] != 0:
+        row_names, _, head_seg = dwwc(graph, metapath[0:repeated_indices[0]], damping=damping,
+                                      dense_threshold=dense_threshold, dtype=dtype)
+        dwpc_matrix = head_seg @ dwpc_matrix
+    if nodes[repeated_indices[-1]] != nodes[-1]:
+        _, cols, tail_seg = dwpc(graph, metapath[repeated_indices[-1]:], damping=damping,
+                                 dense_threshold=dense_threshold, dtype=dtype)
+        dwpc_matrix = dwpc_matrix @ tail_seg
+    return row_names, cols, dwpc_matrix
 
 
 def _dwpc_disjoint(graph, metapath, damping=0.5, dense_threshold=0,
