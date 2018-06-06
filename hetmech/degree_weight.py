@@ -871,6 +871,7 @@ def _dwpc_general_case(graph, metapath, damping=0, dtype=numpy.float64):
     damping : float
     dtype : dtype object
     """
+    metapath = graph.metagraph.get_metapath(metapath)
     dwpc_step = functools.partial(_node_to_children, graph=graph,
                                   metapath=metapath, damping=damping,
                                   dtype=dtype)
