@@ -116,6 +116,9 @@ def dwpc(graph, metapath, damping=0.5, dense_threshold=0, approx_ok=False,
     """
     category = categorize(metapath)
     dwpc_function = _category_to_function(category, dwwc_method=dwwc_method, approx_ok=approx_ok)
+    if category in ('long_repeat', 'other') and not approx_ok:
+        logging.warning(f"Metapath {metapath} will use _dwpc_general_case, "
+                        "which can require very long computations.")
     row_names, col_names, dwpc_matrix = dwpc_function(
         graph, metapath, damping, dense_threshold=dense_threshold,
         dtype=dtype)
