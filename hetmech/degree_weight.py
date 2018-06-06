@@ -598,6 +598,7 @@ def _dwpc_approx(graph, metapath, damping=0.5, dense_threshold=0,
         _, cols, tail_seg = dwpc(graph, metapath[repeated_indices[-1]:], damping=damping,
                                  dense_threshold=dense_threshold, dtype=dtype)
         dwpc_matrix = dwpc_matrix @ tail_seg
+    dwpc_matrix = sparsify_or_densify(dwpc_matrix, dense_threshold)
     return row_names, cols, dwpc_matrix
 
 
