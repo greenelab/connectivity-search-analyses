@@ -394,7 +394,7 @@ def test__dwpc_general_case(length):
 
 @pytest.mark.parametrize('metapath,solution', [
     ('GiG', 'short_repeat'),
-    ('GiGiGiG', 'long_repeat'),
+    ('GiGiGiG', 'four_repeat'),
     ('G' + 10 * 'iG', 'long_repeat'),
     ('GiGiGcGcG', 'long_repeat'),  # iicc
     ('GiGcGcGiG', 'long_repeat'),  # icci
@@ -446,11 +446,11 @@ def test_categorize(metapath, solution):
     ('DlAeGaDaG', '[DlAeG, GaD, DaG]'),  # BCABA
     ('GaDlAeGaD', '[GaD, DlAeG, GaD]'),  # BACBA
     ('GiGiG', '[GiGiG]'),  # short_repeat
-    ('GiGiGiG', '[GiGiGiG]'),  # long_repeat
+    ('GiGiGiG', '[GiG, GiG, GiG]'),  # long_repeat
     ('CrCbGiGiGaDrDlA', '[CrC, CbG, GiGiG, GaD, DrD, DlA]'),
     ('CrCrCbGiGeAlDrD', '[CrCrC, CbG, GiG, GeAlD, DrD]'),
     ('SEcCrCrCbGiGeAlDrDpS', '[SEcC, CrCrC, CbG, GiG, GeAlD, DrD, DpS]'),
-    ('SEcCrCrCrC', '[SEcC, CrCrCrC]'),
+    ('SEcCrCrCrC', '[SEcC, CrC, CrC, CrC]'),
     ('GiGaDaG', '[GiGaDaG]'),
     ('CrCbGiGbC', '[CrC, CbG, GiG, GbC]'),  # OTHER
     ('GbCpDrDaG', '[GbCpD, DrD, DaG]'),
@@ -474,6 +474,28 @@ def test_get_segments(metapath, solution):
     metapath = metagraph.metapath_from_abbrev(metapath)
     output = str(get_segments(metagraph, metapath))
     assert output == solution
+
+
+@pytest.mark.parametrize('metapath,dtype', [
+    ('TeGaDaG', numpy.float64),
+    ('TeGaDaG', numpy.float32),
+    # ('TeGaDaG', numpy.float16),  # fails due to https://github.com/scipy/scipy/issues/8903
+])
+@pytest.mark.parametrize('dwwc_method', [
+    None,
+    dwwc_sequential,
+    dwwc_recursive,
+    dwwc_chain,
+])
+def test_dtype(metapath, dtype, dwwc_method):
+    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
+        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
+        'test/data/disease-gene-example-graph.json',
+    )
+    graph = hetio.readwrite.read_graph(url)
+    metapath = graph.metagraph.metapath_from_abbrev(metapath)
+    rows, cols, dwpc_matrix = dwpc(graph, metapath, dtype=dtype, dwwc_method=dwwc_method)
+    assert dwpc_matrix.dtype == dtype
 
 
 @pytest.mark.parametrize('dense_threshold', [0, 1])
@@ -535,7 +557,14 @@ def test_get_segments(metapath, solution):
                [0, 0, 0.25, 0, 0, 0, 0],
                [0, 0, 0, 0, 0, 0, 0],
                [0.1767767, 0.25, 0, 0.25, 0, 0, 0]]),
-    ('GiGiGiG', None),
+    ('GiGiGiG', [[0, 0, 0, 0, 0, 0, 0],
+                 [0, 0, 0, 0, 0.125, 0, 0],
+                 [0, 0, 0, 0, 0, 0, 0],
+                 [0, 0., 0, 0, 0.125, 0, 0],
+                 [0, 0.125, 0, 0.125, 0, 0, 0.125],
+                 [0, 0, 0, 0, 0, 0, 0],
+                 [0, 0, 0, 0, 0.125, 0, 0]]),
+    ('GiGiGiGiG', None),
     ('GaDaGaD', [[0.08838835, 0],  # BABA
                  [0.08838835, 0],
                  [0, 0.125],
@@ -607,25 +636,3 @@ def test_dwpc(metapath, expected, dense_threshold):
             assert sparse.issparse(dwpc_matrix)
         else:
             assert not sparse.issparse(dwpc_matrix)
-
-
-@pytest.mark.parametrize('metapath,dtype', [
-    ('TeGaDaG', numpy.float64),
-    ('TeGaDaG', numpy.float32),
-    # ('TeGaDaG', numpy.float16),  # fails due to https://github.com/scipy/scipy/issues/8903
-])
-@pytest.mark.parametrize('dwwc_method', [
-    None,
-    dwwc_sequential,
-    dwwc_recursive,
-    dwwc_chain,
-])
-def test_dtype(metapath, dtype, dwwc_method):
-    url = 'https://github.com/dhimmel/hetio/raw/{}/{}'.format(
-        '9dc747b8fc4e23ef3437829ffde4d047f2e1bdde',
-        'test/data/disease-gene-example-graph.json',
-    )
-    graph = hetio.readwrite.read_graph(url)
-    metapath = graph.metagraph.metapath_from_abbrev(metapath)
-    rows, cols, dwpc_matrix = dwpc(graph, metapath, dtype=dtype, dwwc_method=dwwc_method)
-    assert dwpc_matrix.dtype == dtype
