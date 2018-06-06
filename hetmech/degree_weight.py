@@ -584,7 +584,7 @@ def _dwpc_approx(graph, metapath, damping=0.5, dense_threshold=0,
     first_repeat = repeated_nodes[0]
     repeated_indices = [i for i, v in enumerate(nodes) if v == first_repeat]
     for i, segment in enumerate(repeated_indices[1:]):
-        rows, cols, dwpc_matrix = dwwc(graph, metapath[repeated_indices[i]:segment],
+        rows, cols, dwpc_matrix = dwpc(graph, metapath[repeated_indices[i]:segment],
                                        damping=damping, dense_threshold=dense_threshold,
                                        dtype=dtype)
         if row_names is None:
