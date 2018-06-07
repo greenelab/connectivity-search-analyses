@@ -1,4 +1,5 @@
 import numpy
+import pandas
 import scipy.sparse
 
 from hetmech.matrix import metaedge_to_adjacency_matrix
@@ -66,36 +67,40 @@ def compute_summary_metrics(df):
     return df
 
 
-def generate_dwpc_degrees(source_degree_to_ind, target_degree_to_ind, matrix):
-    if scipy.sparse.issparse(matrix) and not scipy.sparse.isspmatrix_csr(matrix):
-        matrix = scipy.sparse.csr_matrix(matrix)
-    for source_degree, row_inds in source_degree_to_ind.items():
-        if source_degree > 0:
-            row_matrix = matrix[row_inds, :]
-            if scipy.sparse.issparse(row_matrix):
-                row_matrix = row_matrix.toarray()
-                # row_matrix = scipy.sparse.csc_matrix(row_matrix)
-        for target_degree, col_inds in target_degree_to_ind.items():
-            row = {
-                'source_degree': source_degree,
-                'target_degree': target_degree,
-            }
-            row['n'] = len(row_inds) * len(col_inds)
-            if source_degree == 0 or target_degree == 0:
-                row['sum'] = 0
-                row['nnz'] = 0
-                row['sum_of_squares'] = 0
-                yield row
-                continue
+def dwpc_to_degrees(graph, metapath):
+    metapath = graph.metagraph.get_metapath(metapath)
 
-            slice_matrix = row_matrix[:, col_inds]
-            values = slice_matrix.data if scipy.sparse.issparse(slice_matrix) else slice_matrix
-            if scale:
-                values = numpy.arcsinh(values / scaler)
-            row['sum'] = values.sum()
-            row['sum_of_squares'] = (values ** 2).sum()
-            if scipy.sparse.issparse(slice_matrix):
-                row['nnz'] = slice_matrix.nnz
-            else:
-                row['nnz'] = numpy.count_nonzero(slice_matrix)
-            yield row
+    row_names, col_names, dwpc_matrix = graph.read_path_counts(metapath, 'dwpc', 0.5)
+    _, _, source_adj_mat = metaedge_to_adjacency_matrix(graph, metapath[0], dense_threshold=0.7)
+    _, _, target_adj_mat = metaedge_to_adjacency_matrix(graph, metapath[-1], dense_threshold=0.7)
+    source_degrees = source_adj_mat.sum(axis=1).flat
+    target_degrees = target_adj_mat.sum(axis=0).flat
+
+    source_path = graph.get_nodes_path(metapath.source(), file_format='tsv')
+    source_node_df = pandas.read_table(source_path)
+    source_node_names = list(source_node_df['name'])
+
+    target_path = graph.get_nodes_path(metapath.target(), file_format='tsv')
+    target_node_df = pandas.read_table(target_path)
+    target_node_names = list(target_node_df['name'])
+
+    dwpc_matrix = numpy.arcsinh(dwpc_matrix / dwpc_matrix.mean())
+    if scipy.sparse.issparse(dwpc_matrix):
+        dwpc_matrix = dwpc_matrix.toarray()
+    row_inds, col_inds = dwpc_matrix.nonzero()
+    for row in zip(row_inds, col_inds):
+        row_ind, col_ind = row
+        row = {
+            'source_id': row_names[row_ind],
+            'source_name': source_node_names[row_ind],
+            'target_name': target_node_names[col_ind],
+            'target_id': col_names[col_ind],
+            'source_degree': source_degrees[row_ind],
+            'target_degree': target_degrees[col_ind],
+            'dwpc': dwpc_matrix[row_ind, col_ind],
+            'metapath': str(metapath),
+            'source_metanode': metapath.source(),
+            'target_metanode': metapath.target(),
+        }
+        yield row
+        continue
