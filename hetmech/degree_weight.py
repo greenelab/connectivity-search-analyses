@@ -27,12 +27,12 @@ def _category_to_function(category, dwwc_method):
         'disjoint_groups': _dwpc_disjoint,
         'short_repeat': _dwpc_short_repeat,
         'four_repeat': _dwpc_baba,
-        'long_repeat': _dwpc_approx,
+        'long_repeat': _dwpc_general_case,
         'BAAB': _dwpc_baab,
         'BABA': _dwpc_baba,
         'repeat_around': _dwpc_repeat_around,
         'interior_complete_group': _dwpc_baba,
-        'other': _dwpc_approx,
+        'other': _dwpc_general_case,
     }
     return function_dictionary[category]
 
