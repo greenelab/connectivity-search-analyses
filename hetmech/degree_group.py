@@ -64,3 +64,38 @@ def compute_summary_metrics(df):
     df['mean'] = df['sum'] / df['n']
     df['sd'] = ((df['sum_of_squares'] - df['sum'] ** 2 / df['n']) / (df['n'] - 1)) ** 0.5
     return df
+
+
+def generate_dwpc_degrees(source_degree_to_ind, target_degree_to_ind, matrix):
+    if scipy.sparse.issparse(matrix) and not scipy.sparse.isspmatrix_csr(matrix):
+        matrix = scipy.sparse.csr_matrix(matrix)
+    for source_degree, row_inds in source_degree_to_ind.items():
+        if source_degree > 0:
+            row_matrix = matrix[row_inds, :]
+            if scipy.sparse.issparse(row_matrix):
+                row_matrix = row_matrix.toarray()
+                # row_matrix = scipy.sparse.csc_matrix(row_matrix)
+        for target_degree, col_inds in target_degree_to_ind.items():
+            row = {
+                'source_degree': source_degree,
+                'target_degree': target_degree,
+            }
+            row['n'] = len(row_inds) * len(col_inds)
+            if source_degree == 0 or target_degree == 0:
+                row['sum'] = 0
+                row['nnz'] = 0
+                row['sum_of_squares'] = 0
+                yield row
+                continue
+
+            slice_matrix = row_matrix[:, col_inds]
+            values = slice_matrix.data if scipy.sparse.issparse(slice_matrix) else slice_matrix
+            if scale:
+                values = numpy.arcsinh(values / scaler)
+            row['sum'] = values.sum()
+            row['sum_of_squares'] = (values ** 2).sum()
+            if scipy.sparse.issparse(slice_matrix):
+                row['nnz'] = slice_matrix.nnz
+            else:
+                row['nnz'] = numpy.count_nonzero(slice_matrix)
+            yield row
