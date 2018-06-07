@@ -20,7 +20,7 @@ from hetmech.matrix import (
 )
 
 
-def _category_to_function(category, dwwc_method, approx_ok):
+def _category_to_function(category, dwwc_method):
     function_dictionary = {
         'no_repeats': dwwc_method,
         'disjoint': _dwpc_disjoint,
@@ -34,9 +34,6 @@ def _category_to_function(category, dwwc_method, approx_ok):
         'interior_complete_group': _dwpc_baba,
         'other': _dwpc_approx,
     }
-    if approx_ok:
-        function_dictionary.update({'long_repeat': _dwpc_general_case,
-                                    'other': _dwpc_general_case})
     return function_dictionary[category]
 
 
@@ -115,10 +112,13 @@ def dwpc(graph, metapath, damping=0.5, dense_threshold=0, approx_ok=False,
         the DWPC matrix
     """
     category = categorize(metapath)
-    dwpc_function = _category_to_function(category, dwwc_method=dwwc_method, approx_ok=approx_ok)
-    if category in ('long_repeat', 'other') and not approx_ok:
-        logging.warning(f"Metapath {metapath} will use _dwpc_general_case, "
-                        "which can require very long computations.")
+    dwpc_function = _category_to_function(category, dwwc_method=dwwc_method)
+    if category in ('long_repeat', 'other'):
+        if approx_ok:
+            dwpc_function = _dwpc_approx
+        else:
+            logging.warning(f"Metapath {metapath} will use _dwpc_general_case, "
+                            "which can require very long computations.")
     row_names, col_names, dwpc_matrix = dwpc_function(
         graph, metapath, damping, dense_threshold=dense_threshold,
         dtype=dtype)
