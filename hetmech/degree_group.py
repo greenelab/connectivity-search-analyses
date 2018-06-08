@@ -1,3 +1,5 @@
+import itertools
+
 import numpy
 import pandas
 import scipy.sparse
@@ -67,10 +69,11 @@ def compute_summary_metrics(df):
     return df
 
 
-def dwpc_to_degrees(graph, metapath):
+def dwpc_to_degrees(graph, metapath, damping=0.5):
     metapath = graph.metagraph.get_metapath(metapath)
 
-    row_names, col_names, dwpc_matrix = graph.read_path_counts(metapath, 'dwpc', 0.5)
+    row_names, col_names, dwpc_matrix = graph.read_path_counts(metapath, 'dwpc', damping)
+    _, _, path_count = graph.read_path_counts(metapath, 'dwpc', 0.0)
     _, _, source_adj_mat = metaedge_to_adjacency_matrix(graph, metapath[0], dense_threshold=0.7)
     _, _, target_adj_mat = metaedge_to_adjacency_matrix(graph, metapath[-1], dense_threshold=0.7)
     source_degrees = source_adj_mat.sum(axis=1).flat
@@ -87,8 +90,10 @@ def dwpc_to_degrees(graph, metapath):
     dwpc_matrix = numpy.arcsinh(dwpc_matrix / dwpc_matrix.mean())
     if scipy.sparse.issparse(dwpc_matrix):
         dwpc_matrix = dwpc_matrix.toarray()
-    row_inds, col_inds = dwpc_matrix.nonzero()
-    for row in zip(row_inds, col_inds):
+    if scipy.sparse.issparse(path_count):
+        path_count = path_count.toarray()
+    row_inds, col_inds = range(len(row_names)), range(len(col_names))
+    for row in itertools.product(row_inds, col_inds):
         row_ind, col_ind = row
         row = {
             'source_id': row_names[row_ind],
@@ -98,6 +103,7 @@ def dwpc_to_degrees(graph, metapath):
             'source_degree': source_degrees[row_ind],
             'target_degree': target_degrees[col_ind],
             'dwpc': dwpc_matrix[row_ind, col_ind],
+            'path-count': path_count[row_ind, col_ind],
             'metapath': str(metapath),
             'source_metanode': metapath.source(),
             'target_metanode': metapath.target(),
