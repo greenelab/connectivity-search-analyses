@@ -5,6 +5,7 @@ import pandas
 import scipy.sparse
 
 from hetmech.matrix import metaedge_to_adjacency_matrix
+import hetmech.degree_weight
 
 
 def degrees_to_degree_to_ind(degrees):
@@ -104,9 +105,45 @@ def dwpc_to_degrees(graph, metapath, damping=0.5):
             'target_degree': target_degrees[col_ind],
             'dwpc': dwpc_matrix[row_ind, col_ind],
             'path-count': path_count[row_ind, col_ind],
-            'metapath': str(metapath),
-            'source_metanode': metapath.source(),
-            'target_metanode': metapath.target(),
         }
         yield row
         continue
+
+
+def single_permutation_degree_group(permuted_hetmat, metapath, dwpc_mean, damping):
+    """
+    Compute degree-grouped permutations for a single permuted_hetmat,
+    for one metapath.
+    """
+    _, _, matrix = hetmech.degree_weight.dwpc(permuted_hetmat, metapath, damping=damping, dense_threshold=0.7)
+    source_deg_to_ind, target_deg_to_ind = hetmech.degree_group.metapath_to_degree_dicts(permuted_hetmat, metapath)
+    row_generator = hetmech.degree_group.generate_degree_group_stats(
+        source_deg_to_ind, target_deg_to_ind, matrix, scale=True, scaler=dwpc_mean)
+    degree_grouped_df = (
+        pandas.DataFrame(row_generator)
+        .set_index(['source_degree', 'target_degree'])
+    )
+    return degree_grouped_df
+
+
+def summarize_degree_grouped_permutations(graph, metapath, damping):
+    """
+    Combine degree-grouped permutation information from all permutations into
+    a single file per metapath.
+    """
+    degree_stats_df = None
+    for permat in graph.permutations.values():
+        path = permat.directory.joinpath('degree-grouped-path-counts', f'dwpc-{float(damping)}',
+                                         f'{metapath}.tsv')
+        df = (
+            pandas.read_table(path)
+            .set_index(['source_degree', 'target_degree'])
+            .assign(n_perms=1)
+        )
+        if degree_stats_df is None:
+            degree_stats_df = df
+        else:
+            degree_stats_df += df
+    degree_stats_df = hetmech.degree_group.compute_summary_metrics(degree_stats_df)
+    degree_stats_df.drop(columns=['sum', 'sum_of_squares'], inplace=True)
+    return degree_stats_df
