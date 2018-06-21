@@ -13,6 +13,7 @@ def test_path_count_priority_cache(tmpdir, allocate_GB):
     hetmat = get_graph('bupropion-subgraph', hetmat=True, directory=tmpdir)
     cache = hetmech.hetmat.caching.PathCountPriorityCache(hetmat, allocate_GB)
     hetmat.path_counts_cache = cache
+    print(cache.get_stats)
 
     # First run
     assert sum(cache.hits.values()) == 0
@@ -62,3 +63,4 @@ def test_path_count_priority_cache(tmpdir, allocate_GB):
         assert cache.hits['memory'] == 2
         assert cache.hits['disk'] == 0
         assert cache.hits['absent'] == 4
+    print(cache.get_stats)
