@@ -11,7 +11,7 @@ def create_hetmat_archive(hetmat, destination_path=None):
     """
     Create the minimal archive to store a hetmat (i.e. metagraph, nodes, edges).
     If destination_path is None (default), use the same name as the hetmat
-    directory with .zip appended.
+    directory with .zip appended. Returns the destination path.
     """
     if destination_path is None:
         destination_path = hetmat.directory.joinpath('..', hetmat.directory.absolute().name + '.zip')
@@ -22,6 +22,7 @@ def create_hetmat_archive(hetmat, destination_path=None):
         include_paths=['metagraph.json'],
         zip_mode='w',
     )
+    return destination_path
 
 
 def create_archive_by_globs(
