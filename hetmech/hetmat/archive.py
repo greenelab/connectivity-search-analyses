@@ -56,8 +56,7 @@ def create_archive(destination_path, root_directory, source_paths, zip_mode='x',
     source_paths = sorted(set(map(str, source_paths)))
     for source_path in source_paths:
         source_fs_path = root_directory.joinpath(source_path)
-        with source_fs_path.open('rb') as read_file, zip_file.open(source_path, mode='w') as write_file:
-            shutil.copyfileobj(read_file, write_file)
+        zip_file.write(source_fs_path, source_path)
     zip_file.close()
 
 
