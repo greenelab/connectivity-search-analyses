@@ -1,4 +1,4 @@
-import itertools
+import os
 
 import numpy
 import pandas
@@ -72,13 +72,11 @@ def compute_summary_metrics(df):
 
 def dwpc_to_degrees(graph, metapath, damping=0.5):
     metapath = graph.metagraph.get_metapath(metapath)
-
-    row_names, col_names, dwpc_matrix = graph.read_path_counts(metapath, 'dwpc', damping)
-    _, _, path_count = graph.read_path_counts(metapath, 'dwpc', 0.0)
     _, _, source_adj_mat = metaedge_to_adjacency_matrix(graph, metapath[0], dense_threshold=0.7)
     _, _, target_adj_mat = metaedge_to_adjacency_matrix(graph, metapath[-1], dense_threshold=0.7)
     source_degrees = source_adj_mat.sum(axis=1).flat
     target_degrees = target_adj_mat.sum(axis=0).flat
+    del source_adj_mat, target_adj_mat
 
     source_path = graph.get_nodes_path(metapath.source(), file_format='tsv')
     source_node_df = pandas.read_table(source_path)
@@ -88,14 +86,17 @@ def dwpc_to_degrees(graph, metapath, damping=0.5):
     target_node_df = pandas.read_table(target_path)
     target_node_names = list(target_node_df['name'])
 
+    row_names, col_names, dwpc_matrix = graph.read_path_counts(metapath, 'dwpc', damping)
     dwpc_matrix = numpy.arcsinh(dwpc_matrix / dwpc_matrix.mean())
-    if scipy.sparse.issparse(dwpc_matrix):
-        dwpc_matrix = dwpc_matrix.toarray()
-    if scipy.sparse.issparse(path_count):
-        path_count = path_count.toarray()
-    row_inds, col_inds = range(len(row_names)), range(len(col_names))
-    for row in itertools.product(row_inds, col_inds):
-        row_ind, col_ind = row
+    dwpc_matrix = scipy.sparse.coo_matrix(dwpc_matrix)
+
+    _, _, path_count = graph.read_path_counts(metapath, 'dwpc', 0.0)
+    path_count = scipy.sparse.coo_matrix(path_count)
+
+    indices = range(dwpc_matrix.nnz)
+    for ind in indices:
+        row_ind = dwpc_matrix.row[ind]
+        col_ind = dwpc_matrix.col[ind]
         row = {
             'source_id': row_names[row_ind],
             'source_name': source_node_names[row_ind],
@@ -103,8 +104,8 @@ def dwpc_to_degrees(graph, metapath, damping=0.5):
             'target_id': col_names[col_ind],
             'source_degree': source_degrees[row_ind],
             'target_degree': target_degrees[col_ind],
-            'dwpc': dwpc_matrix[row_ind, col_ind],
-            'path-count': path_count[row_ind, col_ind],
+            'dwpc': dwpc_matrix.data[ind],
+            'path-count': path_count.data[ind],
         }
         yield row
         continue
@@ -126,7 +127,7 @@ def single_permutation_degree_group(permuted_hetmat, metapath, dwpc_mean, dampin
     return degree_grouped_df
 
 
-def summarize_degree_grouped_permutations(graph, metapath, damping):
+def summarize_degree_grouped_permutations(graph, metapath, damping, delete_intermediates=False):
     """
     Combine degree-grouped permutation information from all permutations into
     a single file per metapath.
@@ -140,10 +141,12 @@ def summarize_degree_grouped_permutations(graph, metapath, damping):
             .set_index(['source_degree', 'target_degree'])
             .assign(n_perms=1)
         )
+        if delete_intermediates:
+            os.remove(path)
+
         if degree_stats_df is None:
             degree_stats_df = df
         else:
             degree_stats_df += df
     degree_stats_df = hetmech.degree_group.compute_summary_metrics(degree_stats_df)
-    degree_stats_df.drop(columns=['sum', 'sum_of_squares'], inplace=True)
     return degree_stats_df
