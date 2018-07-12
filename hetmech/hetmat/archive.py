@@ -1,8 +1,5 @@
-import os
 import pathlib
 import re
-import shutil
-import tempfile
 import urllib.request
 import zipfile
 
@@ -67,11 +64,8 @@ def load_archive(archive_path, destination_dir):
     """
     is_url = isinstance(archive_path, str) and re.match('^(http|ftp)s?://', archive_path)
     if is_url:
-        url = archive_path
-        filename = os.path.basename(url)
-        temp_dir = pathlib.Path(tempfile.mkdtemp())
-        archive_path, _ = urllib.request.urlretrieve(url, temp_dir.joinpath(filename))
+        archive_path, _ = urllib.request.urlretrieve(archive_path)
     with zipfile.ZipFile(archive_path, mode='r') as zip_file:
         zip_file.extractall(destination_dir)
     if is_url:
-        shutil.rmtree(temp_dir)
+        urllib.request.urlcleanup()
