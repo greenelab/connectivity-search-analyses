@@ -14,8 +14,7 @@ def compute_save_dgp(hetmat, metapath, damping=0.5, compression='gzip', delete_i
     using compression method given by compression. Does not recompute previously saved files.
     """
     for mp in (metapath.inverse, metapath):
-        combined_path = hetmat.directory.joinpath(
-          'adjusted-path-counts', 'dwpc-0.5', 'degree-grouped-permutations', f'{mp}.tsv')
+        combined_path = hetmat.get_summary_degree_group_path(hetmat, metapath, 'dwpc', damping)
         if combined_path.exists():
             return
 
@@ -23,7 +22,7 @@ def compute_save_dgp(hetmat, metapath, damping=0.5, compression='gzip', delete_i
     matrix_mean = matrix.mean()
 
     for name, permat in hetmat.permutations.items():
-        path = permat.directory.joinpath('degree-grouped-path-counts', 'dwpc-0.5', f'{metapath}.tsv')
+        path = permat.get_degree_group_path(self, metapath, metric, damping)
         if not path.exists():
             degree_grouped_df = hetmech.degree_group.single_permutation_degree_group(
                 permat, metapath, dwpc_mean=matrix_mean, damping=damping)
@@ -42,8 +41,7 @@ def combine_dwpc_dgp(graph, metapath, damping):
     Save resulting tables as one-per-metapath, compressed .tsv files that include
     gamma-hurdle significance estimates.
     """
-    stats_path = graph.directory.joinpath('adjusted-path-counts', f'dwpc-{float(damping)}',
-                                          'degree-grouped-permutations', f'{metapath}.tsv')
+    stats_path = graph.get_summary_degree_group_path(graph, metapath, 'dwpc', damping)
     degree_stats_df = pandas.read_table(stats_path, compression='gzip')
 
     dwpc_row_generator = hetmech.degree_group.dwpc_to_degrees(graph, metapath)
