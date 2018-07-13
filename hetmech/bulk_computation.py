@@ -1,3 +1,4 @@
+import logging
 import os
 
 import pandas
@@ -16,14 +17,16 @@ def compute_save_dwpc(graph, metapath, damping=0.5, dense_threshold=1, dtype='fl
     Automatically ignores inverses, corrupt files, and previously existing files.
     """
     metapath = graph.metagraph.get_metapath(metapath)
-    for inverse in (True, False):
-        if inverse:
-            mp = metapath.inverse
+    for inverse in True, False:
+        mp = metapath.inverse if inverse else metapath
         try:
             return graph.read_path_counts(mp, 'dwpc', damping)
         except FileNotFoundError:
             continue
-        except:
+        except Exception as error:
+            logging.info(
+                f"{metapath}: Path count file read error - {error}"
+            )
             # Catch all other file issues
             os.remove(graph.get_path_counts_path(mp, 'dwpc', damping, 'sparse.npz'))
     row, col, dwpc_matrix = hetmech.degree_weight.dwpc(graph, metapath, damping=damping,
@@ -83,5 +86,5 @@ def combine_dwpc_dgp(graph, metapath, damping):
     df['mean-nz'] = df['mean'] * df['n'] / df['nnz']
     df['beta'] = df['mean-nz'] / df['sd'] ** 2
     df['alpha'] = df['mean-nz'] * df['beta']
-    df['p-value'] = (df['nnz'] / df['n']) * scipy.special.gammaincc(df['alpha'], df['beta'] * df['dwpc'])
+    df['p-value'] = df['nnz'] / df['n'] * scipy.special.gammaincc(df['alpha'], df['beta'] * df['dwpc'])
     return df
