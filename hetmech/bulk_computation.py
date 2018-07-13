@@ -22,7 +22,7 @@ def compute_save_dgp(hetmat, metapath, damping=0.5, compression='gzip', delete_i
     matrix_mean = matrix.mean()
 
     for name, permat in hetmat.permutations.items():
-        path = permat.get_degree_group_path(metapath, metric, damping)
+        path = permat.get_degree_group_path(metapath, 'dwpc', damping)
         if not path.exists():
             degree_grouped_df = hetmech.degree_group.single_permutation_degree_group(
                 permat, metapath, dwpc_mean=matrix_mean, damping=damping)
