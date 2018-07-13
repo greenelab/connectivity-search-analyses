@@ -10,32 +10,6 @@ import hetmech.degree_weight
 import hetmech.hetmat
 
 
-def compute_save_dwpc(graph, metapath, damping=0.5, dense_threshold=1, dtype='float64', approx_ok=True,
-                      return_result=True):
-    """
-    Returns and saves a DWPC matrix. If already computed and return_result=True, will return saved result.
-    Automatically ignores inverses, corrupt files, and previously existing files.
-    """
-    metapath = graph.metagraph.get_metapath(metapath)
-    for inverse in True, False:
-        mp = metapath.inverse if inverse else metapath
-        try:
-            return graph.read_path_counts(mp, 'dwpc', damping)
-        except FileNotFoundError:
-            continue
-        except Exception as error:
-            logging.info(
-                f"{metapath}: Path count file read error - {error}"
-            )
-            # Catch all other file issues
-            os.remove(graph.get_path_counts_path(mp, 'dwpc', damping, 'sparse.npz'))
-    row, col, dwpc_matrix = hetmech.degree_weight.dwpc(graph, metapath, damping=damping,
-                                                       dense_threshold=dense_threshold, dtype=dtype)
-    path = graph.get_path_counts_path(metapath, 'dwpc', damping, None)
-    hetmech.hetmat.save_matrix(dwpc_matrix, path)
-    return row, col, dwpc_matrix
-
-
 def compute_save_dgp(hetmat, metapath, damping=0.5, compression='gzip', delete_intermediates=True):
     """
     Compute summary file of combined degree-grouped permutations (DGP). Aggregates across permutations,
