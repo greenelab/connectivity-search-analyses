@@ -122,7 +122,7 @@ def save_matrix(matrix, path):
         scipy.sparse.save_npz(path, matrix, compressed=True)
 
 
-def read_first_matrix(specs):
+def read_first_matrix(specs, return_path=False):
     """
     Attempt to read each path provided by specs, until one exists. If none of
     the specs point to an existing path, raise a FileNotFoundError.
@@ -145,7 +145,10 @@ def read_first_matrix(specs):
         matrix = read_matrix(path, file_format=file_format)
         if transpose:
             matrix = matrix.transpose()
-        return matrix
+        if return_path:
+            return matrix, path
+        else:
+            return matrix
     raise FileNotFoundError(
         f'No matrix files found at the specified paths:\n' +
         '\n'.join(paths))
@@ -366,7 +369,7 @@ class HetMat:
 
     def read_path_counts(
             self, metapath, metric, damping,
-            file_formats=['sparse.npz', 'npy']):
+            file_formats=['sparse.npz', 'npy'], return_path=False):
         """
         Read matrix with values of a path-count-based metric. Attempts to
         locate any files with the matrix (or with trivial transformations).
@@ -393,5 +396,8 @@ class HetMat:
             specs.append(spec)
         row_ids = self.get_node_identifiers(metapath.source())
         col_ids = self.get_node_identifiers(metapath.target())
-        matrix = read_first_matrix(specs)
+        matrix = read_first_matrix(specs, return_path=return_path)
+        if return_path:
+            matrix, path = matrix
+            return row_ids, col_ids, matrix, path
         return row_ids, col_ids, matrix
