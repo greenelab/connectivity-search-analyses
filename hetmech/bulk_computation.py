@@ -11,7 +11,7 @@ def compute_save_dgp(hetmat, metapath, damping=0.5, compression='gzip', delete_i
     """
     Compute summary file of combined degree-grouped permutations (DGP). Aggregates across permutations,
     deleting intermediates if delete_intermediates=True. Saves resulting files as compressed .tsv files
-    using compression method given by compression.
+    using compression method given by compression. Does not recompute previously saved files.
     """
     for mp in (metapath.inverse, metapath):
         combined_path = hetmat.directory.joinpath(
@@ -24,9 +24,7 @@ def compute_save_dgp(hetmat, metapath, damping=0.5, compression='gzip', delete_i
 
     for name, permat in hetmat.permutations.items():
         path = permat.directory.joinpath('degree-grouped-path-counts', 'dwpc-0.5', f'{metapath}.tsv')
-        if path.exists():
-            pass
-        else:
+        if not path.exists():
             degree_grouped_df = hetmech.degree_group.single_permutation_degree_group(
                 permat, metapath, dwpc_mean=matrix_mean, damping=damping)
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -41,7 +39,8 @@ def compute_save_dgp(hetmat, metapath, damping=0.5, compression='gzip', delete_i
 def combine_dwpc_dgp(graph, metapath, damping):
     """
     Combine DWPC information with degree-grouped permutation summary metrics.
-    Save resulting tables as one-per-metapath, compressed .tsv files.
+    Save resulting tables as one-per-metapath, compressed .tsv files that include
+    gamma-hurdle significance estimates.
     """
     stats_path = graph.directory.joinpath('adjusted-path-counts', f'dwpc-{float(damping)}',
                                           'degree-grouped-permutations', f'{metapath}.tsv')
