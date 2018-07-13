@@ -145,7 +145,7 @@ def read_first_matrix(specs):
         try:
             matrix = read_matrix(path, file_format=file_format)
         except Exception as error:
-            logging.info(f'Error reading matrix at {path}')
+            logging.info(f'{error} reading matrix at {path}')
             os.remove(path)
         if transpose:
             matrix = matrix.transpose()
