@@ -330,7 +330,25 @@ class HetMat:
         if file_format is not None:
             path = path.with_name(f'{path.name}.{file_format}')
         return path
-
+    
+    def get_degree_group_path(self, metapath, metric, damping):
+        damping = float(damping)
+        path = self.directory.joinpath(
+            'degree-grouped-path-counts', f'{metric}-{damping}/{metapath}.tsv')
+        return path
+    
+    def get_summary_degree_group_path(self, metapath, metric, damping):
+        damping = float(damping)
+        self.directory.joinpath('adjusted-path-counts', f'{metric}-{damping}', 
+                                'degree-grouped-permutations', f'{metapath}.tsv')
+        return path
+    
+    def get_metapath_summary_path(self, metapath, metric, damping):
+        damping = float(damping)
+        self.directory.joinpath('adjusted-path-counts', f'{metric}-{damping}', 
+                                'adjusted-dwpcs', f'{metapath}.tsv')
+        return path
+    
     @functools.lru_cache()
     def get_node_identifiers(self, metanode):
         """
