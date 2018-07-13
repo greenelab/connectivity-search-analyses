@@ -134,7 +134,7 @@ def summarize_degree_grouped_permutations(graph, metapath, damping, delete_inter
     """
     degree_stats_df = None
     for permat in graph.permutations.values():
-        path = permat.get_degree_group_path(metapath, metric, damping)
+        path = permat.get_degree_group_path(metapath, 'dwpc', damping)
         df = (
             pandas.read_table(path)
             .set_index(['source_degree', 'target_degree'])
