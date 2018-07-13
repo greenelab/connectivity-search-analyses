@@ -122,7 +122,7 @@ def save_matrix(matrix, path):
         scipy.sparse.save_npz(path, matrix, compressed=True)
 
 
-def read_first_matrix(specs):
+def read_first_matrix(specs, delete_failures=False):
     """
     Attempt to read each path provided by specs, until one exists. If none of
     the specs point to an existing path, raise a FileNotFoundError.
@@ -146,7 +146,8 @@ def read_first_matrix(specs):
             matrix = read_matrix(path, file_format=file_format)
         except Exception as error:
             logging.info(f'{error} reading matrix at {path}')
-            os.remove(path)
+            if delete_failures:
+                os.remove(path)
         if transpose:
             matrix = matrix.transpose()
         return matrix
