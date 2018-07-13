@@ -393,5 +393,5 @@ class HetMat:
             specs.append(spec)
         row_ids = self.get_node_identifiers(metapath.source())
         col_ids = self.get_node_identifiers(metapath.target())
-        matrix = read_first_matrix(specs, return_path=return_path)
+        matrix = read_first_matrix(specs)
         return row_ids, col_ids, matrix
