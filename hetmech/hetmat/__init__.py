@@ -142,7 +142,11 @@ def read_first_matrix(specs):
             continue
         transpose = spec.get('transpose', False)
         file_format = spec.get('file_format', 'infer')
-        matrix = read_matrix(path, file_format=file_format)
+        try:
+            matrix = read_matrix(path, file_format=file_format)
+        except Exception as error:
+            logging.info(f'Error reading matrix at {path}')
+            os.remove(path)
         if transpose:
             matrix = matrix.transpose()
         return matrix
