@@ -150,6 +150,8 @@ def read_first_matrix(specs, delete_failures=False):
             logging.warning(f'Error reading matrix at {path}:\n{error}')
             if delete_failures:
                 os.remove(path)
+                logging.warning(f'Deleting file at {path}')
+                continue
         if transpose:
             matrix = matrix.transpose()
         return matrix
