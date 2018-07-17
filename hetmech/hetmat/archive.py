@@ -42,12 +42,14 @@ def create_archive_by_globs(
     return create_archive(destination_path, root_directory, source_paths, **kwargs)
 
 
-def create_archive(destination_path, root_directory, source_paths, zip_mode='x', compression=zipfile.ZIP_LZMA, split_size=None):
+def create_archive(
+        destination_path, root_directory, source_paths,
+        zip_mode='x', compression=zipfile.ZIP_LZMA, split_size=None):
     """
     Create a zip archive of the source paths at the destination path.
     source_paths as paths relative to the hetmat root directory.
     split_size is the max zip file size in GB before spliting the zip into
-    multiple parts.
+    multiple parts. The default of split_size=None suppresses splitting.
     """
     root_directory = pathlib.Path(root_directory)
     assert zip_mode in {'w', 'x', 'a'}
@@ -58,7 +60,7 @@ def create_archive(destination_path, root_directory, source_paths, zip_mode='x',
     else:
         zip_path_formatter = f'{destination_path.stem}-{{:04d}}{destination_path.suffix}'.format
         split_num = 0
-        zip_path = zip_path_formatter(split_num)
+        zip_path = destination_path.with_name(zip_path_formatter(split_num))
     zip_paths = [zip_path]
     zip_file = zipfile.ZipFile(zip_path, mode=zip_mode, compression=compression)
     for source_path in source_paths:
@@ -66,10 +68,10 @@ def create_archive(destination_path, root_directory, source_paths, zip_mode='x',
         if split_size is not None:
             fs_size_gb = source_fs_path.stat().st_size / 1e9
             zip_size_gb = zip_path.stat().st_size / 1e9
-            if zip_size_gb + fs_size_gb > split_size:
+            if zip_file.namelist() and zip_size_gb + fs_size_gb > split_size:
                 zip_file.close()
                 split_num += 1
-                zip_path = zip_path_formatter(split_num)
+                zip_path = destination_path.with_name(zip_path_formatter(split_num))
                 zip_paths.append(zip_path)
                 zip_file = zipfile.ZipFile(zip_path, mode=zip_mode, compression=compression)
         zip_file.write(source_fs_path, source_path)
