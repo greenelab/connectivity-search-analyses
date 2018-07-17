@@ -3,6 +3,8 @@ import re
 import urllib.request
 import zipfile
 
+import pandas
+
 
 def create_hetmat_archive(hetmat, destination_path=None):
     """
@@ -50,6 +52,8 @@ def create_archive(
     source_paths as paths relative to the hetmat root directory.
     split_size is the max zip file size in GB before spliting the zip into
     multiple parts. The default of split_size=None suppresses splitting.
+    Returns the paths of files this function has written as a list. The first
+    path is a TSV with information on each archived file.
     """
     root_directory = pathlib.Path(root_directory)
     assert zip_mode in {'w', 'x', 'a'}
@@ -76,7 +80,37 @@ def create_archive(
                 zip_file = zipfile.ZipFile(zip_path, mode=zip_mode, compression=compression)
         zip_file.write(source_fs_path, source_path)
     zip_file.close()
-    return zip_paths
+    info_df = get_archive_info_df(zip_paths)
+    info_path = destination_path.with_name(destination_path.name + '-info.tsv')
+    info_df.to_csv(info_path, sep='\t', index=False)
+    return [info_path] + zip_paths
+
+
+def get_archive_info_df(zip_paths):
+    """
+    Return member file info for a list of zip archives.
+    """
+    fields = [
+        'filename',
+        'file_size',
+        'compress_type',
+        'compress_size',
+        'CRC',
+    ]
+    rows = list()
+    for path in zip_paths:
+        path = pathlib.Path(path)
+        with zipfile.ZipFile(path) as zip_file:
+            infolist = zip_file.infolist()
+        for info in infolist:
+            row = {
+                'archive': path.name,
+            }
+            for field in fields:
+                row[field] = getattr(info, field)
+            rows.append(row)
+    info_df = pandas.DataFrame(rows)
+    return info_df
 
 
 def load_archive(archive_path, destination_dir):
