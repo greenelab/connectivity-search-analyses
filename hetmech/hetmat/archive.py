@@ -110,6 +110,7 @@ def get_archive_info_df(zip_paths):
                 row[field] = getattr(info, field)
             rows.append(row)
     info_df = pandas.DataFrame(rows)
+    info_df.compress_type = info_df.compress_type.map(zipfile.compressor_names)
     return info_df
 
 
