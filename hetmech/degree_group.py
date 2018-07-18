@@ -70,7 +70,11 @@ def compute_summary_metrics(df):
     return df
 
 
-def dwpc_to_degrees(graph, metapath, damping=0.5):
+def dwpc_to_degrees(graph, metapath, damping=0.5, ignore_zeros=False):
+    """
+    Yield a description of each cell in a DWPC matrix adding source and target 
+    node degree info as well as the corresponding path count.
+    """
     metapath = graph.metagraph.get_metapath(metapath)
     _, _, source_adj_mat = metaedge_to_adjacency_matrix(graph, metapath[0], dense_threshold=0.7)
     _, _, target_adj_mat = metaedge_to_adjacency_matrix(graph, metapath[-1], dense_threshold=0.7)
@@ -88,15 +92,19 @@ def dwpc_to_degrees(graph, metapath, damping=0.5):
 
     row_names, col_names, dwpc_matrix = graph.read_path_counts(metapath, 'dwpc', damping)
     dwpc_matrix = numpy.arcsinh(dwpc_matrix / dwpc_matrix.mean())
-    dwpc_matrix = scipy.sparse.coo_matrix(dwpc_matrix)
+    if scipy.sparse.issparse(dwpc_matrix):
+         dwpc_matrix = dwpc_matrix.toarray()
 
     _, _, path_count = graph.read_path_counts(metapath, 'dwpc', 0.0)
-    path_count = scipy.sparse.coo_matrix(path_count)
-
-    indices = range(dwpc_matrix.nnz)
-    for ind in indices:
-        row_ind = dwpc_matrix.row[ind]
-        col_ind = dwpc_matrix.col[ind]
+    if scipy.sparse.issparse(path_count):
+         path_count = path_count.toarray()
+    
+    row_inds, col_inds = range(len(row_names)), range(len(col_names))
+    for row in itertools.product(row_inds, col_inds):
+        row_ind, col_ind = row
+        dwpc_value = dwpc_matrix[row_ind, col_ind]
+        if ignore_zeros and dwpc_value == 0:
+            continue
         row = {
             'source_id': row_names[row_ind],
             'source_name': source_node_names[row_ind],
@@ -104,8 +112,8 @@ def dwpc_to_degrees(graph, metapath, damping=0.5):
             'target_id': col_names[col_ind],
             'source_degree': source_degrees[row_ind],
             'target_degree': target_degrees[col_ind],
-            'dwpc': dwpc_matrix.data[ind],
-            'path-count': path_count.data[ind],
+            'dwpc': dwpc_value,
+            'path-count': path_count[row_ind, col_ind],
         }
         yield row
         continue
