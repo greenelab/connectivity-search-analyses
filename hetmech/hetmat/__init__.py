@@ -149,7 +149,7 @@ def read_first_matrix(specs, delete_failures=False):
         except Exception as error:
             logging.warning(f'Error reading matrix at {path}:\n{error}')
             if delete_failures:
-                os.remove(path)
+                path.unlink()
                 logging.warning(f'Deleting file at {path}')
                 continue
         if transpose:
