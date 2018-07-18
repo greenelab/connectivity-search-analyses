@@ -12,7 +12,7 @@ dependencies:
   - conda-forge::plotnine=0.3.0
   - conda-forge::py2neo=3.1.2
   - conda-forge::pytest=3.6.3
-  - conda-forge::python=3.7.0
+  - conda-forge::python=3.6.6
   - conda-forge::requests=2.19.1
   - conda-forge::scikit-learn=0.19.2
   - conda-forge::scipy=1.1.0
