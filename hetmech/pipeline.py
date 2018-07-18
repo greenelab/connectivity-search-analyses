@@ -14,7 +14,7 @@ def compute_save_dgp(hetmat, metapath, damping=0.5, compression='gzip', delete_i
     using compression method given by compression. Does not recompute previously saved files.
     """
     for mp in (metapath.inverse, metapath):
-        combined_path = hetmat.get_summary_degree_group_path(metapath, 'dwpc', damping)
+        combined_path = hetmat.get_summary_degree_group_path(metapath, 'dwpc', damping, compression=compression)
         if combined_path.exists():
             return
 
