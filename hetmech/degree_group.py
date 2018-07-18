@@ -1,3 +1,4 @@
+import itertools
 import os
 
 import numpy
@@ -72,7 +73,7 @@ def compute_summary_metrics(df):
 
 def dwpc_to_degrees(graph, metapath, damping=0.5, ignore_zeros=False):
     """
-    Yield a description of each cell in a DWPC matrix adding source and target 
+    Yield a description of each cell in a DWPC matrix adding source and target
     node degree info as well as the corresponding path count.
     """
     metapath = graph.metagraph.get_metapath(metapath)
@@ -93,12 +94,12 @@ def dwpc_to_degrees(graph, metapath, damping=0.5, ignore_zeros=False):
     row_names, col_names, dwpc_matrix = graph.read_path_counts(metapath, 'dwpc', damping)
     dwpc_matrix = numpy.arcsinh(dwpc_matrix / dwpc_matrix.mean())
     if scipy.sparse.issparse(dwpc_matrix):
-         dwpc_matrix = dwpc_matrix.toarray()
+        dwpc_matrix = dwpc_matrix.toarray()
 
     _, _, path_count = graph.read_path_counts(metapath, 'dwpc', 0.0)
     if scipy.sparse.issparse(path_count):
-         path_count = path_count.toarray()
-    
+        path_count = path_count.toarray()
+
     row_inds, col_inds = range(len(row_names)), range(len(col_names))
     for row in itertools.product(row_inds, col_inds):
         row_ind, col_ind = row
