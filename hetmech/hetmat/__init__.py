@@ -159,6 +159,15 @@ def read_first_matrix(specs, delete_failures=False):
         '\n'.join(paths))
 
 
+compression_extension = {
+    'gzip': '.gz',
+    'bz2': '.bz2',
+    'zip': '.zip',
+    'xz': '.xz',
+    None: '',
+}
+
+
 class HetMat:
 
     # Supported formats for nodes files
@@ -338,14 +347,6 @@ class HetMat:
             'degree-grouped-path-counts', f'{metric}-{damping}/{metapath}.tsv')
         return path
 
-    compression_extension = {
-            'gzip': '.gz',
-            'bz2': '.bz2',
-            'zip': '.zip',
-            'xz': '.xz',
-            None: '',
-        }
-    
     def get_summary_degree_group_path(self, metapath, metric, damping, compression=None):
         damping = float(damping)
         compr = compression_extension[compression]
@@ -353,7 +354,7 @@ class HetMat:
                                        'degree-grouped-permutations', f'{metapath}.tsv{compr}')
         return path
 
-    def get_metapath_summary_path(self, metapath, metric, damping):
+    def get_metapath_summary_path(self, metapath, metric, damping, compression=None):
         damping = float(damping)
         compr = compression_extension[compression]
         path = self.directory.joinpath('adjusted-path-counts', f'{metric}-{damping}',
