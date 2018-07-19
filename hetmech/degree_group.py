@@ -1,5 +1,4 @@
 import itertools
-import os
 
 import numpy
 import pandas
@@ -150,7 +149,7 @@ def summarize_degree_grouped_permutations(graph, metapath, damping, delete_inter
             .assign(n_perms=1)
         )
         if delete_intermediates:
-            os.remove(path)
+            path.unlink()
 
         if degree_stats_df is None:
             degree_stats_df = df
