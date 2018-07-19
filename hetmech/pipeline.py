@@ -50,8 +50,9 @@ def combine_dwpc_dgp(graph, metapath, damping):
         .merge(degree_stats_df, on=['source_degree', 'target_degree'])
         .drop(columns=['source_degree', 'target_degree'])
     )
-    df['mean_nz'] = df['mean'] * df['n'] / df['nnz']
-    df['beta'] = df['mean_nz'] / df['sd'] ** 2
+    df['mean_nz'] = df['sum'] / df['nnz']
+    df['sd_nz'] = ((df['sum_of_squares'] - df['sum'] ** 2 / df['nnz']) / (df['nnz'] - 1)) ** 0.5
+    df['beta'] = df['mean_nz'] / df['sd_nz'] ** 2
     df['alpha'] = df['mean_nz'] * df['beta']
     df['p_value'] = (
         df['nnz'] / df['n'] * (1 - scipy.special.gammainc(df['alpha'], df['beta'] * df['dwpc']))

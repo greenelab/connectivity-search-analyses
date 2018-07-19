@@ -65,8 +65,8 @@ def generate_degree_group_stats(source_degree_to_ind, target_degree_to_ind, matr
 
 
 def compute_summary_metrics(df):
-    df['mean'] = df['sum'] / df['n']
-    df['sd'] = ((df['sum_of_squares'] - df['sum'] ** 2 / df['n']) / (df['n'] - 1)) ** 0.5
+    df['mean_nz'] = df['sum'] / df['nnz']
+    df['sd_nz'] = ((df['sum_of_squares'] - df['sum'] ** 2 / df['nnz']) / (df['nnz'] - 1)) ** 0.5
     return df
 
 
