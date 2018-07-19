@@ -53,9 +53,7 @@ def combine_dwpc_dgp(graph, metapath, damping):
     df['mean_nz'] = df['mean'] * df['n'] / df['nnz']
     df['beta'] = df['mean_nz'] / df['sd'] ** 2
     df['alpha'] = df['mean_nz'] * df['beta']
-    if df['dwpc'] != 0:
-        p = df['nnz'] / df['n'] * (1 - scipy.special.gammainc(df['alpha'], df['beta'] * df['dwpc']))
-    else:
-        p = 1
-    df['p_value'] = p
+    df['p_value'] = (
+        df['nnz'] / df['n'] * (1 - scipy.special.gammainc(df['alpha'], df['beta'] * df['dwpc']))
+    ).where(cond=df['dwpc'] > 0, other=1)
     return df
