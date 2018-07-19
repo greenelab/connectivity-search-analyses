@@ -338,15 +338,16 @@ class HetMat:
             'degree-grouped-path-counts', f'{metric}-{damping}/{metapath}.tsv')
         return path
 
-    def get_summary_degree_group_path(self, metapath, metric, damping, compression=None):
-        damping = float(damping)
-        compression_extension = {
+    compression_extension = {
             'gzip': '.gz',
             'bz2': '.bz2',
             'zip': '.zip',
             'xz': '.xz',
             None: '',
         }
+    
+    def get_summary_degree_group_path(self, metapath, metric, damping, compression=None):
+        damping = float(damping)
         compr = compression_extension[compression]
         path = self.directory.joinpath('adjusted-path-counts', f'{metric}-{damping}',
                                        'degree-grouped-permutations', f'{metapath}.tsv{compr}')
@@ -354,8 +355,9 @@ class HetMat:
 
     def get_metapath_summary_path(self, metapath, metric, damping):
         damping = float(damping)
+        compr = compression_extension[compression]
         path = self.directory.joinpath('adjusted-path-counts', f'{metric}-{damping}',
-                                       'adjusted-dwpcs', f'{metapath}.tsv')
+                                       'adjusted-dwpcs', f'{metapath}.tsv{compr}')
         return path
 
     @functools.lru_cache()
