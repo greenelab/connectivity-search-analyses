@@ -38,8 +38,7 @@ def compute_save_dgp(hetmat, metapath, damping=0.5, compression='gzip', delete_i
 def combine_dwpc_dgp(graph, metapath, damping):
     """
     Combine DWPC information with degree-grouped permutation summary metrics.
-    Save resulting tables as one-per-metapath, compressed .tsv files that include
-    gamma-hurdle significance estimates.
+    Includes gamma-hurdle significance estimates.
     """
     stats_path = graph.get_summary_degree_group_path(metapath, 'dwpc', damping)
     degree_stats_df = pandas.read_table(stats_path, compression='gzip')
@@ -51,8 +50,8 @@ def combine_dwpc_dgp(graph, metapath, damping):
         .merge(degree_stats_df, on=['source_degree', 'target_degree'])
         .drop(columns=['source_degree', 'target_degree'])
     )
-    df['mean-nz'] = df['mean'] * df['n'] / df['nnz']
-    df['beta'] = df['mean-nz'] / df['sd'] ** 2
-    df['alpha'] = df['mean-nz'] * df['beta']
-    df['p-value'] = df['nnz'] / df['n'] * scipy.special.gammaincc(df['alpha'], df['beta'] * df['dwpc'])
+    df['mean_nz'] = df['mean'] * df['n'] / df['nnz']
+    df['beta'] = df['mean_nz'] / df['sd'] ** 2
+    df['alpha'] = df['mean_nz'] * df['beta']
+    df['p_value'] = df['nnz'] / df['n'] * (1 - scipy.special.gammainc(df['alpha'], df['beta'] * df['dwpc']))
     return df
