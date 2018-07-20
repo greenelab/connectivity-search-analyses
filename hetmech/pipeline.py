@@ -23,8 +23,8 @@ def combine_dwpc_dgp(graph, metapath, damping, ignore_zeros=False):
     dwpc_df = pandas.DataFrame(dwpc_row_generator)
     dwpc_df = dwpc_df.merge(dgp_df)
     dwpc_df['p_value'] = (
-        dwpc_df['nnz'] / dwpc_df['n'] * \
-        (1 - scipy.special.gammainc(dwpc_df['alpha'], dwpc_df['beta'] * dwpc_df['dwpc']))
+        dwpc_df['nnz'] / dwpc_df['n'] 
+        * (1 - scipy.special.gammainc(dwpc_df['alpha'], dwpc_df['beta'] * dwpc_df['dwpc']))
     ).where(cond=dwpc_df['dwpc'] > 0, other=1)
     dwpc_df.drop(columns=['sum', 'sum_of_squares', 'beta', 'alpha'], inplace=True)
     dwpc_df.sort_values(['source_id', 'target_id'], inplace=True)
