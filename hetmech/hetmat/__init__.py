@@ -1,4 +1,5 @@
 import functools
+import gc
 import itertools
 import logging
 import pathlib
@@ -433,7 +434,7 @@ class HetMat:
 
     def clear_caches(self):
         """
-        Clear cached assets of this HetMat.
+        Clear cached assets of this HetMat and force garbage collection.
         """
         # See workaround for methods with @property and @lru_cache decoration
         # https://stackoverflow.com/a/45283290/4651668
@@ -445,3 +446,4 @@ class HetMat:
         ]:
             lru_cached_function.cache_clear()
         self.path_counts_cache = None
+        gc.collect()
