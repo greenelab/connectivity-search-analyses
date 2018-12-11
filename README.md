@@ -1,11 +1,14 @@
-# hetmech: extracting mechanisms from hetnets
+# hetmech prototyping and data repository
 
 [![Build Status](https://travis-ci.org/greenelab/hetmech.svg?branch=master)](https://travis-ci.org/greenelab/hetmech)
 
-Hetmech aims to identify the relevant network connections between a set of query nodes.
+Hetmech is a project to extract mechanistic connections between nodes in hetnets.
+The project aims to identify the relevant network connections between a set of query nodes.
 The method is designed to operate on hetnets (networks with multiple node or relationship types).
 
-This project is still under development. Use with caution.
+**Note: the `hetmech` python package has been renamed to `hetmatpy` and relocated to [`hetio/hetmatpy`](https://github.com/hetio/hetmatpy).**
+This repository is now used as a historical archive, as well as a dataset storage and method prototyping repository.
+This project is still under development: use with caution.
 
 ## Environment
 
@@ -17,10 +20,6 @@ conda env create --file=environment.yml
 ```
 
 Then use `conda activate hetmech` and `conda deactivate` to activate or deactivate the environment.
-
-For local development, run the following with the hetmech environment activated:
-
-`pip install --editable .`
 
 ## Acknowledgments
 
