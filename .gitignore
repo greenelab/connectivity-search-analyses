@@ -11,5 +11,6 @@ __pycache__/
 ### Jupyter Notebook ###
 .ipynb_checkpoints
 
-### IDEA ###
+### Text Editors ###
 **.idea/
+.vscode

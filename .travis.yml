@@ -11,10 +11,7 @@ before_install:
 install:
   - conda env create --quiet --file environment.yml
   - conda activate hetmech
-  - pip install --editable .
   - conda list
 script:
-  - pytest hetmech
   - jupyter nbconvert --to=script --stdout *.ipynb |
     flake8 --exit-zero --show-source --ignore=E402,W291,E501,W391 -
-  - flake8 --max-line-length=120 hetmech
