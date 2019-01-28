@@ -19,6 +19,7 @@ dependencies:
   - conda-forge::tqdm=4.24.0
   - conda-forge::xarray=0.10.8
   - conda-forge::xlrd=1.1.0
+  - conda-forge::psycopg2=2.7.5
   - pip:
     - git+https://github.com/hetio/hetio@52a41c70fc9f46ad4b501510bd228692b6f47a4e
     - git+https://github.com/hetio/hetmatpy@6a6f0074c24c15d94dcc2f92474f8db8dae20f19
