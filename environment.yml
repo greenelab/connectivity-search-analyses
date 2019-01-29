@@ -21,6 +21,6 @@ dependencies:
   - conda-forge::xlrd=1.1.0
   - conda-forge::psycopg2=2.7.5
   - pip:
-    - git+https://github.com/hetio/hetio@52a41c70fc9f46ad4b501510bd228692b6f47a4e
+    - git+https://github.com/hetio/hetio@7c179b75a5520b3520cc44017325b64c2b655ce2
     - git+https://github.com/hetio/hetmatpy@6a6f0074c24c15d94dcc2f92474f8db8dae20f19
     - neo4j-driver==1.6.1
