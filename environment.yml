@@ -1,4 +1,4 @@
-name: hetmech2
+name: hetmech
 channels:
   - conda-forge
 dependencies:
