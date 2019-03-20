@@ -1,4 +1,4 @@
-name: hetmech
+name: hetmech2
 channels:
   - conda-forge
 dependencies:
@@ -17,6 +17,8 @@ dependencies:
   - conda-forge::scikit-learn=0.19.2
   - conda-forge::scipy=1.1.0
   - conda-forge::tqdm=4.24.0
+  - conda-forge::numba=0.42.0
+  - conda-forge::umap-learn=0.3.7
   - conda-forge::xarray=0.10.8
   - conda-forge::xlrd=1.1.0
   - conda-forge::psycopg2=2.7.5
