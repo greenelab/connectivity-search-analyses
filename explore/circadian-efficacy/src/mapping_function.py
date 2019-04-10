@@ -37,8 +37,9 @@ def map_disease_id(query_list, map_do_id, map_disease):
 
     return query_ids
 
-# 
+# map genes to GTEx tissue-specific expression value
 def map_gtex_expression(query_gene_list, query_tissue_list, map_gtex_tissue, map_tissue_name, gtex_exp):
+    # query_gene_list: query gene list; query_tissue_list: query tissue list; map_gtex_tissue: gtex tissue name list; map_tissue_name: circadb tissue name list; gtex_exp: GTEx tissue-specific expression matrix  
 
     gtex_gene_name = list(gtex_exp.loc[:,'gene_id'])
     for i in range(0, len(gtex_gene_name)):
@@ -60,4 +61,3 @@ def map_gtex_expression(query_gene_list, query_tissue_list, map_gtex_tissue, map
         exp_array.append(list(gene_exp))
 
     return exp_array
-
