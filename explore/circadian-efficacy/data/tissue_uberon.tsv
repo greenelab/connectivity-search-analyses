@@ -1,0 +1,14 @@
+Tissue	Uberon.code	Uberon.term	GTEx.name
+Heart Atrial	UBERON:0006631	right atrium auricular region	Heart - Atrial Appendage
+Aorta	UBERON:0001496	ascending aorta	Artery - Aorta
+Lung	UBERON:0008952	upper lobe of left lung	Lung
+Pituitary	UBERON:0000007	pituitary gland	Pituitary
+Fat Visceral	UBERON:0010414	omental fat pad	Adipose - Visceral (Omentum)
+Fat SQ	UBERON:0002190	subcutaneous adipose tissue	Adipose - Subcutaneous
+Nerve Tibial	UBERON:0001323	tibial nerve	Nerve - Tibial
+Artery Tibial	UBERON:0007610	tibial artery	Artery - Tibial
+Colon	UBERON:0001155	colon	Colon - Sigmoid, Colon - Transverse
+Esophagus	UBERON:0001043	esophagus	Esophagus - Gastroesophageal Junction, Esophagus - Mucosa, Esophagus - Muscularis
+Thyroid	UBERON:0002046	thyroid gland	Thyroid
+Liver	UBERON:0001114	right lobe of liver	Liver
+Artery Coronary	UBERON:0001621	coronary artery	Artery - Coronary
