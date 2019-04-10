@@ -31,4 +31,4 @@ Evaluating unsupervised DWPC p-values and path contributions to predict whether 
 
 # Notebook
 
-+ [`data_id_mapping.ipynb`](~/data_id_mapping.ipynb) contains the codes that map treatment and CircaDB data to hetionet IDs.   
++ [`data_id_mapping.ipynb`](data_id_mapping.ipynb) contains the codes that map treatment and CircaDB data to hetionet IDs.   
