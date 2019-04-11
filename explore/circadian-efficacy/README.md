@@ -31,4 +31,6 @@ Evaluating unsupervised DWPC p-values and path contributions to predict whether 
 
 # Notebook
 
-+ [`data_id_mapping.ipynb`](data_id_mapping.ipynb) contains the codes that map treatment and CircaDB data to hetionet IDs.   
++ [`data_id_mapping.ipynb`](data_id_mapping.ipynb) contains the codes that map treatment and CircaDB data to hetionet IDs.  
+
++ [`circa_db_data.ipynb`](circa_db_data.ipynb) contains the codes that show CircaDB score distribution by tissue, comparison between different scores, and comparison between different tissues.
