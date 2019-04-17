@@ -29,8 +29,14 @@ Evaluating unsupervised DWPC p-values and path contributions to predict whether 
 + [`data/circa_db_mapped.tsv`](data/circa_db_mapped.tsv) is a processed version of [`downloads/aat8806_Data_file_S1.xlsx`](downloads/aat8806_Data_file_S1.xlsx).
   It organized circadian scores by gene, added median tissue-specific expression value of each gene from GTEx.
 
++ [`data/HumCircMed2018v2_mapped_hetionet_edges.tsv`](`data/HumCircMed2018v2_mapped_hetionet_edges.tsv`) contains edges extracted from hetionet which connect compound~treatment pairs in [`data/HumCircMed2018v2_mapped.tsv`](data/HumCircMed2018v2_mapped.tsv).
+
 # Notebook
 
 + [`data_id_mapping.ipynb`](data_id_mapping.ipynb) contains the codes that map treatment and CircaDB data to hetionet IDs.  
 
 + [`circa_db_data.ipynb`](circa_db_data.ipynb) contains the codes that show CircaDB score distribution by tissue, comparison between different scores, and comparison between different tissues.
+
++ [`compound_to_treatment.ipynb`](compound_to_treatment.ipynb) contains the codes that extract edges from hetionet which connect compound to treatment.
+
++ [`path_gene_circa.ipynb`](path_gene_circa.ipynb) contains the codes that compare circadian scores of genes in different treatments.
