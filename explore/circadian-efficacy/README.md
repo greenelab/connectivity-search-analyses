@@ -29,9 +29,9 @@ Evaluating unsupervised DWPC p-values and path contributions to predict whether 
 + [`data/circa_db_mapped.tsv`](data/circa_db_mapped.tsv) is a processed version of [`downloads/aat8806_Data_file_S1.xlsx`](downloads/aat8806_Data_file_S1.xlsx).
   It organized circadian scores by gene, added median tissue-specific expression value of each gene from GTEx.
 
-+ [`data/ruben_hetionet_edges.txt`](`data/ruben_hetionet_edges.txt`) and [`data/drugbank_hetionet_edges.txt`](`data/drugbank_hetionet_edges.txt`) contain extracted drug-disease paths from hetionet.
++ [`data/ruben_hetionet_edges.txt`](data/ruben_hetionet_edges.txt) and [`data/drugbank_hetionet_edges.txt`](data/drugbank_hetionet_edges.txt) contain extracted drug-disease paths from hetionet.
 
-+ [`data/hetionet_edges_mean_circadian_score.tsv`](`data/hetionet_edges_mean_circadian_score.tsv`), [`data/hetionet_edges_weightedmean_circadian_score.tsv`](`data/hetionet_edges_weightedmean_circadian_score.tsv`), and [`data/hetionet_edges_max_circadian_score.tsv`](data/hetionet_edges_max_circadian_score.tsv`) contain calculated scores of extracted drug-diseasse paths using mean, weighted mean, and maximum scoring method, respectively.
++ [`data/hetionet_edges_mean_circadian_score.tsv`](data/hetionet_edges_mean_circadian_score.tsv), [`data/hetionet_edges_weightedmean_circadian_score.tsv`](data/hetionet_edges_weightedmean_circadian_score.tsv), and [`data/hetionet_edges_max_circadian_score.tsv`](data/hetionet_edges_max_circadian_score.tsv) contain calculated scores of extracted drug-diseasse paths using mean, weighted mean, and maximum scoring method, respectively.
 
 # Notebook
 
