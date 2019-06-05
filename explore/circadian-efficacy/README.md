@@ -29,9 +29,11 @@ Evaluating unsupervised DWPC p-values and path contributions to predict whether 
 + [`data/circa_db_mapped.tsv`](data/circa_db_mapped.tsv) is a processed version of [`downloads/aat8806_Data_file_S1.xlsx`](downloads/aat8806_Data_file_S1.xlsx).
   It organized circadian scores by gene, added median tissue-specific expression value of each gene from GTEx.
 
-+ [`data/ruben_hetionet_edges.txt`](data/ruben_hetionet_edges.txt) and [`data/drugbank_hetionet_edges.txt`](data/drugbank_hetionet_edges.txt) contain extracted drug-disease paths from hetionet.
++ [`data/rephetio_significant_metapaths.tsv`](data/rephetio_significant_metapaths.tsv) contains 67 metapaths that are used for calculating the edge circadian score. These metapaths were extracted from [Project Rephetio](https://het.io/repurpose/metapaths.html). Metapaths with delta(AUROC)>0 and -log(P)>1.30 were considered. 
 
-+ [`data/hetionet_edges_mean_circadian_score.tsv`](data/hetionet_edges_mean_circadian_score.tsv), [`data/hetionet_edges_weightedmean_circadian_score.tsv`](data/hetionet_edges_weightedmean_circadian_score.tsv), and [`data/hetionet_edges_max_circadian_score.tsv`](data/hetionet_edges_max_circadian_score.tsv) contain calculated scores of extracted drug-diseasse paths using mean, weighted mean, and maximum scoring method, respectively.
++ [`data/HumCircMed2018v2_mapped_edge_circa_scores.tsv`](data/HumCircMed2018v2_mapped_edge_circa_scores.tsv) contains calculated calculate edge circadian scores for drug-disease pairs from Ruben et al dataset.
+
++ [`data/indication_edge_circa_scores.tsv`](data/indication_edge_circa_scores.tsv) contains calculated edge circadian scores for drug-disease pairs from indication dataset.
 
 # Notebook
 
@@ -39,10 +41,8 @@ Evaluating unsupervised DWPC p-values and path contributions to predict whether 
 
 + [`circa_db_data.ipynb`](circa_db_data.ipynb) contains the codes that show CircaDB score distribution by tissue, comparison between different scores, and comparison between different tissues.
 
-+ [`half_life_data.ipynb`](half_life_data.ipynb) contains the codes that show half-life distribution of all available drugs in DrugBank.
++ [`calculate_edge_circa_score_ruben.ipynb`](calculate_edge_circa_score_ruben.ipynb) contains the codes that calculate edge circadian scores for drug-disease pairs from Ruben et al dataset.
 
-+ [`extract_drug_to_disease_path.ipynb`](extract_drug_to_disease_path.ipynb) contains the codes that extract drug-disease paths from hetionet.
++ [`calculate_edge_circa_score_indication.ipynb`](calculate_edge_circa_score_indication.ipynb) contains the codes that calculate edge circadian scores for drug-disease pairs from indication dataset.
 
-+ [`score_drug_to_disease_path.ipynb`](score_drug_to_disease_path.ipynb) contains the codes that calculate scores for extracted paths based on genes in the paths.
-
-+ [`plot_drug_to_disease_score.ipynb`](plot_drug_to_disease_score.ipynb) contains the code that plot the score distribution of paths.
++ [`analyze_edge_circa_score.ipynb`](analyze_edge_circa_score.ipynb) contains the codes that analyze edge circadian scores of drug-disease pairs from Ruben et al dataset and indication dataset.
