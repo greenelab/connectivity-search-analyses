@@ -46,3 +46,5 @@ Evaluating unsupervised DWPC p-values and path contributions to predict whether 
 + [`calculate_edge_circa_score_indication.ipynb`](calculate_edge_circa_score_indication.ipynb) contains the codes that calculate edge circadian scores for drug-disease pairs from indication dataset.
 
 + [`analyze_edge_circa_score.ipynb`](analyze_edge_circa_score.ipynb) contains the codes that analyze edge circadian scores of drug-disease pairs from Ruben et al dataset and indication dataset.
+
++ [`detail_edge_circa_score.ipynb`](detail_edge_circa_score.ipynb) contains the codes that obtain details of edge circadian score in each path.
