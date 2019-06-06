@@ -104,8 +104,7 @@ def calculate_edge_circa_score(query_drug, query_disease, query_tissue, circa_df
 							# get entrez ID of genes in the path
 							loc_id = gene_path_loc[l]
 							gene_node_id = path_search['paths'][k]['node_ids'][loc_id]
-							gene_search =  requests.get('https://search-api.het.io/v1/nodes/' + str(gene_node_id)).json()
-							gene_id = int(gene_search['identifier'])
+							gene_id = int(path_search['nodes'][str(gene_node_id)]['properties']['identifier'])
 							gene_circa_amp = circa_df[query_amp][circa_df['gene_id'] == gene_id]
 							gene_circa_fdr = circa_df[query_fdr][circa_df['gene_id'] == gene_id]
 
@@ -170,12 +169,7 @@ def detail_edge_circa_score(query_drug, query_disease, query_tissue, circa_df, q
 		total_meta_count: number of metapaths that contain gene
 		total_path_count: number of paths that contain gene in CircaDB
 		note: reason why score cannot be calculated for query drug-disease pair (if any) 
-		score_details: a list that contains score details of each path. Each element is a dictionary, and contains the following information of a path:
-			metapath: type of the path
-			gene_id: gene entrez ID
-			circa_db_amp: amplitude of genes in CircaDB (if multiple genes are on the path, genes with higher amplitude will be recorded)
-			circa_db_fdr: FDR of genes in CircaDB
-			importance score: importance score of the path
+		score_details: a dataframe that contains score details of each path
 	'''
 
 	# number of query tissues
@@ -188,7 +182,7 @@ def detail_edge_circa_score(query_drug, query_disease, query_tissue, circa_df, q
 			'total_meta_count': float('nan'),
 			'total_path_count': float('nan'),
 			'note': 'NaN',
-			'score_details': []
+			'score_details': 'NaN'
 			}
 
 	# check whether the drug and the disease are in hetionet
@@ -250,24 +244,18 @@ def detail_edge_circa_score(query_drug, query_disease, query_tissue, circa_df, q
 					# get max circadian score of the path
 					gene_path_loc = [int(index/2) for index, value in enumerate(gene_metapath[j]) if value == 'G']
 					for k in range(0, len(path_search['paths'])):
-						
-						path_details = {'metapath': gene_metapath[j],
-								'gene_id': [], 
-								'circa_db_amp': {},
-								'circa_db_fdr': {},
-								'importance_score': float('nan'),
-								}
+					
 						# get circadian score of the gene
 						path_gene_circa_amp = np.zeros(tissue_len)
 						path_gene_circa_fdr = np.zeros(tissue_len) + 1
 						path_gene_circa_count = 0
+						path_gene_entrez = []
 						for l in range(0, len(gene_path_loc)):
 							# get entrez ID of genes in the path
 							loc_id = gene_path_loc[l]
 							gene_node_id = path_search['paths'][k]['node_ids'][loc_id]
-							gene_search =  requests.get('https://search-api.het.io/v1/nodes/' + str(gene_node_id)).json()
-							gene_id = int(gene_search['identifier'])
-							path_details['gene_id'].append(gene_id)
+							gene_id = int(path_search['nodes'][str(gene_node_id)]['properties']['identifier'])
+							path_gene_entrez.append(gene_id)
 							gene_circa_amp = circa_df[query_amp][circa_df['gene_id'] == gene_id]
 							gene_circa_fdr = circa_df[query_fdr][circa_df['gene_id'] == gene_id]
 
@@ -281,20 +269,45 @@ def detail_edge_circa_score(query_drug, query_disease, query_tissue, circa_df, q
 									tmp_amp = float(gene_circa_amp.iloc[:,m])
 									if tmp_amp > path_gene_circa_amp[m]:
 										tmp_tissue = query_tissue[m]
-										path_gene_circa_amp[m] = path_details['circa_db_amp'][tmp_tissue] = tmp_amp
-										path_gene_circa_fdr[m] = path_details['circa_db_fdr'][tmp_tissue] = float(gene_circa_fdr.iloc[:,m])
-								
+										path_gene_circa_amp[m] = tmp_amp
+										path_gene_circa_fdr[m] = float(gene_circa_fdr.iloc[:,m])
+						
+						circa_vec = np.tile('nan', tissue_len)			
 						if path_gene_circa_count > 0:
 							# get path importance score
 							total_path_count = total_path_count + 1
-							path_score = path_details['importance_score'] = path_search['paths'][k]['score']
+							path_score = path_search['paths'][k]['score']
 							total_edge_score = total_edge_score + path_score
 							# check whether the gene is circadian
 							for n in range(0, tissue_len):
 								if path_gene_circa_amp[n] >= amp_threshold and path_gene_circa_fdr[n] < fdr_threshold:
 									circa_edge_score[n] = circa_edge_score[n] + path_score
-						
-						score_details.append(path_details)		
+									circa_vec[n] = '1'
+								else:
+									circa_vec[n] = '0'
+
+						# fill in score details 
+						node_ids = path_search['paths'][k]['node_ids']
+						node_names = []
+						for ni in node_ids:
+							ni_name = str(path_search['nodes'][str(ni)]['properties']['identifier'])
+							node_names.append(ni_name)
+						rel_ids = path_search['paths'][k]['rel_ids']
+						rel_types = []
+						for ri in rel_ids:
+							ri_name = str(path_search['relationships'][str(ri)]['rel_type'])
+							rel_types.append(ri_name)
+						path_details = {'metapath': gene_metapath[j],
+								'node_ids': ','.join([str(x) for x in node_ids]),
+								'node_names': ','.join(node_names),
+								'rel_ids': ','.join([str(x) for x in rel_ids]),
+								'rel_names': ','.join(rel_types),
+								'gene_entrez': ','.join(str(x) for x in path_gene_entrez),
+								'tissue': ','.join(query_tissue),
+								'circadian': ','.join(circa_vec),
+								'importance_score': path_search['paths'][k]['score']
+                                                                }
+						score_details.append(path_details)
 					
 			# calculate proportion of circadian paths
 			output = null_output
@@ -303,12 +316,13 @@ def detail_edge_circa_score(query_drug, query_disease, query_tissue, circa_df, q
 			if total_meta_count == 0:
 				output['note'] = 'query drug and disease not connected by genes in hetionet'
 			else:
-				output['score_details'] = score_details
 				if total_path_count == 0:
 					output['note'] = 'query drug and disease connected by genes not in CircaDB' 		
 				elif total_path_count < min_path_count:
 					output['note'] = 'query drug and disease connected by too few paths'
 				else:
 					output['edge_circa_score'] = circa_edge_score/total_edge_score
-	
+					detail_df = pd.DataFrame(score_details)
+					detail_cols = ['metapath','node_ids','node_names','rel_ids','rel_names','gene_entrez','tissue','circadian','importance_score']
+					output['score_details'] = detail_df[detail_cols]	
 	return output
