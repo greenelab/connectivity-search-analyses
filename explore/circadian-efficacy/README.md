@@ -36,8 +36,6 @@ Evaluating unsupervised DWPC p-values and path contributions to predict whether 
 
 + [`data_id_mapping.ipynb`](data_id_mapping.ipynb) contains the codes that map treatment and CircaDB data to hetionet IDs.  
 
-+ [`circa_db_data.ipynb`](circa_db_data.ipynb) contains the codes that show CircaDB score distribution by tissue, comparison between different scores, and comparison between different tissues.
-
 + [`calculate_edge_circa_score_ruben.ipynb`](calculate_edge_circa_score_ruben.ipynb) contains the codes that calculate edge circadian scores for drug-disease pairs from Ruben et al dataset.
 
 + [`calculate_edge_circa_score_indication.ipynb`](calculate_edge_circa_score_indication.ipynb) contains the codes that calculate edge circadian scores for drug-disease pairs from indication dataset.
