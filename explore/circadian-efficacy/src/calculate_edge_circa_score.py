@@ -249,13 +249,14 @@ def detail_edge_circa_score(query_drug, query_disease, query_tissue, circa_df, q
 						path_gene_circa_amp = np.zeros(tissue_len)
 						path_gene_circa_fdr = np.zeros(tissue_len) + 1
 						path_gene_circa_count = 0
-						path_gene_entrez = []
+						path_gene_name = []
 						for l in range(0, len(gene_path_loc)):
 							# get entrez ID of genes in the path
 							loc_id = gene_path_loc[l]
 							gene_node_id = path_search['paths'][k]['node_ids'][loc_id]
 							gene_id = int(path_search['nodes'][str(gene_node_id)]['properties']['identifier'])
-							path_gene_entrez.append(gene_id)
+							gene_name = path_search['nodes'][str(gene_node_id)]['properties']['name']
+							path_gene_name.append(gene_name)
 							gene_circa_amp = circa_df[query_amp][circa_df['gene_id'] == gene_id]
 							gene_circa_fdr = circa_df[query_fdr][circa_df['gene_id'] == gene_id]
 
@@ -272,7 +273,8 @@ def detail_edge_circa_score(query_drug, query_disease, query_tissue, circa_df, q
 										path_gene_circa_amp[m] = tmp_amp
 										path_gene_circa_fdr[m] = float(gene_circa_fdr.iloc[:,m])
 						
-						circa_vec = np.tile('nan', tissue_len)			
+						circa_tissues = []
+						non_circa_tissues = []
 						if path_gene_circa_count > 0:
 							# get path importance score
 							total_path_count = total_path_count + 1
@@ -282,15 +284,15 @@ def detail_edge_circa_score(query_drug, query_disease, query_tissue, circa_df, q
 							for n in range(0, tissue_len):
 								if path_gene_circa_amp[n] >= amp_threshold and path_gene_circa_fdr[n] < fdr_threshold:
 									circa_edge_score[n] = circa_edge_score[n] + path_score
-									circa_vec[n] = '1'
+									circa_tissues.append(query_tissue[n])		
 								else:
-									circa_vec[n] = '0'
+									non_circa_tissues.append(query_tissue[n])
 
 						# fill in score details 
 						node_ids = path_search['paths'][k]['node_ids']
 						node_names = []
 						for ni in node_ids:
-							ni_name = str(path_search['nodes'][str(ni)]['properties']['identifier'])
+							ni_name = str(path_search['nodes'][str(ni)]['properties']['name'])
 							node_names.append(ni_name)
 						rel_ids = path_search['paths'][k]['rel_ids']
 						rel_types = []
@@ -302,9 +304,9 @@ def detail_edge_circa_score(query_drug, query_disease, query_tissue, circa_df, q
 								'node_names': ','.join(node_names),
 								'rel_ids': ','.join([str(x) for x in rel_ids]),
 								'rel_names': ','.join(rel_types),
-								'gene_entrez': ','.join(str(x) for x in path_gene_entrez),
-								'tissue': ','.join(query_tissue),
-								'circadian': ','.join(circa_vec),
+								'gene_symbol': ','.join(str(x) for x in path_gene_name),
+								'circadian_tissue': ','.join(circa_tissues),
+								'non_circadian_tissue': ','.join(non_circa_tissues),
 								'importance_score': path_search['paths'][k]['score']
                                                                 }
 						score_details.append(path_details)
@@ -323,6 +325,6 @@ def detail_edge_circa_score(query_drug, query_disease, query_tissue, circa_df, q
 				else:
 					output['edge_circa_score'] = circa_edge_score/total_edge_score
 					detail_df = pd.DataFrame(score_details)
-					detail_cols = ['metapath','node_ids','node_names','rel_ids','rel_names','gene_entrez','tissue','circadian','importance_score']
+					detail_cols = ['metapath','node_ids','node_names','rel_ids','rel_names','gene_symbol','circadian_tissue','non_circadian_tissue','importance_score']
 					output['score_details'] = detail_df[detail_cols]	
 	return output
