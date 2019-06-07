@@ -178,7 +178,7 @@ def detail_edge_circa_score(query_drug, query_disease, query_tissue, circa_df, q
 	# get hetionet ID of the drug and the disease
 	drug_search = requests.get('https://search-api.het.io/v1/nodes/?search=' + query_drug).json()
 	disease_search = requests.get('https://search-api.het.io/v1/nodes/?search=' + query_disease).json()
-	null_output = {'edge_circa_score': np.tile(float('nan'), tissue_len),
+	null_output = {'edge_circa_score': dict((query_tissue[x], float('nan')) for x in range(0, len(query_tissue))),
 			'total_meta_count': float('nan'),
 			'total_path_count': float('nan'),
 			'note': 'NaN',
@@ -276,6 +276,7 @@ def detail_edge_circa_score(query_drug, query_disease, query_tissue, circa_df, q
 						circa_tissues = []
 						non_circa_tissues = []
 						if path_gene_circa_count > 0:
+							gene_in_circa = True
 							# get path importance score
 							total_path_count = total_path_count + 1
 							path_score = path_search['paths'][k]['score']
@@ -287,6 +288,10 @@ def detail_edge_circa_score(query_drug, query_disease, query_tissue, circa_df, q
 									circa_tissues.append(query_tissue[n])		
 								else:
 									non_circa_tissues.append(query_tissue[n])
+						else:
+							gene_in_circa = False
+							circa_tissues = non_circa_tissues = ['NaN']
+					
 
 						# fill in score details 
 						node_ids = path_search['paths'][k]['node_ids']
@@ -299,12 +304,15 @@ def detail_edge_circa_score(query_drug, query_disease, query_tissue, circa_df, q
 						for ri in rel_ids:
 							ri_name = str(path_search['relationships'][str(ri)]['rel_type'])
 							rel_types.append(ri_name)
-						path_details = {'metapath': gene_metapath[j],
+						path_details = {'source_node': node_names[0],
+								'target_node': node_names[-1],
+								'metapath': gene_metapath[j],
 								'node_ids': ','.join([str(x) for x in node_ids]),
 								'node_names': ','.join(node_names),
 								'rel_ids': ','.join([str(x) for x in rel_ids]),
 								'rel_names': ','.join(rel_types),
 								'gene_symbol': ','.join(str(x) for x in path_gene_name),
+								'whether_in_circadb': gene_in_circa,
 								'circadian_tissue': ','.join(circa_tissues),
 								'non_circadian_tissue': ','.join(non_circa_tissues),
 								'importance_score': path_search['paths'][k]['score']
@@ -323,8 +331,9 @@ def detail_edge_circa_score(query_drug, query_disease, query_tissue, circa_df, q
 				elif total_path_count < min_path_count:
 					output['note'] = 'query drug and disease connected by too few paths'
 				else:
-					output['edge_circa_score'] = circa_edge_score/total_edge_score
+					edge_circa_score = circa_edge_score/total_edge_score
+					output['edge_circa_score'] = dict((query_tissue[x], edge_circa_score[x]) for x in range(0, len(query_tissue)))
 					detail_df = pd.DataFrame(score_details)
-					detail_cols = ['metapath','node_ids','node_names','rel_ids','rel_names','gene_symbol','circadian_tissue','non_circadian_tissue','importance_score']
+					detail_cols = ['source_node','target_node','metapath','node_ids','node_names','rel_ids','rel_names','gene_symbol','whether_in_circadb','circadian_tissue','non_circadian_tissue','importance_score']
 					output['score_details'] = detail_df[detail_cols]	
 	return output
