@@ -1,6 +1,5 @@
-drug.trtmnt	drug.trtmnt.DrugBankID	therapeutic.area	therapeutic.area.DOID	halflife.hrs	effect	Aorta	Artery Coronary	Artery Tibial	Colon	Esophagus	Fat SQ	Fat Visceral	Heart Atrial	Liver	Lung	Nerve Tibial	Pituitary	Thyroid	score_note	metapath_cout	path_cout
+drug.trtmnt	drug.trtmnt_drugbank_id	therapeutic.area	therapeutic.area_doid	halflife.hrs	effect	Aorta	Artery Coronary	Artery Tibial	Colon	Esophagus	Fat SQ	Fat Visceral	Heart Atrial	Liver	Lung	Nerve Tibial	Pituitary	Thyroid	score_note	metapath_cout	path_cout
 prednisone	DB00635	asthma	DOID:2841	2.5	more eff	0.0347	0.1573	0.0102	0.0451	0.1221	0.0000	0.2394	0.2420	0.0865	0.0101	0.0303	0.0080	0.1218	NaN	1.0000	145.0000
-tulobuterol	DB12248	asthma	DOID:2841	NA	more eff	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query drug not in hetionet	NA	NA
 theophylline	DB00277	asthma	DOID:2841	8	more eff	0.0000	0.2210	0.0000	0.0000	0.2851	0.0009	0.0009	0.0435	0.0000	0.0000	0.0000	0.0000	0.2017	NaN	4.0000	41.0000
 epinephrine	DB00668	asthma	DOID:2841	0.03	more eff	0.0775	0.1794	0.0000	0.0000	0.5312	0.0000	0.1404	0.0581	0.2737	0.0000	0.0136	0.0000	0.0136	NaN	2.0000	19.0000
 orciprenaline	DB00816	asthma	DOID:2841	6	more eff	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query drug and disease connected by genes not in CircaDB	3.0000	0.0000
@@ -15,6 +14,7 @@ prednisone	DB00635	Rheumatoid arthritis	DOID:7148	2.5	more eff	0.0000	0.2100	0.0
 prednisone	DB00635	Rheumatoid arthritis	DOID:7148	2.5	more eff	0.0000	0.2100	0.0362	0.0492	0.1793	0.0080	0.1145	0.2440	0.0253	0.0000	0.0457	0.0000	0.0191	NaN	2.0000	201.0000
 prednisone	DB00635	Rheumatoid arthritis	DOID:7148	2.5	more eff	0.0000	0.2100	0.0362	0.0492	0.1793	0.0080	0.1145	0.2440	0.0253	0.0000	0.0457	0.0000	0.0191	NaN	2.0000	201.0000
 methotrexate	DB00563	Rheumatoid arthritis	DOID:7148	6	more eff/better tolerability	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query drug and disease not connected by genes in hetionet	0.0000	NA
+indomethacin	DB00328	Osteoarthritis	DOID:8398	4.5	more eff/better tolerability	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.4829	0.0000	0.0000	0.0000	0.0000	NaN	1.0000	20.0000
 clopidogrel	DB00758	myocardial injury	DOID:5844	8	more eff	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query disease not in hetionet	NA	NA
 clopidogrel	DB00758	myocardial injury	DOID:5844	8	more eff	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query disease not in hetionet	NA	NA
 rivaroxaban	DB06228	myocardial injury/cardiovascular thromboembolism	DOID:5844	7	more eff	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query disease not in hetionet	NA	NA
@@ -34,10 +34,8 @@ benazepril	DB00542	hypertension	DOID:10763	10.5	none	0.0000	0.0000	0.0000	0.0000
 nitrendipine	DB01054	hypertension	DOID:10763	12	more eff	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.6052	0.0000	0.0000	0.0000	0.0000	0.0000	NaN	1.0000	12.0000
 perindopril	DB00790	hypertension	DOID:10763	30	none	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	1.0000	0.0000	0.0000	1.0000	0.0000	1.0000	NaN	4.0000	1.0000
 amlodipine	DB00381	hypertension	DOID:10763	40	none	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	1.0000	0.0000	0.0000	0.0000	0.0000	0.0000	NaN	1.0000	6.0000
-imidapril	DB11783	hypertension	DOID:10763	15	none	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query drug not in hetionet	NA	NA
 amlodipine	DB00381	hypertension	DOID:10763	40	more eff	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	1.0000	0.0000	0.0000	0.0000	0.0000	0.0000	NaN	1.0000	6.0000
 valsartan	DB00177	hypertension	DOID:10763	7	more eff	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query drug and disease connected by genes not in CircaDB	1.0000	0.0000
-cilnidipine	DB09232	hypertension	DOID:10763	0.3	none	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query drug not in hetionet	NA	NA
 trandolapril	DB00519	hypertension	DOID:10763	24	none	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	NaN	2.0000	5.0000
 valsartan	DB00177	hypertension	DOID:10763	7	more eff	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query drug and disease connected by genes not in CircaDB	1.0000	0.0000
 valsartan	DB00177	hypertension	DOID:10763	7	more eff	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query drug and disease connected by genes not in CircaDB	1.0000	0.0000
@@ -47,10 +45,9 @@ torasemide	DB00214	hypertension	DOID:10763	3.5	more eff	0.0000	0.0000	0.0000	0.0
 olmesartan	DB00275	hypertension	DOID:10763	13	more eff	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query drug and disease connected by genes not in CircaDB	1.0000	0.0000
 ramipril	DB00178	hypertension	DOID:10763	24	more eff	0.0267	0.2452	0.0466	0.0356	0.1857	0.0602	0.2747	0.2726	0.0454	0.0853	0.0741	0.0139	0.0723	NaN	3.0000	140.0000
 spirapril	DB01348	hypertension	DOID:10763	40	more eff	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query drug and disease connected by genes not in CircaDB	2.0000	0.0000
-candesartan	DB13919	hypertension	DOID:10763	9	more eff	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query drug not in hetionet	NA	NA
+candesartan	DB00796	hypertension	DOID:10763	9	more eff	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	1.0000	0.0000	0.0000	0.0000	0.0000	NaN	2.0000	4.0000
 valsartan	DB00177	hypertension	DOID:10763	7	more eff	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query drug and disease connected by genes not in CircaDB	1.0000	0.0000
 valsartan	DB00177	hypertension	DOID:10763	7	none	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query drug and disease connected by genes not in CircaDB	1.0000	0.0000
 mequitazine	DB01071	allergic rhinitis	DOID:4481	18	more eff / less Aes	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query drug and disease not connected by genes in hetionet	0.0000	NA
 desloratadine	DB00967	allergic rhinitis	DOID:4481	50	none	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query drug and disease not connected by genes in hetionet	0.0000	NA
-lixisenatide	DB09265	diabetes	DOID:9352	3	none	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	query drug not in hetionet	NA	NA
 levothyroxine	DB00451	hypothyroidism	DOID:1459	48	none	0.0184	0.0000	0.0045	0.0000	0.3574	0.0000	0.3993	0.3220	0.0307	0.4120	0.2972	0.0387	0.0036	NaN	8.0000	64.0000
