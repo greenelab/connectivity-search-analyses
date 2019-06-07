@@ -1,0 +1,14 @@
+tissue	exact_uberon_code	exact_uberon_term	hetionet_uberon_code	hetionet_uberon_term	gtex_name
+Heart Atrial	UBERON:0006631	right atrium auricular region	UBERON:0002081	acardiac atrium	Heart - Atrial Appendage
+Aorta	UBERON:0001496	ascending aorta	UBERON:0001515	thoracic aorta	Artery - Aorta
+Lung	UBERON:0008952	upper lobe of left lung	UBERON:0002048	lung	Lung
+Pituitary	UBERON:0000007	pituitary gland	UBERON:0000007	pituitary gland	Pituitary
+Fat Visceral	UBERON:0010414	omental fat pad	UBERON:0001013	adipose tissue	Adipose - Visceral (Omentum)
+Fat SQ	UBERON:0002190	subcutaneous adipose tissue	UBERON:0001013	adipose tissue	Adipose - Subcutaneous
+Nerve Tibial	UBERON:0001323	tibial nerve	UBERON:0001323	tibial nerve	Nerve - Tibial
+Artery Tibial	UBERON:0007610	tibial artery	UBERON:0001637	artery	Artery - Tibial
+Colon	UBERON:0001155	colon	UBERON:0001007	digestive system	Colon - Sigmoid, Colon - Transverse
+Esophagus	UBERON:0001043	esophagus	UBERON:0001007	digestive system	Esophagus - Gastroesophageal Junction, Esophagus - Mucosa, Esophagus - Muscularis
+Thyroid	UBERON:0002046	thyroid gland	UBERON:0002046	thyroid gland	Thyroid
+Liver	UBERON:0001114	right lobe of liver	UBERON:0002107	liver	Liver
+Artery Coronary	UBERON:0001621	coronary artery	UBERON:0001637	artery	Artery - Coronary
