@@ -26,6 +26,20 @@ Evaluating unsupervised DWPC p-values and path contributions to predict whether 
 + [`data/circa_db_mapped.tsv`](data/circa_db_mapped.tsv) is a processed version of [`downloads/aat8806_Data_file_S1.xlsx`](downloads/aat8806_Data_file_S1.xlsx).
   It organized circadian scores by gene, added median tissue-specific expression value of each gene from GTEx.
 
++ [`data/rephetio_significant_metapaths.tsv`](data/rephetio_significant_metapaths.tsv) contains 67 metapaths that are used for calculating the edge circadian score. These metapaths were extracted from [Project Rephetio](https://het.io/repurpose/metapaths.html). Metapaths with delta(AUROC)>0 and -log(P)>1.30 were considered. 
+
++ [`data/HumCircMed2018v2_mapped_edge_circa_scores.tsv`](data/HumCircMed2018v2_mapped_edge_circa_scores.tsv) contains calculated calculate edge circadian scores for drug-disease pairs from Ruben et al dataset.
+
++ [`data/indication_edge_circa_scores.tsv`](data/indication_edge_circa_scores.tsv) contains calculated edge circadian scores for drug-disease pairs from indication dataset.
+
 # Notebook
 
-+ [`data_id_mapping.ipynb`](data_id_mapping.ipynb) contains the codes that map treatment and CircaDB data to hetionet IDs.   
++ [`data_id_mapping.ipynb`](data_id_mapping.ipynb) contains the codes that map treatment and CircaDB data to hetionet IDs.  
+
++ [`calculate_edge_circa_score_ruben.ipynb`](calculate_edge_circa_score_ruben.ipynb) contains the codes that calculate edge circadian scores for drug-disease pairs from Ruben et al dataset.
+
++ [`calculate_edge_circa_score_indication.ipynb`](calculate_edge_circa_score_indication.ipynb) contains the codes that calculate edge circadian scores for drug-disease pairs from indication dataset.
+
++ [`analyze_edge_circa_score.ipynb`](analyze_edge_circa_score.ipynb) contains the codes that analyze edge circadian scores of drug-disease pairs from Ruben et al dataset and indication dataset.
+
++ [`detail_edge_circa_score.ipynb`](detail_edge_circa_score.ipynb) contains the codes that obtain details of edge circadian score in each path.
