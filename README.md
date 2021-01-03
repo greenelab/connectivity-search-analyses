@@ -27,6 +27,17 @@ conda env update --file=environment.yml
 
 Then use `conda activate hetmech` and `conda deactivate` to activate or deactivate the environment.
 
+Note that the environment is tested with the conda `channel_priority strict` configuration.
+Locally, you can run the following commands to configure conda (as per https://conda-forge.org docs),
+but note that it affects your conda config beyond this environment:
+
+```shell
+conda config --add channels conda-forge
+conda config --set channel_priority strict
+```
+
+Another option is to install conda with [miniforge](https://github.com/conda-forge/miniforge).
+
 ## Acknowledgments
 
 This work was supported through a research collaboration with [Pfizer Worldwide Research and Development](https://www.pfizer.com/partners/research-and-development).
