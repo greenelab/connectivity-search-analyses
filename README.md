@@ -1,6 +1,6 @@
 # Hetnet connectivity search prototyping and data repository
 
-[![Build Status](https://travis-ci.org/greenelab/hetmech.svg?branch=master)](https://travis-ci.org/greenelab/hetmech)
+[![Build Status](https://travis-ci.org/greenelab/hetmech.svg?branch=main)](https://travis-ci.org/greenelab/hetmech)
 
 Hetmech is a project to extract mechanistic connections between nodes in hetnets.
 The project aims to identify the relevant network connections between a set of query nodes.
