@@ -2,28 +2,28 @@ name: hetmech
 channels:
   - conda-forge
 dependencies:
-  - conda-forge::flake8=3.5.0
-  - conda-forge::ipykernel=4.8.2
-  - conda-forge::ipywidgets=7.4.0
-  - conda-forge::nb_conda_kernels=2.1.1
-  - conda-forge::neo4j-python-driver=1.7.2  
-  - conda-forge::notebook=5.6.0
-  - conda-forge::numpy=1.14.6
-  - conda-forge::pandas=0.23.4
-  - conda-forge::plotly=3.7.1
-  - conda-forge::plotnine=0.4.0
-  - conda-forge::py2neo=4.2.0
-  - conda-forge::pytest=3.7.2
-  - conda-forge::python=3.6.6
-  - conda-forge::requests=2.19.1
-  - conda-forge::scikit-learn=0.19.2
-  - conda-forge::scipy=1.1.0
-  - conda-forge::tqdm=4.24.0
-# - conda-forge::numba=0.42.1
-  - conda-forge::umap-learn=0.3.7
-  - conda-forge::xarray=0.10.8
-  - conda-forge::xlrd=1.1.0
-  - conda-forge::psycopg2=2.7.5
+  - flake8=3.8.4
+  - ipykernel=5.4.2
+  - ipywidgets=7.6.2
+  - nb_conda_kernels=2.3.1
+  - neo4j-python-driver=4.2.1
+  - notebook=6.1.6
+  - numpy=1.19.4
+  - pandas=1.2.0
+  - pip
+  - plotly=4.14.1
+  - plotnine=0.7.1
+  - psycopg2=2.8.6
+  - py2neo=4.2.0
+  - pytest=6.2.1
+  - python=3.9.1
+  - requests=2.25.1
+  - scikit-learn=0.24.0
+  - scipy=1.6.0
+  - tqdm=4.55.1
+  - umap-learn=0.4.6
+  - xarray=0.16.2
+  - xlrd=1.2.0
   - pip:
-    - git+https://github.com/hetio/hetio@7c179b75a5520b3520cc44017325b64c2b655ce2
-    - git+https://github.com/hetio/hetmatpy@6a6f0074c24c15d94dcc2f92474f8db8dae20f19
+    - git+https://github.com/hetio/hetnetpy@a4b11a055353fa54b1697a663701c53a61927da8
+    - git+https://github.com/hetio/hetmatpy@bc36aa9859c43a1a5fb22808cd6eb952ef9d497c
