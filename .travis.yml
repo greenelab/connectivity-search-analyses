@@ -14,4 +14,4 @@ install:
   - conda list
 script:
   - jupyter nbconvert --to=script --stdout *.ipynb |
-    flake8 --exit-zero --show-source --ignore=E402,W291,E501,W391 -
+    flake8 --exit-zero --show-source -
