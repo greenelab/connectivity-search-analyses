@@ -1,6 +1,6 @@
 # Hetnet connectivity search prototyping and data repository
 
-[![Build Status](https://travis-ci.com/greenelab/connectivity-search-analyses.svg?branch=main)](https://travis-ci.org/greenelab/connectivity-search-analyses)
+[![Build Status](https://travis-ci.org/greenelab/connectivity-search-analyses.svg?branch=main)](https://travis-ci.org/greenelab/connectivity-search-analyses)
 
 Connectivity Search (formerly called Hetmech for _hetnet mechanisms_) is a project to extract mechanistic connections between nodes in hetnets.
 The project aims to identify the relevant network connections between query nodes.
