@@ -1,13 +1,14 @@
 # Hetnet connectivity search prototyping and data repository
 
-[![Build Status](https://travis-ci.org/greenelab/hetmech.svg?branch=main)](https://travis-ci.org/greenelab/hetmech)
+[![Build Status](https://travis-ci.com/greenelab/connectivity-search-analyses.svg?branch=main)](https://travis-ci.org/greenelab/connectivity-search-analyses)
 
-Hetmech is a project to extract mechanistic connections between nodes in hetnets.
-The project aims to identify the relevant network connections between a set of query nodes.
+Connectivity Search (formerly called Hetmech for _hetnet mechanisms_) is a project to extract mechanistic connections between nodes in hetnets.
+The project aims to identify the relevant network connections between query nodes.
 The method is designed to operate on hetnets (networks with multiple node or relationship types).
 
 **Note: the `hetmech` python package has been renamed to `hetmatpy` and relocated to [`hetio/hetmatpy`](https://github.com/hetio/hetmatpy).**
-This repository is now used as a historical archive, as well as a dataset storage and method prototyping repository.
+This repository is now used as a historical archive,
+as well as a dataset storage, method prototyping, and exploratory data analysis repository.
 
 Many findings from this repository are described in the [Connectivity Search Manuscript](https://greenelab.github.io/connectivity-search-manuscript/ "Hetnet connectivity search provides rapid insights into how two biomedical entities are related").
 The manuscript source code is available in [`greenelab/connectivity-search-manuscript`](https://github.com/greenelab/connectivity-search-manuscript).
